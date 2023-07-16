@@ -2,5 +2,5 @@
 
 public static class DomainExtensions
 {
-	// ToDo реализовать экстеншены
+    // ToDo реализовать экстеншены
 }
