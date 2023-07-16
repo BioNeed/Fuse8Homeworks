@@ -95,7 +95,7 @@ public class Money
             sign = MinusSign;
         }
 
-        return $"Account balance: {sign}{Rubles.ToString()}{Kopeks.ToString()}";
+        return $"Account balance: {sign}{Rubles.ToString()} rub. {Kopeks.ToString()} kop.";
     }
 
     public override bool Equals(object? obj)
