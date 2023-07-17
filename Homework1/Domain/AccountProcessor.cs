@@ -2,7 +2,8 @@
 
 public class AccountProcessor
 {
-    // ToDo Реализовать без копирования и боксинга
+    private delegate decimal Operation(ref BankOperation bankOperation);
+
     public decimal Calculate(BankAccount bankAccount)
     {
         return CalculateOperation(bankAccount.LastOperation) +
@@ -36,6 +37,26 @@ public class AccountProcessor
                CalculateOperation3(bankAccount);
     }
 
+    public decimal CalculatePerformed(ref BankAccount bankAccount)
+    {
+        decimal result = 0m;
+        result += ExecuteOperation(ref bankAccount, CalculateOperationPerformed) * 3;
+        result += ExecuteOperation(ref bankAccount, CalculateOperationPerformed1) * 3;
+        result += ExecuteOperation(ref bankAccount, CalculateOperationPerformed2) * 3;
+        result += ExecuteOperation(ref bankAccount, CalculateOperationPerformed3) * 3;
+        result += CalculateOperationPerformed3(ref bankAccount) * 3;
+
+        return result;
+
+        static decimal ExecuteOperation(ref BankAccount bankAccount, Operation operation)
+        {
+            BankOperation previousOperation = bankAccount.PreviousOperation;
+            BankOperation lastOperation = bankAccount.LastOperation;
+
+            return operation(ref previousOperation) + operation(ref lastOperation);
+        }
+    }
+
     private decimal CalculateOperation(BankOperation bankOperation)
     {
         // Some calculation code
@@ -55,6 +76,31 @@ public class AccountProcessor
     }
 
     private decimal CalculateOperation3(ITotalAmount bankOperation)
+    {
+        // Some calculation code
+        return bankOperation.TotalAmount;
+    }
+
+    private decimal CalculateOperationPerformed(ref BankOperation bankOperation)
+    {
+        // Some calculation code
+        return bankOperation.OperationInfo0;
+    }
+
+    private decimal CalculateOperationPerformed1(ref BankOperation bankOperation)
+    {
+        // Some calculation code
+        return bankOperation.OperationInfo1;
+    }
+
+    private decimal CalculateOperationPerformed2(ref BankOperation bankOperation)
+    {
+        // Some calculation code
+        return bankOperation.OperationInfo2;
+    }
+
+    private decimal CalculateOperationPerformed3<T>(ref T bankOperation)
+        where T : ITotalAmount
     {
         // Some calculation code
         return bankOperation.TotalAmount;
