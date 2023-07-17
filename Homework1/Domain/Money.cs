@@ -27,7 +27,7 @@ public class Money
 
         if (rubles == 0 && kopeks == 0 && isNegative == true)
         {
-            throw new ArgumentException("Zero balance cannot be negative", nameof(IsNegative));
+            throw new ArgumentException("Zero balance cannot be negative", nameof(isNegative));
         }
 
         IsNegative = isNegative;
