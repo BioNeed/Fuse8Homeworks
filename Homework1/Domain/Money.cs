@@ -15,6 +15,21 @@ public class Money
 
     public Money(bool isNegative, int rubles, int kopeks)
     {
+        if (rubles < 0)
+        {
+            throw new ArgumentException("Rubles count must be >= 0", nameof(rubles));
+        }
+
+        if (kopeks < 0 || kopeks > 99)
+        {
+            throw new ArgumentException("Kopeks count must be >= 0 and <= 99", nameof(kopeks));
+        }
+
+        if (rubles == 0 && kopeks == 0 && isNegative == true)
+        {
+            throw new ArgumentException("Zero balance cannot be negative", nameof(IsNegative));
+        }
+
         IsNegative = isNegative;
         Rubles = rubles;
         Kopeks = kopeks;
@@ -113,8 +128,8 @@ public class Money
 
     private static Money CreateMoneyFromTotalKopeks(int totalKopeks)
     {
-        int rubles = totalKopeks / RublesToKopeksFactor;
-        int kopeks = totalKopeks % RublesToKopeksFactor;
+        int rubles = Math.Abs(totalKopeks / RublesToKopeksFactor);
+        int kopeks = Math.Abs(totalKopeks % RublesToKopeksFactor);
         bool isNegative = totalKopeks < 0;
 
         return new Money(isNegative: isNegative, rubles, kopeks);
