@@ -1,5 +1,14 @@
-﻿namespace Fuse8_ByteMinds.SummerSchool.Domain;
+﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Order;
+using BenchmarkDotNet.Running;
 
+BenchmarkRunner.Run<AccountProcessor>();
+Console.WriteLine("Done benchmarking");
+Console.ReadLine();
+
+[MemoryDiagnoser(displayGenColumns: true)]
+[Orderer(SummaryOrderPolicy.FastestToSlowest)]
+[RankColumn]
 public class AccountProcessor
 {
     private delegate decimal Operation(ref BankOperation bankOperation);
