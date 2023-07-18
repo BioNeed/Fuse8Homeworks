@@ -6,7 +6,7 @@ public static class DomainExtensions
 {
     public static bool IsNullOrEmpty<T>(this IEnumerable<T> collection)
     {
-        if (collection == null || collection.Any() == true)
+        if (collection == null || collection.Any() == false)
         {
             return true;
         }
