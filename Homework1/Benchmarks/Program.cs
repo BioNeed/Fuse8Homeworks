@@ -12,36 +12,36 @@ Console.ReadLine();
 /// 
 /// Результаты для слов:
 /// "Эйри" - слово из начала словаря через StringBuilder
-/// WordIsExistsIntern("Эйри") - 1.022 us
-/// WordIsExists("Эйри") - 1.174 us
+/// WordIsExistsIntern("Эйри") - 1.086 us
+/// WordIsExists("Эйри") - 1.273 us
 /// 
 /// "Эйде" - слово из начала словаря константное
-/// WordIsExistsIntern("Эйде") - ????? us
-/// WordIsExists("Эйде") - ????? us
+/// WordIsExistsIntern("Эйде") - 1.105 us
+/// WordIsExists("Эйде") - 1.365 us
 /// 
 /// "потеплеет" - слово из середины словаря через StringBuilder
-/// WordIsExistsIntern("потеплеет") - 637.698 us
-/// WordIsExists("потеплеет") - 794.809 us
+/// WordIsExistsIntern("потеплеет") - 599.190 us
+/// WordIsExists("потеплеет") - 785.382 us
 /// 
 /// "подернется" - слово из середины словаря константное
-/// WordIsExistsIntern("подернется") - 642.639 us
-/// WordIsExists("подернется") - 868.846 us
+/// WordIsExistsIntern("подернется") - 653.441 us
+/// WordIsExists("подернется") - 914.158 us
 /// 
 /// "ёмче" - слово из конца словаря через StringBuilder
-/// WordIsExistsIntern("ёмче") - 1,201.952 us
-/// WordIsExists("ёмче") - 1,671.600 us
+/// WordIsExistsIntern("ёмче") - 1,289.393 us
+/// WordIsExists("ёмче") - 1,812.927 us
 /// 
 /// "ёрш" - слово из конца словаря константное
-/// WordIsExistsIntern("ёрш") - 1,251.781 us
-/// WordIsExists("ёрш") - 1,612.884 us
+/// WordIsExistsIntern("ёрш") - 1,308.396 us
+/// WordIsExists("ёрш") - 1,709.576 us
 /// 
 /// "лопнутый" - слово НЕ из словаря через StringBuilder
-/// WordIsExistsIntern("лопнутый") - 1,233.824 us
-/// WordIsExists("лопнутый") - 1,639.830 us
+/// WordIsExistsIntern("лопнутый") - 1,294.581 us
+/// WordIsExists("лопнутый") - 1,815.758 us
 /// 
 /// "шуфлядка" - слово НЕ из словаря константное
-/// WordIsExistsIntern("шуфлядка") - 1,174.752 us
-/// WordIsExists("шуфлядка") - 1,716.977 us
+/// WordIsExistsIntern("шуфлядка") - 1,348.098 us
+/// WordIsExists("шуфлядка") - 1,778.393 us
 /// 
 /// </summary>
 [MemoryDiagnoser(displayGenColumns: true)]

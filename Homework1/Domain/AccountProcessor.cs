@@ -1,10 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Order;
-using BenchmarkDotNet.Running;
-
-BenchmarkRunner.Run<AccountProcessor>();
-Console.WriteLine("Done benchmarking");
-Console.ReadLine();
 
 [MemoryDiagnoser(displayGenColumns: true)]
 [Orderer(SummaryOrderPolicy.FastestToSlowest)]
@@ -13,6 +8,8 @@ public class AccountProcessor
 {
     private delegate decimal Operation(ref BankOperation bankOperation);
 
+    [Benchmark(Baseline = true)]
+    [ArgumentsSource(nameof(SampleData))]
     public decimal Calculate(BankAccount bankAccount)
     {
         return CalculateOperation(bankAccount.LastOperation) +
@@ -46,6 +43,8 @@ public class AccountProcessor
                CalculateOperation3(bankAccount);
     }
 
+    [Benchmark]
+    [ArgumentsSource(nameof(SampleData))]
     public decimal CalculatePerformed(ref BankAccount bankAccount)
     {
         decimal result = 0m;
@@ -64,6 +63,31 @@ public class AccountProcessor
 
             return operation(ref previousOperation) + operation(ref lastOperation);
         }
+    }
+
+    public IEnumerable<BankAccount> SampleData()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            BankAccount bankAccount = new BankAccount()
+            {
+                PreviousOperation = new BankOperation()
+                {
+                    Rubles = i,
+                    Kopeks = (short)i,
+                },
+                LastOperation = new BankOperation()
+                {
+                    Rubles = i,
+                    Kopeks = (short)i,
+                },
+                TotalAmount = i,
+            };
+
+            yield return bankAccount;
+        }
+
+        yield return new BankAccount();
     }
 
     private decimal CalculateOperation(BankOperation bankOperation)
