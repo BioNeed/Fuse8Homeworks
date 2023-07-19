@@ -21,22 +21,7 @@ public static class DomainExtensions
             throw new ArgumentNullException(nameof(collection), "Collection cannot be null");
         }
 
-        if (collection.Any() == false)
-        {
-            return string.Empty;
-        }
-
-        StringBuilder outputBuilder = new StringBuilder(collection.Count());
-
-        outputBuilder.Append(collection.First().ToString());
-
-        foreach (T item in collection.Skip(1))
-        {
-            outputBuilder.Append(separator);
-            outputBuilder.Append(item.ToString());
-        }
-
-        return outputBuilder.ToString();
+        return string.Join(separator, collection);
     }
 
     public static int DaysCountBetween(this DateTimeOffset dateTimeOffset, DateTimeOffset otherDateTimeOffset)

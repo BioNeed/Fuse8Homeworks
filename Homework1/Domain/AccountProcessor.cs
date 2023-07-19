@@ -45,7 +45,7 @@ public class AccountProcessor
 
     [Benchmark]
     [ArgumentsSource(nameof(SampleData))]
-    public decimal CalculatePerformed(ref BankAccount bankAccount)
+    public decimal CalculatePerformedWithDelegate(ref BankAccount bankAccount)
     {
         decimal result = 0m;
         result += ExecuteOperation(ref bankAccount, CalculateOperationPerformed) * 3;
@@ -65,28 +65,50 @@ public class AccountProcessor
         }
     }
 
+    [Benchmark]
+    [ArgumentsSource(nameof(SampleData))]
+    public decimal CalculatePerformedWithoutDelegate(ref BankAccount bankAccount)
+    {
+        BankOperation previousOperation = bankAccount.PreviousOperation;
+        BankOperation lastOperation = bankAccount.LastOperation;
+
+        return CalculateOperationPerformed(ref lastOperation) +
+            CalculateOperationPerformed(ref lastOperation) +
+            CalculateOperationPerformed(ref lastOperation) +
+            CalculateOperationPerformed(ref previousOperation) +
+            CalculateOperationPerformed(ref previousOperation) +
+            CalculateOperationPerformed(ref previousOperation)
+            +
+            CalculateOperationPerformed1(ref lastOperation) +
+            CalculateOperationPerformed1(ref lastOperation) +
+            CalculateOperationPerformed1(ref lastOperation) +
+            CalculateOperationPerformed1(ref previousOperation) +
+            CalculateOperationPerformed1(ref previousOperation) +
+            CalculateOperationPerformed1(ref previousOperation)
+            +
+            CalculateOperationPerformed2(ref lastOperation) +
+            CalculateOperationPerformed2(ref lastOperation) +
+            CalculateOperationPerformed2(ref lastOperation) +
+            CalculateOperationPerformed2(ref previousOperation) +
+            CalculateOperationPerformed2(ref previousOperation) +
+            CalculateOperationPerformed2(ref previousOperation)
+            +
+            CalculateOperationPerformed3(ref lastOperation) +
+            CalculateOperationPerformed3(ref lastOperation) +
+            CalculateOperationPerformed3(ref lastOperation) +
+            CalculateOperationPerformed3(ref previousOperation) +
+            CalculateOperationPerformed3(ref previousOperation) +
+            CalculateOperationPerformed3(ref previousOperation)
+            +
+            CalculateOperationPerformed3(ref bankAccount) +
+            CalculateOperationPerformed3(ref bankAccount) +
+            CalculateOperationPerformed3(ref bankAccount);
+    }
+
     public IEnumerable<BankAccount> SampleData()
     {
-        for (int i = 0; i < 3; i++)
-        {
-            BankAccount bankAccount = new BankAccount()
-            {
-                PreviousOperation = new BankOperation()
-                {
-                    Rubles = i,
-                    Kopeks = (short)i,
-                },
-                LastOperation = new BankOperation()
-                {
-                    Rubles = i,
-                    Kopeks = (short)i,
-                },
-                TotalAmount = i,
-            };
-
-            yield return bankAccount;
-        }
-
+        yield return new BankAccount();
+        yield return new BankAccount();
         yield return new BankAccount();
     }
 
