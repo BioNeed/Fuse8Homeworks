@@ -1,10 +1,11 @@
-|             Method | bankAccount |     Mean |    Error |   StdDev |   Median | Ratio | RatioSD | Rank |   Gen0 | Allocated | Alloc Ratio |
-|------------------- |------------ |---------:|---------:|---------:|---------:|------:|--------:|-----:|-------:|----------:|------------:|
-| CalculatePerformed | BankAccount | 130.8 ns |  2.51 ns |  2.79 ns | 130.3 ns |  0.27 |    0.01 |    1 | 0.0408 |     256 B |        0.04 |
-| CalculatePerformed | BankAccount | 143.7 ns |  3.77 ns | 10.95 ns | 139.4 ns |  0.29 |    0.02 |    2 | 0.0408 |     256 B |        0.04 |
-| CalculatePerformed | BankAccount | 144.4 ns |  4.13 ns | 12.19 ns | 142.3 ns |  0.27 |    0.01 |    2 | 0.0408 |     256 B |        0.04 |
-| CalculatePerformed | BankAccount | 160.8 ns |  4.48 ns | 13.15 ns | 156.2 ns |  0.33 |    0.02 |    3 | 0.0408 |     256 B |        0.04 |
-|          Calculate | BankAccount | 493.1 ns |  9.35 ns |  7.81 ns | 494.7 ns |  1.00 |    0.00 |    4 | 1.0710 |    6720 B |        1.00 |
-|          Calculate | BankAccount | 509.6 ns |  8.74 ns |  7.75 ns | 508.4 ns |  1.03 |    0.02 |    5 | 1.0710 |    6720 B |        1.00 |
-|          Calculate | BankAccount | 541.5 ns | 11.06 ns | 29.70 ns | 528.3 ns |  1.17 |    0.04 |    6 | 1.0710 |    6720 B |        1.00 |
-|          Calculate | BankAccount | 545.8 ns | 15.83 ns | 45.94 ns | 536.2 ns |  1.08 |    0.09 |    6 | 1.0710 |    6720 B |        1.00 |
+|                            Method | bankAccount |     Mean |    Error |   StdDev |   Median | Ratio | RatioSD | Rank |   Gen0 | Allocated | Alloc Ratio |
+|---------------------------------- |------------ |---------:|---------:|---------:|---------:|------:|--------:|-----:|-------:|----------:|------------:|
+| CalculatePerformedWithoutDelegate | BankAccount | 104.7 ns |  2.43 ns |  6.96 ns | 103.9 ns |  0.19 |    0.01 |    1 |      - |         - |        0.00 |
+| CalculatePerformedWithoutDelegate | BankAccount | 104.9 ns |  2.07 ns |  5.67 ns | 103.9 ns |  0.20 |    0.01 |    1 |      - |         - |        0.00 |
+| CalculatePerformedWithoutDelegate | BankAccount | 106.1 ns |  2.13 ns |  5.28 ns | 105.9 ns |  0.20 |    0.01 |    1 |      - |         - |        0.00 |
+|    CalculatePerformedWithDelegate | BankAccount | 127.8 ns |  2.60 ns |  5.64 ns | 125.6 ns |  0.24 |    0.02 |    2 | 0.0408 |     256 B |        0.04 |
+|    CalculatePerformedWithDelegate | BankAccount | 137.0 ns |  4.76 ns | 13.87 ns | 132.5 ns |  0.27 |    0.03 |    3 | 0.0408 |     256 B |        0.04 |
+|    CalculatePerformedWithDelegate | BankAccount | 139.5 ns |  3.24 ns |  9.44 ns | 138.8 ns |  0.26 |    0.02 |    4 | 0.0408 |     256 B |        0.04 |
+|                         Calculate | BankAccount | 528.7 ns | 10.74 ns | 24.89 ns | 520.2 ns |  1.00 |    0.00 |    5 | 1.0710 |    6720 B |        1.00 |
+|                         Calculate | BankAccount | 556.5 ns | 15.84 ns | 44.69 ns | 546.1 ns |  1.04 |    0.08 |    6 | 1.0710 |    6720 B |        1.00 |
+|                         Calculate | BankAccount | 556.6 ns | 11.22 ns | 29.35 ns | 547.8 ns |  1.06 |    0.09 |    6 | 1.0710 |    6720 B |        1.00 |
