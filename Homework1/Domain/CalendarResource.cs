@@ -5,50 +5,69 @@
 /// </summary>
 public class CalendarResource
 {
-	public static readonly CalendarResource Instance = new();
+    public static readonly CalendarResource Instance = new ();
 
-	public static readonly string January = GetMonthByNumber(0);
-	public static readonly string February = GetMonthByNumber(1);
+    public static readonly string January;
+    public static readonly string February;
 
-	private static readonly string[] MonthNames;
+    private static readonly MonthInfo[] MonthInfos;
 
-	static CalendarResource()
-	{
-		MonthNames = new[]
-		{
-			"Январь",
-			"Февраль",
-			"Март",
-			"Апрель",
-			"Май",
-			"Июнь",
-			"Июль",
-			"Август",
-			"Сентябрь",
-			"Октябрь",
-			"Ноябрь",
-			"Декабрь",
-		};
-	}
+    static CalendarResource()
+    {
+        MonthInfos = new[]
+        {
+            new MonthInfo(Month.January, "Январь"),
+            new MonthInfo(Month.February, "Февраль"),
+            new MonthInfo(Month.March, "Март"),
+            new MonthInfo(Month.April, "Апрель"),
+            new MonthInfo(Month.May, "Май"),
+            new MonthInfo(Month.June, "Июнь"),
+            new MonthInfo(Month.July, "Июль"),
+            new MonthInfo(Month.August, "Август"),
+            new MonthInfo(Month.September, "Сентябрь"),
+            new MonthInfo(Month.October, "Октябрь"),
+            new MonthInfo(Month.November, "Ноябрь"),
+            new MonthInfo(Month.December, "Декабрь"),
+        };
 
-	private static string GetMonthByNumber(int number)
-		=> MonthNames[number];
+        January = GetMonthByNumber(0);
+        February = GetMonthByNumber(1);
+    }
 
-	// ToDo реализовать индексатор для получения названия месяца по енаму Month
+    public string this[Month month]
+    {
+        get
+        {
+            foreach (MonthInfo monthInfo in MonthInfos)
+            {
+                if (monthInfo.Month == month)
+                {
+                    return monthInfo.MonthName;
+                }
+            }
+
+            throw new ArgumentOutOfRangeException(
+                nameof(month),
+                $"Month {month} is invalid");
+        }
+    }
+
+    private static string GetMonthByNumber(int number)
+        => MonthInfos[number].MonthName;
 }
 
 public enum Month
 {
-	January,
-	February,
-	March,
-	April,
-	May,
-	June,
-	July,
-	August,
-	September,
-	October,
-	November,
-	December,
+    January,
+    February,
+    March,
+    April,
+    May,
+    June,
+    July,
+    August,
+    September,
+    October,
+    November,
+    December,
 }
