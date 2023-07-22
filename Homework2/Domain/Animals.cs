@@ -34,7 +34,7 @@ public abstract class Dog : Animal
 
     public override string WhatDoesSay()
     {
-        return "гав";
+        return AnimalSounds.DogSound;
     }
 }
 
@@ -47,7 +47,7 @@ public sealed class Fox : Animal
 
     public override string WhatDoesSay()
     {
-        return "ми-ми-ми";
+        return AnimalSounds.FoxSound;
     }
 }
 
@@ -64,4 +64,9 @@ public sealed class Chihuahua : Dog
 public sealed class Husky : Dog
 {
     public override bool HasBigWeight => true;
+
+    public new string WhatDoesSay()
+    {
+        return AnimalSounds.HuskySound;
+    }
 }
