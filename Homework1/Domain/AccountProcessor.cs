@@ -1,153 +1,253 @@
-﻿namespace Fuse8_ByteMinds.SummerSchool.Domain;
+﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Order;
 
+[MemoryDiagnoser(displayGenColumns: true)]
+[Orderer(SummaryOrderPolicy.FastestToSlowest)]
+[RankColumn]
 public class AccountProcessor
 {
-	// ToDo Реализовать без копирования и боксинга
-	public decimal Calculate(BankAccount bankAccount)
-	{
-		return CalculateOperation(bankAccount.LastOperation) +
-		       CalculateOperation(bankAccount.PreviousOperation) +
-		       CalculateOperation1(bankAccount.LastOperation) +
-		       CalculateOperation1(bankAccount.PreviousOperation) +
-		       CalculateOperation2(bankAccount.LastOperation) +
-		       CalculateOperation2(bankAccount.PreviousOperation) +
-		       CalculateOperation3(bankAccount.LastOperation) +
-		       CalculateOperation3(bankAccount.PreviousOperation) +
-		       CalculateOperation3(bankAccount)
-		       +
-		       CalculateOperation(bankAccount.LastOperation) +
-		       CalculateOperation(bankAccount.PreviousOperation) +
-		       CalculateOperation1(bankAccount.LastOperation) +
-		       CalculateOperation1(bankAccount.PreviousOperation) +
-		       CalculateOperation2(bankAccount.LastOperation) +
-		       CalculateOperation2(bankAccount.PreviousOperation) +
-		       CalculateOperation3(bankAccount.LastOperation) +
-		       CalculateOperation3(bankAccount.PreviousOperation) +
-		       CalculateOperation3(bankAccount)
-		       +
-		       CalculateOperation(bankAccount.LastOperation) +
-		       CalculateOperation(bankAccount.PreviousOperation) +
-		       CalculateOperation1(bankAccount.LastOperation) +
-		       CalculateOperation1(bankAccount.PreviousOperation) +
-		       CalculateOperation2(bankAccount.LastOperation) +
-		       CalculateOperation2(bankAccount.PreviousOperation) +
-		       CalculateOperation3(bankAccount.LastOperation) +
-		       CalculateOperation3(bankAccount.PreviousOperation) +
-		       CalculateOperation3(bankAccount);
-	}
+    private delegate decimal Operation(ref BankOperation bankOperation);
 
-	private decimal CalculateOperation(BankOperation bankOperation)
-	{
-		// Some calculation code
-		return bankOperation.OperationInfo0;
-	}
+    [Benchmark(Baseline = true)]
+    [ArgumentsSource(nameof(SampleData))]
+    public decimal Calculate(BankAccount bankAccount)
+    {
+        return CalculateOperation(bankAccount.LastOperation) +
+               CalculateOperation(bankAccount.PreviousOperation) +
+               CalculateOperation1(bankAccount.LastOperation) +
+               CalculateOperation1(bankAccount.PreviousOperation) +
+               CalculateOperation2(bankAccount.LastOperation) +
+               CalculateOperation2(bankAccount.PreviousOperation) +
+               CalculateOperation3(bankAccount.LastOperation) +
+               CalculateOperation3(bankAccount.PreviousOperation) +
+               CalculateOperation3(bankAccount)
+               +
+               CalculateOperation(bankAccount.LastOperation) +
+               CalculateOperation(bankAccount.PreviousOperation) +
+               CalculateOperation1(bankAccount.LastOperation) +
+               CalculateOperation1(bankAccount.PreviousOperation) +
+               CalculateOperation2(bankAccount.LastOperation) +
+               CalculateOperation2(bankAccount.PreviousOperation) +
+               CalculateOperation3(bankAccount.LastOperation) +
+               CalculateOperation3(bankAccount.PreviousOperation) +
+               CalculateOperation3(bankAccount)
+               +
+               CalculateOperation(bankAccount.LastOperation) +
+               CalculateOperation(bankAccount.PreviousOperation) +
+               CalculateOperation1(bankAccount.LastOperation) +
+               CalculateOperation1(bankAccount.PreviousOperation) +
+               CalculateOperation2(bankAccount.LastOperation) +
+               CalculateOperation2(bankAccount.PreviousOperation) +
+               CalculateOperation3(bankAccount.LastOperation) +
+               CalculateOperation3(bankAccount.PreviousOperation) +
+               CalculateOperation3(bankAccount);
+    }
 
-	private decimal CalculateOperation1(BankOperation bankOperation)
-	{
-		// Some calculation code
-		return bankOperation.OperationInfo1;
-	}
+    [Benchmark]
+    [ArgumentsSource(nameof(SampleData))]
+    public decimal CalculatePerformedWithDelegate(ref BankAccount bankAccount)
+    {
+        decimal result = 0m;
+        result += ExecuteOperation(ref bankAccount, CalculateOperationPerformed) * 3;
+        result += ExecuteOperation(ref bankAccount, CalculateOperationPerformed1) * 3;
+        result += ExecuteOperation(ref bankAccount, CalculateOperationPerformed2) * 3;
+        result += ExecuteOperation(ref bankAccount, CalculateOperationPerformed3) * 3;
+        result += CalculateOperationPerformed3(ref bankAccount) * 3;
 
-	private decimal CalculateOperation2(BankOperation bankOperation)
-	{
-		// Some calculation code
-		return bankOperation.OperationInfo2;
-	}
+        return result;
 
-	private decimal CalculateOperation3(ITotalAmount bankOperation)
-	{
-		// Some calculation code
-		return bankOperation.TotalAmount;
-	}
+        static decimal ExecuteOperation(ref BankAccount bankAccount, Operation operation)
+        {
+            BankOperation previousOperation = bankAccount.PreviousOperation;
+            BankOperation lastOperation = bankAccount.LastOperation;
+
+            return operation(ref previousOperation) + operation(ref lastOperation);
+        }
+    }
+
+    [Benchmark]
+    [ArgumentsSource(nameof(SampleData))]
+    public decimal CalculatePerformedWithoutDelegate(ref BankAccount bankAccount)
+    {
+        BankOperation previousOperation = bankAccount.PreviousOperation;
+        BankOperation lastOperation = bankAccount.LastOperation;
+
+        return CalculateOperationPerformed(ref lastOperation) +
+            CalculateOperationPerformed(ref lastOperation) +
+            CalculateOperationPerformed(ref lastOperation) +
+            CalculateOperationPerformed(ref previousOperation) +
+            CalculateOperationPerformed(ref previousOperation) +
+            CalculateOperationPerformed(ref previousOperation)
+            +
+            CalculateOperationPerformed1(ref lastOperation) +
+            CalculateOperationPerformed1(ref lastOperation) +
+            CalculateOperationPerformed1(ref lastOperation) +
+            CalculateOperationPerformed1(ref previousOperation) +
+            CalculateOperationPerformed1(ref previousOperation) +
+            CalculateOperationPerformed1(ref previousOperation)
+            +
+            CalculateOperationPerformed2(ref lastOperation) +
+            CalculateOperationPerformed2(ref lastOperation) +
+            CalculateOperationPerformed2(ref lastOperation) +
+            CalculateOperationPerformed2(ref previousOperation) +
+            CalculateOperationPerformed2(ref previousOperation) +
+            CalculateOperationPerformed2(ref previousOperation)
+            +
+            CalculateOperationPerformed3(ref lastOperation) +
+            CalculateOperationPerformed3(ref lastOperation) +
+            CalculateOperationPerformed3(ref lastOperation) +
+            CalculateOperationPerformed3(ref previousOperation) +
+            CalculateOperationPerformed3(ref previousOperation) +
+            CalculateOperationPerformed3(ref previousOperation)
+            +
+            CalculateOperationPerformed3(ref bankAccount) +
+            CalculateOperationPerformed3(ref bankAccount) +
+            CalculateOperationPerformed3(ref bankAccount);
+    }
+
+    public IEnumerable<BankAccount> SampleData()
+    {
+        yield return new BankAccount();
+        yield return new BankAccount();
+        yield return new BankAccount();
+    }
+
+    private decimal CalculateOperation(BankOperation bankOperation)
+    {
+        // Some calculation code
+        return bankOperation.OperationInfo0;
+    }
+
+    private decimal CalculateOperation1(BankOperation bankOperation)
+    {
+        // Some calculation code
+        return bankOperation.OperationInfo1;
+    }
+
+    private decimal CalculateOperation2(BankOperation bankOperation)
+    {
+        // Some calculation code
+        return bankOperation.OperationInfo2;
+    }
+
+    private decimal CalculateOperation3(ITotalAmount bankOperation)
+    {
+        // Some calculation code
+        return bankOperation.TotalAmount;
+    }
+
+    private decimal CalculateOperationPerformed(ref BankOperation bankOperation)
+    {
+        // Some calculation code
+        return bankOperation.OperationInfo0;
+    }
+
+    private decimal CalculateOperationPerformed1(ref BankOperation bankOperation)
+    {
+        // Some calculation code
+        return bankOperation.OperationInfo1;
+    }
+
+    private decimal CalculateOperationPerformed2(ref BankOperation bankOperation)
+    {
+        // Some calculation code
+        return bankOperation.OperationInfo2;
+    }
+
+    private decimal CalculateOperationPerformed3<T>(ref T bankOperation)
+        where T : ITotalAmount
+    {
+        // Some calculation code
+        return bankOperation.TotalAmount;
+    }
 }
-
 
 public struct BankAccount : ITotalAmount
 {
-	public decimal TotalAmount { get; set; }
-	public BankOperation LastOperation { get; set; }
-	public BankOperation PreviousOperation { get; set; }
+    public decimal TotalAmount { get; set; }
+    public BankOperation LastOperation { get; set; }
+    public BankOperation PreviousOperation { get; set; }
 }
 
 public interface ITotalAmount
 {
-	decimal TotalAmount { get; set; }
+    decimal TotalAmount { get; set; }
 }
 
 public struct BankOperation : ITotalAmount
 {
-	public decimal TotalAmount { get; set; }
+    public decimal TotalAmount { get; set; }
 
-	public long Rubles { get; set; }
+    public long Rubles { get; set; }
 
-	public short Kopeks { get; set; }
+    public short Kopeks { get; set; }
 
-	public long RublesBeforeOperation { get; set; }
+    public long RublesBeforeOperation { get; set; }
 
-	public short KopeksBeforeOperation { get; set; }
+    public short KopeksBeforeOperation { get; set; }
 
-	public long RublesAfterOperation { get; set; }
+    public long RublesAfterOperation { get; set; }
 
-	public short KopeksAfterOperation { get; set; }
+    public short KopeksAfterOperation { get; set; }
 
-	public long OperationInfo0 { get; set; }
-	public long OperationInfo1 { get; set; }
-	public long OperationInfo2 { get; set; }
-	public long OperationInfo3 { get; set; }
-	public long OperationInfo4 { get; set; }
-	public long OperationInfo5 { get; set; }
-	public long OperationInfo6 { get; set; }
-	public long OperationInfo7 { get; set; }
-	public long OperationInfo8 { get; set; }
-	public long OperationInfo9 { get; set; }
-	public long OperationInfo10 { get; set; }
-	public long OperationInfo11 { get; set; }
-	public long OperationInfo12 { get; set; }
-	public long OperationInfo13 { get; set; }
-	public long OperationInfo14 { get; set; }
-	public long OperationInfo15 { get; set; }
-	public long OperationInfo16 { get; set; }
-	public long OperationInfo17 { get; set; }
-	public long OperationInfo18 { get; set; }
-	public long OperationInfo19 { get; set; }
-	public long OperationInfo20 { get; set; }
-	public long OperationInfo21 { get; set; }
-	public long OperationInfo22 { get; set; }
-	public long OperationInfo23 { get; set; }
-	public long OperationInfo24 { get; set; }
-	public long OperationInfo25 { get; set; }
-	public long OperationInfo26 { get; set; }
-	public long OperationInfo27 { get; set; }
-	public long OperationInfo28 { get; set; }
-	public long OperationInfo29 { get; set; }
-	public long OperationInfo30 { get; set; }
-	public long OperationInfo31 { get; set; }
-	public long OperationInfo32 { get; set; }
-	public long OperationInfo33 { get; set; }
-	public long OperationInfo34 { get; set; }
-	public long OperationInfo35 { get; set; }
-	public long OperationInfo36 { get; set; }
-	public long OperationInfo37 { get; set; }
-	public long OperationInfo38 { get; set; }
-	public long OperationInfo39 { get; set; }
-	public long OperationInfo40 { get; set; }
-	public long OperationInfo41 { get; set; }
-	public long OperationInfo42 { get; set; }
-	public long OperationInfo43 { get; set; }
-	public long OperationInfo44 { get; set; }
-	public long OperationInfo45 { get; set; }
-	public long OperationInfo46 { get; set; }
-	public long OperationInfo47 { get; set; }
-	public long OperationInfo48 { get; set; }
-	public long OperationInfo49 { get; set; }
-	public long OperationInfo50 { get; set; }
-	public long OperationInfo51 { get; set; }
-	public long OperationInfo52 { get; set; }
-	public long OperationInfo53 { get; set; }
-	public long OperationInfo54 { get; set; }
-	public long OperationInfo55 { get; set; }
-	public long OperationInfo56 { get; set; }
-	public long OperationInfo57 { get; set; }
-	public long OperationInfo58 { get; set; }
-	public long OperationInfo59 { get; set; }
+    public long OperationInfo0 { get; set; }
+    public long OperationInfo1 { get; set; }
+    public long OperationInfo2 { get; set; }
+    public long OperationInfo3 { get; set; }
+    public long OperationInfo4 { get; set; }
+    public long OperationInfo5 { get; set; }
+    public long OperationInfo6 { get; set; }
+    public long OperationInfo7 { get; set; }
+    public long OperationInfo8 { get; set; }
+    public long OperationInfo9 { get; set; }
+    public long OperationInfo10 { get; set; }
+    public long OperationInfo11 { get; set; }
+    public long OperationInfo12 { get; set; }
+    public long OperationInfo13 { get; set; }
+    public long OperationInfo14 { get; set; }
+    public long OperationInfo15 { get; set; }
+    public long OperationInfo16 { get; set; }
+    public long OperationInfo17 { get; set; }
+    public long OperationInfo18 { get; set; }
+    public long OperationInfo19 { get; set; }
+    public long OperationInfo20 { get; set; }
+    public long OperationInfo21 { get; set; }
+    public long OperationInfo22 { get; set; }
+    public long OperationInfo23 { get; set; }
+    public long OperationInfo24 { get; set; }
+    public long OperationInfo25 { get; set; }
+    public long OperationInfo26 { get; set; }
+    public long OperationInfo27 { get; set; }
+    public long OperationInfo28 { get; set; }
+    public long OperationInfo29 { get; set; }
+    public long OperationInfo30 { get; set; }
+    public long OperationInfo31 { get; set; }
+    public long OperationInfo32 { get; set; }
+    public long OperationInfo33 { get; set; }
+    public long OperationInfo34 { get; set; }
+    public long OperationInfo35 { get; set; }
+    public long OperationInfo36 { get; set; }
+    public long OperationInfo37 { get; set; }
+    public long OperationInfo38 { get; set; }
+    public long OperationInfo39 { get; set; }
+    public long OperationInfo40 { get; set; }
+    public long OperationInfo41 { get; set; }
+    public long OperationInfo42 { get; set; }
+    public long OperationInfo43 { get; set; }
+    public long OperationInfo44 { get; set; }
+    public long OperationInfo45 { get; set; }
+    public long OperationInfo46 { get; set; }
+    public long OperationInfo47 { get; set; }
+    public long OperationInfo48 { get; set; }
+    public long OperationInfo49 { get; set; }
+    public long OperationInfo50 { get; set; }
+    public long OperationInfo51 { get; set; }
+    public long OperationInfo52 { get; set; }
+    public long OperationInfo53 { get; set; }
+    public long OperationInfo54 { get; set; }
+    public long OperationInfo55 { get; set; }
+    public long OperationInfo56 { get; set; }
+    public long OperationInfo57 { get; set; }
+    public long OperationInfo58 { get; set; }
+    public long OperationInfo59 { get; set; }
 }
