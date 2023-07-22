@@ -5,8 +5,8 @@
 /// </summary>
 public class Lazy<TValue>
 {
+    private readonly Func<TValue> acion;
     private TValue? value;
-    private Func<TValue> acion;
     private bool isInitializedProperty;
 
     public Lazy(Func<TValue> func)
@@ -14,9 +14,7 @@ public class Lazy<TValue>
         acion = func;
     }
 
-    // TODO Реализовать ленивое получение значение при первом обращении к Value
-
-    public TValue? Value 
+    public TValue? Value
     {
         get
         {

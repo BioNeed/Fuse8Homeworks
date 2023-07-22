@@ -25,9 +25,13 @@ public static class AssemblyHelpers
 
         foreach (Type type in assemblyClassTypes)
         {
+            if (type.IsAbstract == true)
+            {
+                continue;
+            }
+
             Type baseType = GetBaseType(type);
-            if (baseType == null || baseType.Assembly != currentAssembly
-                || type.IsAbstract == true)
+            if (baseType == null || baseType.Assembly != currentAssembly)
             {
                 continue;
             }
