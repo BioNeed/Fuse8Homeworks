@@ -1,4 +1,5 @@
 ﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Middlewares;
+using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi;
@@ -27,7 +28,20 @@ public class Startup
 				});
 		;
 		services.AddEndpointsApiExplorer();
-		services.AddSwaggerGen();
+		services.AddSwaggerGen(
+			c =>
+			{
+				c.SwaggerDoc(
+					"v1",
+					new OpenApiInfo()
+					{
+						Title = "Апи",
+						Version = "v1",
+						Description = "API by Alexey Goncharov"
+					});
+
+				c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{typeof(Startup).Assembly.GetName().Name}.xml"), true);
+			});
 	}
 
 	public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
