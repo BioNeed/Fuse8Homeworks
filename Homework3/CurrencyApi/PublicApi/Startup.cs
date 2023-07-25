@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Middlewares;
+using System.Text.Json.Serialization;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi;
 
@@ -31,13 +32,15 @@ public class Startup
 
 	public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 	{
-		if (env.IsDevelopment())
+        if (env.IsDevelopment())
 		{
 			app.UseSwagger();
 			app.UseSwaggerUI();
 		}
 
-		app.UseRouting()
+        app.UseMiddleware<LoggingMiddleware>();
+
+        app.UseRouting()
 			.UseEndpoints(endpoints => endpoints.MapControllers());
 	}
 }
