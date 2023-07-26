@@ -9,7 +9,7 @@
             Методы для работы с Currencyapi API
             </summary>
         </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController.GetSettings(Microsoft.Extensions.Options.IOptionsSnapshot{Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfiguration})">
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController.GetSettings(Microsoft.Extensions.Options.IOptionsSnapshot{Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel})">
             <summary>
             Получить настройки приложения
             </summary>
@@ -65,32 +65,32 @@
             Ошибка в работе API
             </summary>
         </member>
-        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfiguration">
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel">
             <summary>
             Настройки приложения и доступные запросы
             </summary>
         </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfiguration.DefaultCurrency">
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel.DefaultCurrency">
             <summary>
             Валюта по умолчанию
             </summary>
         </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfiguration.BaseCurrency">
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel.BaseCurrency">
             <summary>
             Базовая валюта
             </summary>
         </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfiguration.CurrencyRoundCount">
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel.CurrencyRoundCount">
             <summary>
             Количество знаков после запятой у курса валют
             </summary>
         </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfiguration.RequestLimit">
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel.RequestLimit">
             <summary>
             Максимальное количество запросов к внешнему API
             </summary>
         </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfiguration.RequestCount">
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel.RequestCount">
             <summary>
             Количество отправленных запросов к внешнему API
             </summary>

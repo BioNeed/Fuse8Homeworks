@@ -69,6 +69,9 @@ dotnet_diagnostic.CS8604.severity = silent
 # SA1402: File may only contain a single type
 dotnet_diagnostic.SA1402.severity = silent
 
+# SA1615: Element return value should be documented
+dotnet_diagnostic.SA1615.severity = silent
+
 [*.cs]
 #### Стили именования ####
 
