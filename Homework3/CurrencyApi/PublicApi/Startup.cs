@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using Audit.Http;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Middlewares;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 using Microsoft.OpenApi.Models;
@@ -20,10 +21,10 @@ public class Startup
         IConfigurationSection section = _configuration.GetRequiredSection("Settings");
         services.Configure<CurrencyConfigurationModel>(section);
 
-        string apiKey = _configuration[Constants.ApiKeys.Default];
-        string baseAddress = _configuration[Constants.Uris.BaseAddress];
+        string apiKey = _configuration[ApiConstants.ApiKeys.Default];
+        string baseAddress = _configuration[ApiConstants.Uris.BaseAddress];
 
-        services.AddHttpClient(Constants.HttpClientsNames.CurrencyApi,
+        services.AddHttpClient(ApiConstants.HttpClientsNames.CurrencyApi,
             client =>
             {
                 client.BaseAddress = new Uri(baseAddress);

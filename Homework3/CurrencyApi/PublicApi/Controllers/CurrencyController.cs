@@ -1,4 +1,5 @@
-﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
+﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
@@ -29,8 +30,8 @@ public class CurrencyController : ControllerBase
     [HttpGet]
     public async Task<CurrencyConfigurationModel> GetSettings([FromServices] IOptionsSnapshot<CurrencyConfigurationModel> currencyConfig)
     {
-        HttpClient httpClient = _httpClientFactory.CreateClient(Constants.HttpClientsNames.CurrencyApi);
-        HttpResponseMessage? response = await httpClient.GetAsync(Constants.Uris.GetStatus);
+        HttpClient httpClient = _httpClientFactory.CreateClient(ApiConstants.HttpClientsNames.CurrencyApi);
+        HttpResponseMessage? response = await httpClient.GetAsync(ApiConstants.Uris.GetStatus);
         response.EnsureSuccessStatusCode();
 
         string responseString = await response.Content.ReadAsStringAsync();
