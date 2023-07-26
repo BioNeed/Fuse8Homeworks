@@ -3,7 +3,7 @@
     /// <summary>
     /// Настройки приложения и доступные запросы
     /// </summary>
-    public record CurrencyConfiguration
+    public record CurrencyConfigurationModel
     {
         /// <summary>
         /// Валюта по умолчанию

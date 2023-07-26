@@ -18,7 +18,7 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         IConfigurationSection section = _configuration.GetRequiredSection("Settings");
-        services.Configure<CurrencyConfiguration>(section);
+        services.Configure<CurrencyConfigurationModel>(section);
 
         string apiKey = _configuration[Constants.ApiKeys.Default];
         string baseAddress = _configuration[Constants.Uris.BaseAddress];

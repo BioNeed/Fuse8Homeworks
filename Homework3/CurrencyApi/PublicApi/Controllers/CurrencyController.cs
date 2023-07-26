@@ -27,7 +27,7 @@ public class CurrencyController : ControllerBase
     /// </response>
     [Route("/settings")]
     [HttpGet]
-    public async Task<CurrencyConfiguration> GetSettings([FromServices] IOptionsSnapshot<CurrencyConfiguration> currencyConfig)
+    public async Task<CurrencyConfigurationModel> GetSettings([FromServices] IOptionsSnapshot<CurrencyConfigurationModel> currencyConfig)
     {
         HttpClient httpClient = _httpClientFactory.CreateClient(Constants.HttpClientsNames.CurrencyApi);
         HttpResponseMessage? response = await httpClient.GetAsync(Constants.Uris.GetStatus);
@@ -39,7 +39,7 @@ public class CurrencyController : ControllerBase
         int totalRequests = status["quotas"]["month"]["total"].Value<int>();
         int usedRequests = status["quotas"]["month"]["used"].Value<int>();
 
-        CurrencyConfiguration settingsFull = currencyConfig.Value with
+        CurrencyConfigurationModel settingsFull = currencyConfig.Value with
         {
             RequestCount = usedRequests,
             RequestLimit = totalRequests,
