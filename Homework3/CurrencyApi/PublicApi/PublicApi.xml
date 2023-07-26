@@ -4,6 +4,17 @@
         <name>PublicApi</name>
     </assembly>
     <members>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController">
+            <summary>
+            Методы для работы с Currencyapi API
+            </summary>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController.GetSettings(Microsoft.Extensions.Options.IOptionsSnapshot{Fuse8_ByteMinds.SummerSchool.PublicApi.Models.SettingsModel})">
+            <summary>
+            Получить настройки приложения
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckController">
             <summary>
             Методы для проверки работоспособности PublicApi
@@ -49,6 +60,16 @@
         <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult.CheckStatus.Failed">
             <summary>
             Ошибка в работе API
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.SettingsFullModel">
+            <summary>
+            Настройки приложения и доступные запросы
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.SettingsModel">
+            <summary>
+            Текущие настройки приложения
             </summary>
         </member>
     </members>
