@@ -21,10 +21,13 @@ public class CurrencyController : ControllerBase
     /// <summary>
     /// Получить настройки приложения
     /// </summary>
-    /// <returns></returns>
+    /// <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
+    /// <response code="200">
+    /// Возвращает, если удалось получить настройки приложения
+    /// </response>
     [Route("/settings")]
     [HttpGet]
-    public async Task<SettingsFullModel> GetSettings([FromServices] IOptionsSnapshot<SettingsModel> settingsOptions)
+    public async Task<CurrencyConfiguration> GetSettings([FromServices] IOptionsSnapshot<CurrencyConfiguration> currencyConfig)
     {
         HttpClient httpClient = _httpClientFactory.CreateClient(Constants.HttpClientsNames.CurrencyApi);
         HttpResponseMessage? response = await httpClient.GetAsync(Constants.Uris.GetStatus);
@@ -36,9 +39,8 @@ public class CurrencyController : ControllerBase
         int totalRequests = status["quotas"]["month"]["total"].Value<int>();
         int usedRequests = status["quotas"]["month"]["used"].Value<int>();
 
-        SettingsFullModel settingsFull = new SettingsFullModel()
+        CurrencyConfiguration settingsFull = currencyConfig.Value with
         {
-            ConfigurationSettings = settingsOptions.Value,
             RequestCount = usedRequests,
             RequestLimit = totalRequests,
         };
