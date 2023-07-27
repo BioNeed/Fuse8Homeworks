@@ -1,4 +1,5 @@
 ﻿using System.Collections.Specialized;
+using System.ComponentModel.DataAnnotations;
 using System.Web;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
@@ -23,22 +24,24 @@ public class CurrencyController : ControllerBase
     }
 
     /// <summary>
-    /// Получить курс валюты по умолчанию
+    /// Получить курс валют
     /// </summary>
     /// <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
+    /// <param name="currencyCode">(Необязателен) Код валюты, в которой узнать курс базовой валюты. Если не указан, используется RUB</param>
     /// <response code="200">
-    /// Возвращает, если удалось получить курс валюты по умолчанию
+    /// Возвращает, если удалось получить курс валюты
     /// </response>
     [HttpGet]
-    public async Task<ExchangeRateModel> GetDefaultCurrencyExchangeRate(
-        [FromServices] IOptionsSnapshot<CurrencyConfigurationModel> currencyConfig)
+    public async Task<ExchangeRateModel> GetExchangeRate(
+        [FromServices] IOptionsSnapshot<CurrencyConfigurationModel> currencyConfig,
+        [FromQuery] string? currencyCode)
     {
-        string defaultCurrency = currencyConfig.Value.DefaultCurrency;
-        string baseCurrency = currencyConfig.Value.BaseCurrency;
+        string requestDefaultCurrency = currencyCode ?? currencyConfig.Value.DefaultCurrency;
+        string requestBaseCurrency = currencyConfig.Value.BaseCurrency;
 
         NameValueCollection requestQuery = HttpUtility.ParseQueryString(string.Empty);
-        requestQuery["base_currency"] = baseCurrency;
-        requestQuery["currencies"] = defaultCurrency;
+        requestQuery["base_currency"] = requestBaseCurrency;
+        requestQuery["currencies"] = requestDefaultCurrency;
 
         string requestPath = ApiConstants.Uris.GetCurrency + requestQuery.ToString();
 
@@ -47,15 +50,15 @@ public class CurrencyController : ControllerBase
             requestPath);
 
         JObject parsedExchangeRate = JObject.Parse(responseString);
-        string currencyCode = parsedExchangeRate["data"][defaultCurrency]["code"].Value<string>();
-        decimal currencyExchangeRate = parsedExchangeRate["data"][defaultCurrency]["value"].Value<decimal>();
+        string responseCurrencyCode = parsedExchangeRate["data"][requestDefaultCurrency]["code"].Value<string>();
+        decimal responseCurrencyExchangeRate = parsedExchangeRate["data"][requestDefaultCurrency]["value"].Value<decimal>();
 
         int currencyRoundCount = currencyConfig.Value.CurrencyRoundCount;
-        decimal roundedExchangeRate = decimal.Round(currencyExchangeRate, currencyRoundCount);
+        decimal roundedExchangeRate = decimal.Round(responseCurrencyExchangeRate, currencyRoundCount);
 
         return new ExchangeRateModel
         {
-            Code = currencyCode!,
+            Code = responseCurrencyCode!,
             Value = roundedExchangeRate,
         };
     }
@@ -64,7 +67,6 @@ public class CurrencyController : ControllerBase
     /// Получить настройки приложения
     /// </summary>
     /// <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
-    /// <param name="sender">Синглтон сервис, посылающий запросы</param>
     /// <response code="200">
     /// Возвращает, если удалось получить настройки приложения
     /// </response>

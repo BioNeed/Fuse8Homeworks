@@ -9,13 +9,14 @@
             Методы для работы с Currencyapi API
             </summary>
         </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController.GetDefaultCurrencyExchangeRate(Microsoft.Extensions.Options.IOptionsSnapshot{Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel})">
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController.GetExchangeRateWithDefaultCurrency(Microsoft.Extensions.Options.IOptionsSnapshot{Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel},System.String)">
             <summary>
-            Получить курс валюты по умолчанию
+            Получить курс валют
             </summary>
             <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
+            <param name="currencyCode">(Необязателен) Код валюты, в которой узнать курс базовой валюты. Если не указан, используется RUB</param>
             <response code="200">
-            Возвращает, если удалось получить курс валюты по умолчанию
+            Возвращает, если удалось получить курс валюты
             </response>
         </member>
         <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController.GetSettings(Microsoft.Extensions.Options.IOptionsSnapshot{Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel})">
@@ -23,7 +24,6 @@
             Получить настройки приложения
             </summary>
             <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
-            <param name="sender">Синглтон сервис, посылающий запросы</param>
             <response code="200">
             Возвращает, если удалось получить настройки приложения
             </response>

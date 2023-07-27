@@ -25,8 +25,6 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Middlewares
         {
             if (context.Request.Path != ApiConstants.Uris.GetSettings)
             {
-                _logger.LogWarning("Checking whether requests are available");
-
                 if (await IsRequestAvailableAsync() == false)
                 {
                     throw new ApiRequestLimitException(
