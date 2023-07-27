@@ -3,6 +3,7 @@ using Audit.Http;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Middlewares;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Services;
 using Microsoft.OpenApi.Models;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi;
@@ -37,6 +38,7 @@ public class Startup
                 .IncludeResponseBody()
                 .IncludeContentHeaders());
 
+        services.AddSingleton<IRequestSender, HttpClientRequestSender>();
         services.AddControllers()
 
             // Добавляем глобальные настройки для преобразования Json
@@ -74,6 +76,7 @@ public class Startup
         }
 
         app.UseMiddleware<LoggingMiddleware>();
+        app.UseMiddleware<CheckingRequestsAvailabilityMiddleware>();
 
         app.UseRouting()
             .UseEndpoints(endpoints => endpoints.MapControllers());

@@ -23,6 +23,7 @@
             Получить настройки приложения
             </summary>
             <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
+            <param name="sender">Синглтон сервис, посылающий запросы</param>
             <response code="200">
             Возвращает, если удалось получить настройки приложения
             </response>
@@ -102,6 +103,21 @@
         <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel.RequestCount">
             <summary>
             Количество отправленных запросов к внешнему API
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateModel">
+            <summary>
+            Курс валюты относительно валюты по умолчанию
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateModel.Code">
+            <summary>
+            Код валюты
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateModel.Value">
+            <summary>
+            Курс валюты относительно валюты по умолчанию
             </summary>
         </member>
     </members>

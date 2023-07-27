@@ -2,6 +2,7 @@
 using System.Web;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
@@ -14,11 +15,11 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers;
 [Route("currency")]
 public class CurrencyController : ControllerBase
 {
-    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IRequestSender _sender;
 
-    public CurrencyController(IHttpClientFactory httpClientFactory)
+    public CurrencyController(IRequestSender sender)
     {
-        _httpClientFactory = httpClientFactory;
+        _sender = sender;
     }
 
     /// <summary>
@@ -35,17 +36,15 @@ public class CurrencyController : ControllerBase
         string defaultCurrency = currencyConfig.Value.DefaultCurrency;
         string baseCurrency = currencyConfig.Value.BaseCurrency;
 
-        string requestPath = ApiConstants.Uris.GetCurrency;
         NameValueCollection requestQuery = HttpUtility.ParseQueryString(string.Empty);
         requestQuery["base_currency"] = baseCurrency;
         requestQuery["currencies"] = defaultCurrency;
-        HttpClient httpClient = _httpClientFactory.CreateClient(ApiConstants.HttpClientsNames.CurrencyApi);
 
-        HttpResponseMessage? response = await httpClient.GetAsync(
-            requestPath + requestQuery.ToString());
+        string requestPath = ApiConstants.Uris.GetCurrency + requestQuery.ToString();
 
-        response.EnsureSuccessStatusCode();
-        string responseString = await response.Content.ReadAsStringAsync();
+        string responseString = await _sender.SendRequestAsync(
+            ApiConstants.HttpClientsNames.CurrencyApi,
+            requestPath);
 
         JObject parsedExchangeRate = JObject.Parse(responseString);
         string currencyCode = parsedExchangeRate["data"][defaultCurrency]["code"].Value<string>();
@@ -65,6 +64,7 @@ public class CurrencyController : ControllerBase
     /// Получить настройки приложения
     /// </summary>
     /// <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
+    /// <param name="sender">Синглтон сервис, посылающий запросы</param>
     /// <response code="200">
     /// Возвращает, если удалось получить настройки приложения
     /// </response>
@@ -73,11 +73,9 @@ public class CurrencyController : ControllerBase
     public async Task<CurrencyConfigurationModel> GetSettings(
         [FromServices] IOptionsSnapshot<CurrencyConfigurationModel> currencyConfig)
     {
-        HttpClient httpClient = _httpClientFactory.CreateClient(ApiConstants.HttpClientsNames.CurrencyApi);
-        HttpResponseMessage? response = await httpClient.GetAsync(ApiConstants.Uris.GetStatus);
-        response.EnsureSuccessStatusCode();
-
-        string responseString = await response.Content.ReadAsStringAsync();
+        string responseString = await _sender.SendRequestAsync(
+            ApiConstants.HttpClientsNames.CurrencyApi,
+            ApiConstants.Uris.GetStatus);
 
         JObject status = JObject.Parse(responseString);
         int totalRequests = status["quotas"]["month"]["total"].Value<int>();
