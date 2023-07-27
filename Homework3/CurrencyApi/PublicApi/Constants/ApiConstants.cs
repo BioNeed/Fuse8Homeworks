@@ -6,6 +6,7 @@
         {
             public const string BaseAddress = "Uris:BaseAddress";
             public const string GetStatus = "v3/status";
+            public const string GetCurrency = "v3/latest?";
         }
 
         public static class HttpClientsNames
