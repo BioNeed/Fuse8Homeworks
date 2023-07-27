@@ -5,6 +5,7 @@
         public static class Uris
         {
             public const string BaseAddress = "Uris:BaseAddress";
+            public const string GetSettings = "/settings";
             public const string GetStatus = "v3/status";
             public const string GetCurrency = "v3/latest?";
         }
@@ -17,6 +18,12 @@
         public static class ApiKeys
         {
             public const string Default = "APIKeys:Default";
+        }
+
+        public static class ErrorMessages
+        {
+            public const string RequestLimitExceptionMessage = 
+                "Превышен лимит доступных запросов к Currencyapi API";
         }
     }
 }

@@ -2,8 +2,9 @@
 {
     public class ApiRequestLimitException : Exception
     {
-        public ApiRequestLimitException(string message)
+        public ApiRequestLimitException(string message = "")
             : base(message)
-        { }
+        {
+        }
     }
 }
