@@ -60,7 +60,6 @@ dotnet_diagnostic.SA1623.severity = silent
 # SA1618: Generic type parameters should be documented
 dotnet_diagnostic.SA1618.severity = silent
 
-<<<<<<< HEAD
 # CS8602: Разыменование вероятной пустой ссылки.
 dotnet_diagnostic.CS8602.severity = none
 
@@ -73,8 +72,6 @@ dotnet_diagnostic.SA1402.severity = silent
 # SA1615: Element return value should be documented
 dotnet_diagnostic.SA1615.severity = silent
 
-=======
->>>>>>> 301bf1282660deb0f4602223eff79eba6882ad47
 [*.cs]
 #### Стили именования ####
 
