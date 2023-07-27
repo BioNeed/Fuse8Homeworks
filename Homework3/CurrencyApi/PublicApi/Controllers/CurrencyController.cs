@@ -29,7 +29,7 @@ public class CurrencyController : ControllerBase
     /// Возвращает, если удалось получить курс валюты по умолчанию
     /// </response>
     [HttpGet]
-    public async Task<ExchangeRate> GetDefaultCurrencyExchangeRate(
+    public async Task<ExchangeRateModel> GetDefaultCurrencyExchangeRate(
         [FromServices] IOptionsSnapshot<CurrencyConfigurationModel> currencyConfig)
     {
         string defaultCurrency = currencyConfig.Value.DefaultCurrency;
@@ -54,7 +54,7 @@ public class CurrencyController : ControllerBase
         int currencyRoundCount = currencyConfig.Value.CurrencyRoundCount;
         decimal roundedExchangeRate = decimal.Round(currencyExchangeRate, currencyRoundCount);
 
-        return new ExchangeRate
+        return new ExchangeRateModel
         {
             Code = currencyCode!,
             Value = roundedExchangeRate,

@@ -3,7 +3,7 @@
     /// <summary>
     /// Курс валюты относительно валюты по умолчанию
     /// </summary>
-    public record ExchangeRate
+    public record ExchangeRateModel
     {
         /// <summary>
         /// Код валюты
