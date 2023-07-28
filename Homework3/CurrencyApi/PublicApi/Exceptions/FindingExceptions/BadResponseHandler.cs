@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
 using Newtonsoft.Json.Linq;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions.FindingExceptions
@@ -7,7 +8,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions.FindingExceptions
     {
         private const string InvalidCurrencyMessage = "The selected currencies is invalid.";
 
-        public async Task TryRaiseSpecificExceptionsAsync(HttpResponseMessage response)
+        public async Task TryRaiseExceptionAsync(HttpResponseMessage response)
         {
             if (response.IsSuccessStatusCode == true)
             {
@@ -15,6 +16,8 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions.FindingExceptions
             }
 
             await HandleIfUnknownCurrencyAsync(response);
+
+            throw new Exception(ApiConstants.ErrorMessages.UnknownExceptionMessage);
         }
 
         private async Task HandleIfUnknownCurrencyAsync(HttpResponseMessage badResponse)
@@ -22,13 +25,21 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions.FindingExceptions
             if (badResponse.StatusCode == HttpStatusCode.UnprocessableEntity)
             {
                 string responseString = await badResponse.Content.ReadAsStringAsync();
-                JObject parsedBadResponse = JObject.Parse(responseString);
-                IJEnumerable<JToken> errorDescriptions = parsedBadResponse["errors"]["currencies"].Values();
 
-                if (errorDescriptions.Any(e =>
-                    e.Value<string>() == InvalidCurrencyMessage) == true)
+                if (responseString.Contains("currencies") == false)
                 {
-                    throw new CurrencyNotFoundException(InvalidCurrencyMessage);
+                    return;
+                }
+
+                JObject parsedBadResponse = JObject.Parse(responseString);
+                IEnumerable<JToken> errorDescriptions = parsedBadResponse["errors"]["currencies"].Values();
+
+                foreach (JToken errorDescription in errorDescriptions)
+                {
+                    if (errorDescription?.Value<string>() == InvalidCurrencyMessage)
+                    {
+                        throw new CurrencyNotFoundException(InvalidCurrencyMessage);
+                    }
                 }
             }
         }

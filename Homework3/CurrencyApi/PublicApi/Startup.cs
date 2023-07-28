@@ -45,7 +45,7 @@ public class Startup
         services.AddSingleton<ICheckingBeforeRequests, CheckingRequestsAvailability>();
         services.AddTransient<DateValidator>();
         services.AddControllers(options =>
-            options.Filters.Add(typeof(GlobalExceptionFilterAttribute)))
+            options.Filters.Add(typeof(GlobalExceptionFilter)))
 
             // Добавляем глобальные настройки для преобразования Json
             .AddJsonOptions(
@@ -64,9 +64,9 @@ public class Startup
                     "v1",
                     new OpenApiInfo()
                     {
-                        Title = "Апи",
+                        Title = "API for working with Currencyapi API",
                         Version = "v1",
-                        Description = "API by Alexey Goncharov",
+                        Description = "Developed by Alexey Goncharov",
                     });
 
                 c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{typeof(Startup).Assembly.GetName().Name}.xml"), true);

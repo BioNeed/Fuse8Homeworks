@@ -25,6 +25,9 @@
         {
             public const string RequestLimitExceptionMessage =
                 "Превышен лимит доступных запросов к Currencyapi API";
+
+            public const string UnknownExceptionMessage =
+                "Произошла непредвиденная ошибка";
         }
 
         public static class ValidationRules

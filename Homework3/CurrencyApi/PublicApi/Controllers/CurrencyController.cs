@@ -53,7 +53,7 @@ public class CurrencyController : ControllerBase
     {
         if (await _checkingRequestsAvailability.IsRequestAvailableAsync() == false)
         {
-            throw new ApiRequestLimitException();
+            throw new ApiRequestLimitException(ApiConstants.ErrorMessages.RequestLimitExceptionMessage);
         }
 
         string requestDefaultCurrency = currencyCode ?? currencyConfig.Value.DefaultCurrency;
@@ -69,7 +69,7 @@ public class CurrencyController : ControllerBase
             ApiConstants.HttpClientsNames.CurrencyApi,
             requestPath);
 
-        await _responseHandler.TryRaiseSpecificExceptionsAsync(response);
+        await _responseHandler.TryRaiseExceptionAsync(response);
 
         string responseString = await response.Content.ReadAsStringAsync();
 
@@ -115,7 +115,7 @@ public class CurrencyController : ControllerBase
     {
         if (await _checkingRequestsAvailability.IsRequestAvailableAsync() == false)
         {
-            throw new ApiRequestLimitException();
+            throw new ApiRequestLimitException(ApiConstants.ErrorMessages.RequestLimitExceptionMessage);
         }
 
         if (dateValidator.IsDateValid(dateString) == false)
@@ -137,7 +137,7 @@ public class CurrencyController : ControllerBase
             ApiConstants.HttpClientsNames.CurrencyApi,
             requestPath);
 
-        await _responseHandler.TryRaiseSpecificExceptionsAsync(response);
+        await _responseHandler.TryRaiseExceptionAsync(response);
 
         string responseString = await response.Content.ReadAsStringAsync();
 
@@ -172,7 +172,7 @@ public class CurrencyController : ControllerBase
             ApiConstants.HttpClientsNames.CurrencyApi,
             ApiConstants.Uris.GetStatus);
 
-        await _responseHandler.TryRaiseSpecificExceptionsAsync(response);
+        await _responseHandler.TryRaiseExceptionAsync(response);
 
         string responseString = await response.Content.ReadAsStringAsync();
 

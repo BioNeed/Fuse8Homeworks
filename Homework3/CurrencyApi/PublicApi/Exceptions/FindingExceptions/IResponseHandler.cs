@@ -2,6 +2,6 @@
 {
     public interface IResponseHandler
     {
-        Task TryRaiseSpecificExceptionsAsync(HttpResponseMessage response);
+        Task TryRaiseExceptionAsync(HttpResponseMessage response);
     }
 }

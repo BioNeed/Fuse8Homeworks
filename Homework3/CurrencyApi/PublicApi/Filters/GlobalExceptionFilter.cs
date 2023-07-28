@@ -1,16 +1,15 @@
 ﻿using System.Net;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Filters
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class GlobalExceptionFilterAttribute : Attribute, IExceptionFilter
+    public class GlobalExceptionFilter : IExceptionFilter
     {
-        private readonly ILogger<GlobalExceptionFilterAttribute> _logger;
+        private readonly ILogger<GlobalExceptionFilter> _logger;
 
-        public GlobalExceptionFilterAttribute(ILogger<GlobalExceptionFilterAttribute> logger)
+        public GlobalExceptionFilter(ILogger<GlobalExceptionFilter> logger)
         {
             _logger = logger;
         }
@@ -54,7 +53,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Filters
 
         private void HandleAnyOtherException(ExceptionContext context)
         {
-            _logger.LogError("Ошибка! {message}", context.Exception.Message);
+            _logger.LogError("Ошибка! {message}", ApiConstants.ErrorMessages.UnknownExceptionMessage);
             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             context.ExceptionHandled = true;
         }
