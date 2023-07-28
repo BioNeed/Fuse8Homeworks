@@ -39,8 +39,8 @@ public class Startup
                 .IncludeContentHeaders());
 
         services.AddSingleton<IRequestSender, HttpClientRequestSender>();
+        services.AddTransient<DateValidator>();
         services.AddControllers()
-
             // Добавляем глобальные настройки для преобразования Json
             .AddJsonOptions(
                 options =>

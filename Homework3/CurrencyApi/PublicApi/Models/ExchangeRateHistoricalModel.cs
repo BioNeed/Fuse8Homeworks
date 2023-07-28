@@ -3,7 +3,7 @@
     /// <summary>
     /// Курс валюты относительно базовой валюты
     /// </summary>
-    public record ExchangeRateModel
+    public class ExchangeRateHistoricalModel
     {
         /// <summary>
         /// Код валюты, в которой нужно узнать курс
@@ -14,5 +14,10 @@
         /// Курс валюты относительно базовой валюты
         /// </summary>
         public decimal Value { get; init; }
+
+        /// <summary>
+        /// Дата акутуальности курса
+        /// </summary>
+        public string Date { get; init; }
     }
 }

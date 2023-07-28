@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Web;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -60,6 +61,57 @@ public class CurrencyController : ControllerBase
         {
             Code = responseCurrencyCode!,
             Value = roundedExchangeRate,
+        };
+    }
+
+    /// <summary>
+    /// Получить курс валют на выбранную дату
+    /// </summary>
+    /// <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
+    /// <param name="dateValidator">Валидатор даты в формате yyyy-MM-dd</param>
+    /// <param name="currencyCode">Код валюты, в которой узнать курс базовой валюты</param>
+    /// <param name="dateString">Выбранная дата в формате yyyy-MM-dd</param>
+    /// <response code="200">
+    /// Возвращает, если удалось получить курс валюты на выбранную дату
+    /// </response>
+    [HttpGet("{currencyCode}/{date}")]
+    public async Task<ExchangeRateHistoricalModel> GetExchangeRateByDate(
+        [FromServices] IOptionsSnapshot<CurrencyConfigurationModel> currencyConfig,
+        [FromServices] DateValidator dateValidator,
+        [FromRoute] string? currencyCode,
+        [FromRoute(Name = "date")] string dateString)
+    {
+        if (dateValidator.IsDateValid(dateString) == false)
+        {
+            throw new InvalidDateFormatException("Неверно указана дата. Ожидался формат: yyyy-MM-dd");
+        }
+
+        string requestDefaultCurrency = currencyCode;
+        string requestBaseCurrency = currencyConfig.Value.BaseCurrency;
+
+        NameValueCollection requestQuery = HttpUtility.ParseQueryString(string.Empty);
+        requestQuery["base_currency"] = requestBaseCurrency;
+        requestQuery["currencies"] = requestDefaultCurrency;
+        requestQuery["date"] = dateString;
+
+        string requestPath = ApiConstants.Uris.GetCurrencyHistorical + requestQuery.ToString();
+
+        string responseString = await _sender.SendRequestAsync(
+            ApiConstants.HttpClientsNames.CurrencyApi,
+            requestPath);
+
+        JObject parsedExchangeRate = JObject.Parse(responseString);
+        string responseCurrencyCode = parsedExchangeRate["data"][requestDefaultCurrency]["code"].Value<string>();
+        decimal responseCurrencyExchangeRate = parsedExchangeRate["data"][requestDefaultCurrency]["value"].Value<decimal>();
+
+        int currencyRoundCount = currencyConfig.Value.CurrencyRoundCount;
+        decimal roundedExchangeRate = decimal.Round(responseCurrencyExchangeRate, currencyRoundCount);
+
+        return new ExchangeRateHistoricalModel
+        {
+            Code = responseCurrencyCode!,
+            Value = roundedExchangeRate,
+            Date = dateString,
         };
     }
 

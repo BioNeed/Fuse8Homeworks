@@ -9,7 +9,7 @@
             Методы для работы с Currencyapi API
             </summary>
         </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController.GetExchangeRateWithDefaultCurrency(Microsoft.Extensions.Options.IOptionsSnapshot{Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel},System.String)">
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController.GetExchangeRate(Microsoft.Extensions.Options.IOptionsSnapshot{Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel},System.String)">
             <summary>
             Получить курс валют
             </summary>
@@ -17,6 +17,18 @@
             <param name="currencyCode">(Необязателен) Код валюты, в которой узнать курс базовой валюты. Если не указан, используется RUB</param>
             <response code="200">
             Возвращает, если удалось получить курс валюты
+            </response>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController.GetExchangeRateByDate(Microsoft.Extensions.Options.IOptionsSnapshot{Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel},Fuse8_ByteMinds.SummerSchool.PublicApi.Services.DateValidator,System.String,System.String)">
+            <summary>
+            Получить курс валют на выбранную дату
+            </summary>
+            <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
+            <param name="dateValidator">Валидатор даты в формате yyyy-MM-dd</param>
+            <param name="currencyCode">Код валюты, в которой узнать курс базовой валюты</param>
+            <param name="dateString">Выбранная дата в формате yyyy-MM-dd</param>
+            <response code="200">
+            Возвращает, если удалось получить курс валюты на выбранную дату
             </response>
         </member>
         <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController.GetSettings(Microsoft.Extensions.Options.IOptionsSnapshot{Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel})">
@@ -105,19 +117,39 @@
             Количество отправленных запросов к внешнему API
             </summary>
         </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateHistoricalModel">
+            <summary>
+            Курс валюты относительно базовой валюты
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateHistoricalModel.Code">
+            <summary>
+            Код валюты, в которой нужно узнать курс
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateHistoricalModel.Value">
+            <summary>
+            Курс валюты относительно базовой валюты
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateHistoricalModel.Date">
+            <summary>
+            Дата акутуальности курса
+            </summary>
+        </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateModel">
             <summary>
-            Курс валюты относительно валюты по умолчанию
+            Курс валюты относительно базовой валюты
             </summary>
         </member>
         <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateModel.Code">
             <summary>
-            Код валюты
+            Код валюты, в которой нужно узнать курс
             </summary>
         </member>
         <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateModel.Value">
             <summary>
-            Курс валюты относительно валюты по умолчанию
+            Курс валюты относительно базовой валюты
             </summary>
         </member>
     </members>

@@ -8,6 +8,7 @@
             public const string GetSettings = "/settings";
             public const string GetStatus = "v3/status";
             public const string GetCurrency = "v3/latest?";
+            public const string GetCurrencyHistorical = "/v3/historical?";
         }
 
         public static class HttpClientsNames
@@ -22,8 +23,13 @@
 
         public static class ErrorMessages
         {
-            public const string RequestLimitExceptionMessage = 
+            public const string RequestLimitExceptionMessage =
                 "Превышен лимит доступных запросов к Currencyapi API";
+        }
+
+        public static class ValidationRules
+        {
+            public const string DateFormat = "yyyy-MM-dd";
         }
     }
 }

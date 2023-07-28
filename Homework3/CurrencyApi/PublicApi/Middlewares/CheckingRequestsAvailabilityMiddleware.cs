@@ -8,16 +8,13 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Middlewares
     public class CheckingRequestsAvailabilityMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ILogger<CheckingRequestsAvailabilityMiddleware> _logger;
         private readonly IRequestSender _requestSender;
 
         public CheckingRequestsAvailabilityMiddleware(
             RequestDelegate next,
-            ILogger<CheckingRequestsAvailabilityMiddleware> logger,
             IRequestSender requestSender)
         {
             _next = next;
-            _logger = logger;
             _requestSender = requestSender;
         }
 
