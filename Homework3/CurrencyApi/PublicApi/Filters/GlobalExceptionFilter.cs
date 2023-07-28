@@ -30,6 +30,12 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Filters
                         break;
                     }
 
+                case InvalidDateFormatException:
+                    {
+                        HandleAnyOtherException(context, context.Exception.Message);
+                        break;
+                    }
+
                 default:
                     {
                         HandleAnyOtherException(context);
@@ -51,9 +57,11 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Filters
             context.ExceptionHandled = true;
         }
 
-        private void HandleAnyOtherException(ExceptionContext context)
+        private void HandleAnyOtherException(
+            ExceptionContext context,
+            string message = ApiConstants.ErrorMessages.UnknownExceptionMessage)
         {
-            _logger.LogError("Ошибка! {message}", ApiConstants.ErrorMessages.UnknownExceptionMessage);
+            _logger.LogError("Ошибка! {message}", message);
             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             context.ExceptionHandled = true;
         }

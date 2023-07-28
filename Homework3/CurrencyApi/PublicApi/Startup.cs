@@ -64,7 +64,7 @@ public class Startup
                     "v1",
                     new OpenApiInfo()
                     {
-                        Title = "API for working with Currencyapi API",
+                        Title = "[Fuse8_ByteMinds Internship] API for working with Currencyapi API",
                         Version = "v1",
                         Description = "Developed by Alexey Goncharov",
                     });
