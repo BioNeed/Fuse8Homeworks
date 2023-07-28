@@ -1,20 +1,16 @@
 ﻿using System.Net;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions;
 using Newtonsoft.Json.Linq;
 
-namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions.FindingExceptions
+namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services.FindingExceptions
 {
     public class BadResponseHandler : IResponseHandler
     {
         private const string InvalidCurrencyMessage = "The selected currencies is invalid.";
 
-        public async Task TryRaiseExceptionAsync(HttpResponseMessage response)
+        public async Task RaiseExceptionAsync(HttpResponseMessage response)
         {
-            if (response.IsSuccessStatusCode == true)
-            {
-                return;
-            }
-
             await HandleIfUnknownCurrencyAsync(response);
 
             throw new Exception(ApiConstants.ErrorMessages.UnknownExceptionMessage);
@@ -25,11 +21,6 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions.FindingExceptions
             if (badResponse.StatusCode == HttpStatusCode.UnprocessableEntity)
             {
                 string responseString = await badResponse.Content.ReadAsStringAsync();
-
-                if (responseString.Contains("currencies") == false)
-                {
-                    return;
-                }
 
                 JObject parsedBadResponse = JObject.Parse(responseString);
                 IEnumerable<JToken> errorDescriptions = parsedBadResponse["errors"]["currencies"].Values();

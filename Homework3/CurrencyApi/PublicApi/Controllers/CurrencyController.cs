@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Web;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions.FindingExceptions;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Services;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Services.FindingExceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
@@ -69,7 +69,10 @@ public class CurrencyController : ControllerBase
             ApiConstants.HttpClientsNames.CurrencyApi,
             requestPath);
 
-        await _responseHandler.TryRaiseExceptionAsync(response);
+        if (response.IsSuccessStatusCode == false)
+        {
+            await _responseHandler.RaiseExceptionAsync(response);
+        }
 
         string responseString = await response.Content.ReadAsStringAsync();
 
@@ -137,7 +140,10 @@ public class CurrencyController : ControllerBase
             ApiConstants.HttpClientsNames.CurrencyApi,
             requestPath);
 
-        await _responseHandler.TryRaiseExceptionAsync(response);
+        if (response.IsSuccessStatusCode == false)
+        {
+            await _responseHandler.RaiseExceptionAsync(response);
+        }
 
         string responseString = await response.Content.ReadAsStringAsync();
 
@@ -172,7 +178,10 @@ public class CurrencyController : ControllerBase
             ApiConstants.HttpClientsNames.CurrencyApi,
             ApiConstants.Uris.GetStatus);
 
-        await _responseHandler.TryRaiseExceptionAsync(response);
+        if (response.IsSuccessStatusCode == false)
+        {
+            await _responseHandler.RaiseExceptionAsync(response);
+        }
 
         string responseString = await response.Content.ReadAsStringAsync();
 

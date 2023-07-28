@@ -1,11 +1,11 @@
 ﻿using System.Text.Json.Serialization;
 using Audit.Http;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions.FindingExceptions;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Filters;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Middlewares;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Services;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Services.FindingExceptions;
 using Microsoft.OpenApi.Models;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi;
