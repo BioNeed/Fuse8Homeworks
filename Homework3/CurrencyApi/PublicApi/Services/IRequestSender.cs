@@ -2,6 +2,6 @@
 {
     public interface IRequestSender
     {
-        Task<string> SendRequestAsync(string clientName, string requestPath);
+        Task<HttpResponseMessage> SendRequestAsync(string clientName, string requestPath);
     }
 }

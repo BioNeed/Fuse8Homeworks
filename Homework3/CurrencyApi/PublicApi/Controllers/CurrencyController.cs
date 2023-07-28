@@ -46,9 +46,11 @@ public class CurrencyController : ControllerBase
 
         string requestPath = ApiConstants.Uris.GetCurrency + requestQuery.ToString();
 
-        string responseString = await _sender.SendRequestAsync(
+        HttpResponseMessage response = await _sender.SendRequestAsync(
             ApiConstants.HttpClientsNames.CurrencyApi,
             requestPath);
+
+        string responseString = await response.Content.ReadAsStringAsync();
 
         JObject parsedExchangeRate = JObject.Parse(responseString);
         string responseCurrencyCode = parsedExchangeRate["data"][requestDefaultCurrency]["code"].Value<string>();
@@ -96,9 +98,11 @@ public class CurrencyController : ControllerBase
 
         string requestPath = ApiConstants.Uris.GetCurrencyHistorical + requestQuery.ToString();
 
-        string responseString = await _sender.SendRequestAsync(
+        HttpResponseMessage response = await _sender.SendRequestAsync(
             ApiConstants.HttpClientsNames.CurrencyApi,
             requestPath);
+
+        string responseString = await response.Content.ReadAsStringAsync();
 
         JObject parsedExchangeRate = JObject.Parse(responseString);
         string responseCurrencyCode = parsedExchangeRate["data"][requestDefaultCurrency]["code"].Value<string>();
@@ -127,9 +131,11 @@ public class CurrencyController : ControllerBase
     public async Task<CurrencyConfigurationModel> GetSettings(
         [FromServices] IOptionsSnapshot<CurrencyConfigurationModel> currencyConfig)
     {
-        string responseString = await _sender.SendRequestAsync(
+        HttpResponseMessage response = await _sender.SendRequestAsync(
             ApiConstants.HttpClientsNames.CurrencyApi,
             ApiConstants.Uris.GetStatus);
+
+        string responseString = await response.Content.ReadAsStringAsync();
 
         JObject status = JObject.Parse(responseString);
         int totalRequests = status["quotas"]["month"]["total"].Value<int>();

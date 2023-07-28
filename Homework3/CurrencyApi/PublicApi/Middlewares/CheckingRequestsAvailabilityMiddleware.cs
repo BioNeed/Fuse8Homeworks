@@ -34,9 +34,11 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Middlewares
 
         private async Task<bool> IsRequestAvailableAsync()
         {
-            string responseString = await _requestSender.SendRequestAsync(
+            HttpResponseMessage response = await _requestSender.SendRequestAsync(
                 ApiConstants.HttpClientsNames.CurrencyApi,
                 ApiConstants.Uris.GetStatus);
+
+            string responseString = await response.Content.ReadAsStringAsync();
 
             JObject status = JObject.Parse(responseString);
             int totalRequests = status["quotas"]["month"]["total"].Value<int>();
