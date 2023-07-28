@@ -2,6 +2,7 @@
 using Audit.Http;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions.FindingExceptions;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Filters;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Middlewares;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Services;
@@ -41,8 +42,10 @@ public class Startup
 
         services.AddSingleton<IRequestSender, HttpClientRequestSender>();
         services.AddSingleton<IResponseHandler, BadResponseHandler>();
+        services.AddSingleton<ICheckingBeforeRequests, CheckingRequestsAvailability>();
         services.AddTransient<DateValidator>();
-        services.AddControllers()
+        services.AddControllers(options =>
+            options.Filters.Add(typeof(GlobalExceptionFilterAttribute)))
 
             // Добавляем глобальные настройки для преобразования Json
             .AddJsonOptions(
@@ -78,8 +81,7 @@ public class Startup
             app.UseSwaggerUI();
         }
 
-        app.UseMiddleware<LoggingMiddleware>();
-        app.UseMiddleware<CheckingRequestsAvailabilityMiddleware>();
+        app.UseMiddleware<LoggingRequestsMiddleware>();
 
         app.UseRouting()
             .UseEndpoints(endpoints => endpoints.MapControllers());

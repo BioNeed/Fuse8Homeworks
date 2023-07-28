@@ -20,11 +20,13 @@ public class CurrencyController : ControllerBase
 {
     private readonly IRequestSender _sender;
     private readonly IResponseHandler _responseHandler;
+    private readonly ICheckingBeforeRequests _checkingRequestsAvailability;
 
-    public CurrencyController(IRequestSender sender, IResponseHandler responseHandler)
+    public CurrencyController(IRequestSender sender, IResponseHandler responseHandler, ICheckingBeforeRequests checkingRequestsAvailability)
     {
         _sender = sender;
         _responseHandler = responseHandler;
+        _checkingRequestsAvailability = checkingRequestsAvailability;
     }
 
     /// <summary>
@@ -35,11 +37,25 @@ public class CurrencyController : ControllerBase
     /// <response code="200">
     /// Возвращает, если удалось получить курс валюты
     /// </response>
+    /// <response code="404">
+    /// Возвращает, если не найдена указанная валюта
+    /// </response>
+    /// <response code="429">
+    /// Возвращает, если больше не осталось доступных запросов
+    /// </response>
+    /// <response code="500">
+    /// Возвращает в случае других ошибок
+    /// </response>
     [HttpGet]
     public async Task<ExchangeRateModel> GetExchangeRate(
         [FromServices] IOptionsSnapshot<CurrencyConfigurationModel> currencyConfig,
         [FromQuery] string? currencyCode)
     {
+        if (await _checkingRequestsAvailability.IsRequestAvailableAsync() == false)
+        {
+            throw new ApiRequestLimitException();
+        }
+
         string requestDefaultCurrency = currencyCode ?? currencyConfig.Value.DefaultCurrency;
         string requestBaseCurrency = currencyConfig.Value.BaseCurrency;
 
@@ -81,6 +97,15 @@ public class CurrencyController : ControllerBase
     /// <response code="200">
     /// Возвращает, если удалось получить курс валюты на выбранную дату
     /// </response>
+    /// <response code="429">
+    /// Возвращает, если больше не осталось доступных запросов
+    /// </response>
+    /// <response code="404">
+    /// Возвращает, если не найдена указанная валюта
+    /// </response>
+    /// <response code="500">
+    /// Возвращает в случае других ошибок
+    /// </response>
     [HttpGet("{currencyCode}/{date}")]
     public async Task<ExchangeRateHistoricalModel> GetExchangeRateByDate(
         [FromServices] IOptionsSnapshot<CurrencyConfigurationModel> currencyConfig,
@@ -88,6 +113,11 @@ public class CurrencyController : ControllerBase
         [FromRoute] string? currencyCode,
         [FromRoute(Name = "date")] string dateString)
     {
+        if (await _checkingRequestsAvailability.IsRequestAvailableAsync() == false)
+        {
+            throw new ApiRequestLimitException();
+        }
+
         if (dateValidator.IsDateValid(dateString) == false)
         {
             throw new InvalidDateFormatException("Неверно указана дата. Ожидался формат: yyyy-MM-dd");

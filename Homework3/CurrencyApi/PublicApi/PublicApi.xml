@@ -18,6 +18,15 @@
             <response code="200">
             Возвращает, если удалось получить курс валюты
             </response>
+            <response code="404">
+            Возвращает, если не найдена указанная валюта
+            </response>
+            <response code="429">
+            Возвращает, если больше не осталось доступных запросов
+            </response>
+            <response code="500">
+            Возвращает в случае других ошибок
+            </response>
         </member>
         <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController.GetExchangeRateByDate(Microsoft.Extensions.Options.IOptionsSnapshot{Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel},Fuse8_ByteMinds.SummerSchool.PublicApi.Services.DateValidator,System.String,System.String)">
             <summary>
@@ -29,6 +38,15 @@
             <param name="dateString">Выбранная дата в формате yyyy-MM-dd</param>
             <response code="200">
             Возвращает, если удалось получить курс валюты на выбранную дату
+            </response>
+            <response code="429">
+            Возвращает, если больше не осталось доступных запросов
+            </response>
+            <response code="404">
+            Возвращает, если не найдена указанная валюта
+            </response>
+            <response code="500">
+            Возвращает в случае других ошибок
             </response>
         </member>
         <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController.GetSettings(Microsoft.Extensions.Options.IOptionsSnapshot{Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel})">
