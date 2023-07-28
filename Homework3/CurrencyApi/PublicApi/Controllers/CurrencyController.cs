@@ -123,7 +123,7 @@ public class CurrencyController : ControllerBase
 
         if (dateValidator.IsDateValid(dateString) == false)
         {
-            throw new InvalidDateFormatException("Неверно указана дата. Ожидался формат: yyyy-MM-dd");
+            throw new InvalidDateFormatException(ApiConstants.ErrorMessages.InvalidDateFormatExceptionMessage);
         }
 
         string requestDefaultCurrency = currencyCode;

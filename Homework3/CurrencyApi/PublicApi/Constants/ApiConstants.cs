@@ -28,6 +28,9 @@
 
             public const string UnknownExceptionMessage =
                 "Произошла непредвиденная ошибка";
+
+            public const string InvalidDateFormatExceptionMessage =
+                "Произошла непредвиденная ошибка";
         }
 
         public static class ValidationRules
