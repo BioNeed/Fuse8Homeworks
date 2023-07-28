@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Web;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions.FindingExceptions;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +19,12 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers;
 public class CurrencyController : ControllerBase
 {
     private readonly IRequestSender _sender;
+    private readonly IResponseHandler _responseHandler;
 
-    public CurrencyController(IRequestSender sender)
+    public CurrencyController(IRequestSender sender, IResponseHandler responseHandler)
     {
         _sender = sender;
+        _responseHandler = responseHandler;
     }
 
     /// <summary>
@@ -49,6 +52,8 @@ public class CurrencyController : ControllerBase
         HttpResponseMessage response = await _sender.SendRequestAsync(
             ApiConstants.HttpClientsNames.CurrencyApi,
             requestPath);
+
+        await _responseHandler.TryRaiseSpecificExceptionsAsync(response);
 
         string responseString = await response.Content.ReadAsStringAsync();
 
@@ -102,6 +107,8 @@ public class CurrencyController : ControllerBase
             ApiConstants.HttpClientsNames.CurrencyApi,
             requestPath);
 
+        await _responseHandler.TryRaiseSpecificExceptionsAsync(response);
+
         string responseString = await response.Content.ReadAsStringAsync();
 
         JObject parsedExchangeRate = JObject.Parse(responseString);
@@ -134,6 +141,8 @@ public class CurrencyController : ControllerBase
         HttpResponseMessage response = await _sender.SendRequestAsync(
             ApiConstants.HttpClientsNames.CurrencyApi,
             ApiConstants.Uris.GetStatus);
+
+        await _responseHandler.TryRaiseSpecificExceptionsAsync(response);
 
         string responseString = await response.Content.ReadAsStringAsync();
 
