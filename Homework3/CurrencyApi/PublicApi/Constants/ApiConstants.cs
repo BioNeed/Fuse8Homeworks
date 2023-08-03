@@ -4,21 +4,10 @@
     {
         public static class Uris
         {
-            public const string BaseAddress = "Uris:BaseAddress";
             public const string GetSettings = "/settings";
             public const string GetStatus = "v3/status";
             public const string GetCurrency = "v3/latest?";
             public const string GetCurrencyHistorical = "/v3/historical?";
-        }
-
-        public static class HttpClientsNames
-        {
-            public const string CurrencyApi = "CurrencyApiClient";
-        }
-
-        public static class ApiKeys
-        {
-            public const string Default = "APIKeys:Default";
         }
 
         public static class ErrorMessages
@@ -31,6 +20,9 @@
 
             public const string InvalidDateFormatExceptionMessage =
                 "Произошла непредвиденная ошибка";
+
+            public const string InvalidCurrencyMessage =
+                "The selected currencies is invalid.";
         }
 
         public static class ValidationRules

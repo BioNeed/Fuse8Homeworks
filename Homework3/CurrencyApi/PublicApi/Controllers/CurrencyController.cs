@@ -1,14 +1,10 @@
-﻿using System.Collections.Specialized;
-using System.ComponentModel.DataAnnotations;
-using System.Web;
+﻿using System.Globalization;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Services;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Services.FindingExceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers;
 
@@ -18,15 +14,11 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers;
 [Route("currency")]
 public class CurrencyController : ControllerBase
 {
-    private readonly IRequestSender _sender;
-    private readonly IResponseHandler _responseHandler;
-    private readonly ICheckingBeforeRequests _checkingRequestsAvailability;
+    private readonly ICurrencyService _currencyService;
 
-    public CurrencyController(IRequestSender sender, IResponseHandler responseHandler, ICheckingBeforeRequests checkingRequestsAvailability)
+    public CurrencyController(ICurrencyService currencyService)
     {
-        _sender = sender;
-        _responseHandler = responseHandler;
-        _checkingRequestsAvailability = checkingRequestsAvailability;
+        _currencyService = currencyService;
     }
 
     /// <summary>
@@ -47,54 +39,17 @@ public class CurrencyController : ControllerBase
     /// Возвращает в случае других ошибок
     /// </response>
     [HttpGet]
-    public async Task<ExchangeRateModel> GetExchangeRate(
+    public async Task<ExchangeRateModel> GetExchangeRateAsync(
         [FromServices] IOptionsSnapshot<CurrencyConfigurationModel> currencyConfig,
         [FromQuery] string? currencyCode)
     {
-        if (await _checkingRequestsAvailability.IsRequestAvailableAsync() == false)
-        {
-            throw new ApiRequestLimitException(ApiConstants.ErrorMessages.RequestLimitExceptionMessage);
-        }
-
-        string requestDefaultCurrency = currencyCode ?? currencyConfig.Value.DefaultCurrency;
-        string requestBaseCurrency = currencyConfig.Value.BaseCurrency;
-
-        NameValueCollection requestQuery = HttpUtility.ParseQueryString(string.Empty);
-        requestQuery["base_currency"] = requestBaseCurrency;
-        requestQuery["currencies"] = requestDefaultCurrency;
-
-        string requestPath = ApiConstants.Uris.GetCurrency + requestQuery.ToString();
-
-        HttpResponseMessage response = await _sender.SendRequestAsync(
-            ApiConstants.HttpClientsNames.CurrencyApi,
-            requestPath);
-
-        if (response.IsSuccessStatusCode == false)
-        {
-            await _responseHandler.RaiseExceptionAsync(response);
-        }
-
-        string responseString = await response.Content.ReadAsStringAsync();
-
-        JObject parsedExchangeRate = JObject.Parse(responseString);
-        string responseCurrencyCode = parsedExchangeRate["data"][requestDefaultCurrency]["code"].Value<string>();
-        decimal responseCurrencyExchangeRate = parsedExchangeRate["data"][requestDefaultCurrency]["value"].Value<decimal>();
-
-        int currencyRoundCount = currencyConfig.Value.CurrencyRoundCount;
-        decimal roundedExchangeRate = decimal.Round(responseCurrencyExchangeRate, currencyRoundCount);
-
-        return new ExchangeRateModel
-        {
-            Code = responseCurrencyCode!,
-            Value = roundedExchangeRate,
-        };
+        return await _currencyService.GetExchangeRateAsync(currencyConfig.Value, currencyCode);
     }
 
     /// <summary>
     /// Получить курс валют на выбранную дату
     /// </summary>
     /// <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
-    /// <param name="dateValidator">Валидатор даты в формате yyyy-MM-dd</param>
     /// <param name="currencyCode">Код валюты, в которой узнать курс базовой валюты</param>
     /// <param name="dateString">Выбранная дата в формате yyyy-MM-dd</param>
     /// <response code="200">
@@ -110,56 +65,17 @@ public class CurrencyController : ControllerBase
     /// Возвращает в случае других ошибок
     /// </response>
     [HttpGet("{currencyCode}/{date}")]
-    public async Task<ExchangeRateHistoricalModel> GetExchangeRateByDate(
+    public async Task<ExchangeRateHistoricalModel> GetExchangeRateByDateAsync(
         [FromServices] IOptionsSnapshot<CurrencyConfigurationModel> currencyConfig,
-        [FromServices] DateValidator dateValidator,
-        [FromRoute] string? currencyCode,
+        [FromRoute] string currencyCode,
         [FromRoute(Name = "date")] string dateString)
     {
-        if (await _checkingRequestsAvailability.IsRequestAvailableAsync() == false)
-        {
-            throw new ApiRequestLimitException(ApiConstants.ErrorMessages.RequestLimitExceptionMessage);
-        }
-
-        if (dateValidator.IsDateValid(dateString) == false)
+        if (IsDateValid(dateString) == false)
         {
             throw new InvalidDateFormatException(ApiConstants.ErrorMessages.InvalidDateFormatExceptionMessage);
         }
 
-        string requestDefaultCurrency = currencyCode;
-        string requestBaseCurrency = currencyConfig.Value.BaseCurrency;
-
-        NameValueCollection requestQuery = HttpUtility.ParseQueryString(string.Empty);
-        requestQuery["base_currency"] = requestBaseCurrency;
-        requestQuery["currencies"] = requestDefaultCurrency;
-        requestQuery["date"] = dateString;
-
-        string requestPath = ApiConstants.Uris.GetCurrencyHistorical + requestQuery.ToString();
-
-        HttpResponseMessage response = await _sender.SendRequestAsync(
-            ApiConstants.HttpClientsNames.CurrencyApi,
-            requestPath);
-
-        if (response.IsSuccessStatusCode == false)
-        {
-            await _responseHandler.RaiseExceptionAsync(response);
-        }
-
-        string responseString = await response.Content.ReadAsStringAsync();
-
-        JObject parsedExchangeRate = JObject.Parse(responseString);
-        string responseCurrencyCode = parsedExchangeRate["data"][requestDefaultCurrency]["code"].Value<string>();
-        decimal responseCurrencyExchangeRate = parsedExchangeRate["data"][requestDefaultCurrency]["value"].Value<decimal>();
-
-        int currencyRoundCount = currencyConfig.Value.CurrencyRoundCount;
-        decimal roundedExchangeRate = decimal.Round(responseCurrencyExchangeRate, currencyRoundCount);
-
-        return new ExchangeRateHistoricalModel
-        {
-            Code = responseCurrencyCode!,
-            Value = roundedExchangeRate,
-            Date = dateString,
-        };
+        return await _currencyService.GetExchangeRateByDateAsync(currencyConfig.Value, currencyCode, dateString);
     }
 
     /// <summary>
@@ -171,30 +87,22 @@ public class CurrencyController : ControllerBase
     /// </response>
     [Route("/settings")]
     [HttpGet]
-    public async Task<CurrencyConfigurationModel> GetSettings(
-        [FromServices] IOptionsSnapshot<CurrencyConfigurationModel> currencyConfig)
+    public async Task<CurrencyConfigurationModel> GetConfigSettingsAsync([FromServices] IOptionsSnapshot<CurrencyConfigurationModel> currencyConfig)
     {
-        HttpResponseMessage response = await _sender.SendRequestAsync(
-            ApiConstants.HttpClientsNames.CurrencyApi,
-            ApiConstants.Uris.GetStatus);
+        return await _currencyService.GetSettingsAsync(currencyConfig.Value);
+    }
 
-        if (response.IsSuccessStatusCode == false)
+    private bool IsDateValid(string dateString)
+    {
+        if (DateTime.TryParseExact(dateString,
+            ApiConstants.ValidationRules.DateFormat,
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.None,
+            out _) == false)
         {
-            await _responseHandler.RaiseExceptionAsync(response);
+            return false;
         }
 
-        string responseString = await response.Content.ReadAsStringAsync();
-
-        JObject status = JObject.Parse(responseString);
-        int totalRequests = status["quotas"]["month"]["total"].Value<int>();
-        int usedRequests = status["quotas"]["month"]["used"].Value<int>();
-
-        CurrencyConfigurationModel settingsFull = currencyConfig.Value with
-        {
-            RequestCount = usedRequests,
-            RequestLimit = totalRequests,
-        };
-
-        return settingsFull;
+        return true;
     }
 }

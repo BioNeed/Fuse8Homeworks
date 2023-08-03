@@ -1,11 +1,10 @@
 ﻿using System.Text.Json.Serialization;
 using Audit.Http;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Filters;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Middlewares;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Services;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Services.FindingExceptions;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi;
@@ -21,17 +20,17 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        IConfigurationSection section = _configuration.GetRequiredSection("Settings");
-        services.Configure<CurrencyConfigurationModel>(section);
+        IConfigurationSection settingsSection = _configuration.GetRequiredSection("Settings");
+        services.Configure<CurrencyConfigurationModel>(settingsSection);
 
-        string apiKey = _configuration[ApiConstants.ApiKeys.Default];
-        string baseAddress = _configuration[ApiConstants.Uris.BaseAddress];
+        IConfigurationSection apiSettingsSection = _configuration.GetRequiredSection("ApiSettings");
+        services.Configure<ApiSettingsModel>(apiSettingsSection);
 
-        services.AddHttpClient(ApiConstants.HttpClientsNames.CurrencyApi,
-            client =>
+        services.AddHttpClient<ICurrencyService, CurrencyService>((provider, client) =>
             {
-                client.BaseAddress = new Uri(baseAddress);
-                client.DefaultRequestHeaders.Add("apikey", apiKey);
+                var apiSettings = provider.GetRequiredService<IOptionsMonitor<ApiSettingsModel>>();
+                client.BaseAddress = new Uri(apiSettings.CurrentValue.BaseAddress);
+                client.DefaultRequestHeaders.Add("apikey", apiSettings.CurrentValue.ApiKey);
             })
             .AddAuditHandler(audit =>
                 audit.IncludeRequestHeaders()
@@ -40,10 +39,6 @@ public class Startup
                 .IncludeResponseBody()
                 .IncludeContentHeaders());
 
-        services.AddSingleton<IRequestSender, HttpClientRequestSender>();
-        services.AddSingleton<IResponseHandler, BadResponseHandler>();
-        services.AddSingleton<ICheckingBeforeRequests, CheckingRequestsAvailability>();
-        services.AddTransient<DateValidator>();
         services.AddControllers(options =>
             options.Filters.Add(typeof(GlobalExceptionFilter)))
 
