@@ -1,11 +1,14 @@
 ﻿using System.Text.Json.Serialization;
 using Audit.Http;
+using Audit.NET.Serilog.Providers;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Filters;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Middlewares;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Templates;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi;
 
@@ -30,10 +33,15 @@ public class Startup
             {
                 var apiSettings = provider.GetRequiredService<IOptionsMonitor<ApiSettingsModel>>();
                 client.BaseAddress = new Uri(apiSettings.CurrentValue.BaseAddress);
-                client.DefaultRequestHeaders.Add("apikey", apiSettings.CurrentValue.ApiKey);
+                client.DefaultRequestHeaders.Add("apikey", apiSettings.CurrentValue.ApiKey);            
             })
             .AddAuditHandler(audit =>
-                audit.IncludeRequestHeaders()
+                audit
+                .AuditDataProvider(new SerilogDataProvider(config =>
+                    config.Logger(new LoggerConfiguration()
+                    .ReadFrom.Configuration(_configuration)
+                    .CreateLogger())))
+                .IncludeRequestHeaders()
                 .IncludeResponseHeaders()
                 .IncludeRequestBody()
                 .IncludeResponseBody()
