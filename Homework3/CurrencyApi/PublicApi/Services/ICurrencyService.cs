@@ -10,7 +10,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
 
         Task<ExchangeRateHistoricalModel> GetExchangeRateByDateAsync(
             CurrencyConfigurationModel currencyConfig,
-            string? currencyCode,
+            string currencyCode,
             string dateString);
 
         Task<CurrencyConfigurationModel> GetSettingsAsync(CurrencyConfigurationModel currencyConfig);

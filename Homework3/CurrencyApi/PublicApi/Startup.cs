@@ -8,7 +8,6 @@ using Fuse8_ByteMinds.SummerSchool.PublicApi.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Serilog;
-using Serilog.Templates;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi;
 
@@ -33,7 +32,7 @@ public class Startup
             {
                 var apiSettings = provider.GetRequiredService<IOptionsMonitor<ApiSettingsModel>>();
                 client.BaseAddress = new Uri(apiSettings.CurrentValue.BaseAddress);
-                client.DefaultRequestHeaders.Add("apikey", apiSettings.CurrentValue.ApiKey);            
+                client.DefaultRequestHeaders.Add("apikey", apiSettings.CurrentValue.ApiKey);
             })
             .AddAuditHandler(audit =>
                 audit

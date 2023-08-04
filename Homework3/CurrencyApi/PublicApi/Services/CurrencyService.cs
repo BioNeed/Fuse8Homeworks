@@ -1,10 +1,11 @@
 ﻿using System.Collections.Specialized;
 using System.Net;
+using System.Text.Json;
 using System.Web;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.JsonConverters;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
-using Newtonsoft.Json.Linq;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
 {
@@ -44,23 +45,27 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
 
             string responseString = await response.Content.ReadAsStringAsync();
 
-            JObject parsedExchangeRate = JObject.Parse(responseString);
-            string responseCurrencyCode = parsedExchangeRate["data"][requestDefaultCurrency]["code"].Value<string>();
-            decimal responseCurrencyExchangeRate = parsedExchangeRate["data"][requestDefaultCurrency]["value"].Value<decimal>();
+            JsonSerializerOptions options = new JsonSerializerOptions()
+            {
+                Converters = { new ExchangeRateJsonConverter() },
+            };
+
+            var exchangeRate = JsonSerializer.Deserialize<ExchangeRateModel>(
+                responseString, options);
 
             int currencyRoundCount = currencyConfig.CurrencyRoundCount;
-            decimal roundedExchangeRate = decimal.Round(responseCurrencyExchangeRate, currencyRoundCount);
+            decimal roundedExchangeRate = decimal.Round(exchangeRate.Value, currencyRoundCount);
 
             return new ExchangeRateModel
             {
-                Code = responseCurrencyCode!,
+                Code = exchangeRate.Code,
                 Value = roundedExchangeRate,
             };
         }
 
         public async Task<ExchangeRateHistoricalModel> GetExchangeRateByDateAsync(
             CurrencyConfigurationModel currencyConfig,
-            string? currencyCode,
+            string currencyCode,
             string dateString)
         {
             if (await IsRequestAvailableAsync() == false)
@@ -87,16 +92,20 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
 
             string responseString = await response.Content.ReadAsStringAsync();
 
-            JObject parsedExchangeRate = JObject.Parse(responseString);
-            string responseCurrencyCode = parsedExchangeRate["data"][requestDefaultCurrency]["code"].Value<string>();
-            decimal responseCurrencyExchangeRate = parsedExchangeRate["data"][requestDefaultCurrency]["value"].Value<decimal>();
+            JsonSerializerOptions options = new JsonSerializerOptions()
+            {
+                Converters = { new ExchangeRateJsonConverter() },
+            };
+
+            var exchangeRate = JsonSerializer.Deserialize<ExchangeRateModel>(
+                responseString, options);
 
             int currencyRoundCount = currencyConfig.CurrencyRoundCount;
-            decimal roundedExchangeRate = decimal.Round(responseCurrencyExchangeRate, currencyRoundCount);
+            decimal roundedExchangeRate = decimal.Round(exchangeRate.Value, currencyRoundCount);
 
             return new ExchangeRateHistoricalModel
             {
-                Code = responseCurrencyCode!,
+                Code = exchangeRate.Code,
                 Value = roundedExchangeRate,
                 Date = dateString,
             };
@@ -114,17 +123,19 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
 
             string responseString = await response.Content.ReadAsStringAsync();
 
-            JObject status = JObject.Parse(responseString);
-            int totalRequests = status["quotas"]["month"]["total"].Value<int>();
-            int usedRequests = status["quotas"]["month"]["used"].Value<int>();
-
-            CurrencyConfigurationModel settingsFull = currencyConfig with
+            JsonSerializerOptions options = new JsonSerializerOptions()
             {
-                RequestCount = usedRequests,
-                RequestLimit = totalRequests,
+                Converters = { new ApiStatusJsonConverter() },
             };
 
-            return settingsFull;
+            ApiStatusModel apiStatusFromJson =
+                JsonSerializer.Deserialize<ApiStatusModel>(responseString, options);
+
+            return currencyConfig with
+            {
+                RequestCount = apiStatusFromJson.UsedRequests,
+                RequestLimit = apiStatusFromJson.TotalRequests,
+            };
         }
 
         private async Task RaiseExceptionAsync(HttpResponseMessage response)
@@ -140,15 +151,9 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
             {
                 string responseString = await badResponse.Content.ReadAsStringAsync();
 
-                JObject parsedBadResponse = JObject.Parse(responseString);
-                IEnumerable<JToken> errorDescriptions = parsedBadResponse["errors"]["currencies"].Values();
-
-                foreach (JToken errorDescription in errorDescriptions)
+                if (responseString.Contains(ApiConstants.ErrorMessages.InvalidCurrencyMessage))
                 {
-                    if (errorDescription?.Value<string>() == ApiConstants.ErrorMessages.InvalidCurrencyMessage)
-                    {
-                        throw new CurrencyNotFoundException(ApiConstants.ErrorMessages.InvalidCurrencyMessage);
-                    }
+                    throw new CurrencyNotFoundException(ApiConstants.ErrorMessages.InvalidCurrencyMessage);
                 }
             }
         }
@@ -160,11 +165,15 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
 
             string responseString = await response.Content.ReadAsStringAsync();
 
-            JObject status = JObject.Parse(responseString);
-            int totalRequests = status["quotas"]["month"]["total"].Value<int>();
-            int usedRequests = status["quotas"]["month"]["used"].Value<int>();
+            JsonSerializerOptions options = new JsonSerializerOptions()
+            {
+                Converters = { new ApiStatusJsonConverter() },
+            };
 
-            return usedRequests < totalRequests;
+            ApiStatusModel apiStatusFromJson =
+                JsonSerializer.Deserialize<ApiStatusModel>(responseString, options);
+
+            return apiStatusFromJson.UsedRequests < apiStatusFromJson.TotalRequests;
         }
     }
 }
