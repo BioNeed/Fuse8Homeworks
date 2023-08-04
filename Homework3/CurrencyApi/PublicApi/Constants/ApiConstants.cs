@@ -4,7 +4,6 @@
     {
         public static class Uris
         {
-            public const string GetSettings = "/settings";
             public const string GetStatus = "v3/status";
             public const string GetCurrency = "v3/latest?";
             public const string GetCurrencyHistorical = "/v3/historical?";
@@ -19,7 +18,7 @@
                 "Произошла непредвиденная ошибка";
 
             public const string InvalidDateFormatExceptionMessage =
-                "Произошла непредвиденная ошибка";
+                "Неверно указана дата";
 
             public const string InvalidCurrencyMessage =
                 "The selected currencies is invalid.";

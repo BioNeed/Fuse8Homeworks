@@ -38,8 +38,8 @@ public class Startup
                 audit
                 .AuditDataProvider(new SerilogDataProvider(config =>
                     config.Logger(new LoggerConfiguration()
-                    .ReadFrom.Configuration(_configuration)
-                    .CreateLogger())))
+                        .ReadFrom.Configuration(_configuration)
+                        .CreateLogger())))
                 .IncludeRequestHeaders()
                 .IncludeResponseHeaders()
                 .IncludeRequestBody()
