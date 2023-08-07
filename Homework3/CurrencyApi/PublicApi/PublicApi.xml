@@ -1,0 +1,173 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PublicApi</name>
+    </assembly>
+    <members>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController">
+            <summary>
+            Методы для работы с Currencyapi API
+            </summary>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController.GetExchangeRateAsync(Microsoft.Extensions.Options.IOptionsSnapshot{Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel},System.String)">
+            <summary>
+            Получить курс валют
+            </summary>
+            <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
+            <param name="currencyCode">(Необязателен) Код валюты, в которой узнать курс базовой валюты. Если не указан, используется RUB</param>
+            <response code="200">
+            Возвращает, если удалось получить курс валюты
+            </response>
+            <response code="404">
+            Возвращает, если не найдена указанная валюта
+            </response>
+            <response code="429">
+            Возвращает, если больше не осталось доступных запросов
+            </response>
+            <response code="500">
+            Возвращает в случае других ошибок
+            </response>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController.GetExchangeRateByDateAsync(Microsoft.Extensions.Options.IOptionsSnapshot{Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel},System.String,System.String)">
+            <summary>
+            Получить курс валют на выбранную дату
+            </summary>
+            <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
+            <param name="currencyCode">Код валюты, в которой узнать курс базовой валюты</param>
+            <param name="dateString">Выбранная дата в формате yyyy-MM-dd</param>
+            <response code="200">
+            Возвращает, если удалось получить курс валюты на выбранную дату
+            </response>
+            <response code="404">
+            Возвращает, если не найдена указанная валюта
+            </response>
+            <response code="429">
+            Возвращает, если больше не осталось доступных запросов
+            </response>
+            <response code="500">
+            Возвращает в случае других ошибок
+            </response>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController.GetConfigSettingsAsync(Microsoft.Extensions.Options.IOptionsSnapshot{Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel})">
+            <summary>
+            Получить настройки приложения
+            </summary>
+            <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
+            <response code="200">
+            Возвращает, если удалось получить настройки приложения
+            </response>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckController">
+            <summary>
+            Методы для проверки работоспособности PublicApi
+            </summary>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckController.Check(System.Nullable{System.Boolean})">
+            <summary>
+            Проверить что API работает
+            </summary>
+            <param name="checkExternalApi">Необходимо проверить работоспособность внешнего API. Если FALSE или NULL - проверяется работоспособность только текущего API</param>
+            <response code="200">
+            Возвращает если удалось получить доступ к API
+            </response>
+            <response code="400">
+            Возвращает если удалось не удалось получить доступ к API
+            </response>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult">
+            <summary>
+            Результат проверки работоспособности API
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult.CheckedOn">
+            <summary>
+            Дата проверки
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult.Status">
+            <summary>
+            Статус работоспособности API
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult.CheckStatus">
+            <summary>
+            Статус API
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult.CheckStatus.Ok">
+            <summary>
+            API работает
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult.CheckStatus.Failed">
+            <summary>
+            Ошибка в работе API
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel">
+            <summary>
+            Настройки приложения и доступные запросы
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel.DefaultCurrency">
+            <summary>
+            Валюта по умолчанию
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel.BaseCurrency">
+            <summary>
+            Базовая валюта
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel.CurrencyRoundCount">
+            <summary>
+            Количество знаков после запятой у курса валют
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel.RequestLimit">
+            <summary>
+            Максимальное количество запросов к внешнему API
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel.RequestCount">
+            <summary>
+            Количество отправленных запросов к внешнему API
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateHistoricalModel">
+            <summary>
+            Курс валюты относительно базовой валюты
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateHistoricalModel.Code">
+            <summary>
+            Код валюты, в которой нужно узнать курс
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateHistoricalModel.Value">
+            <summary>
+            Курс валюты относительно базовой валюты
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateHistoricalModel.Date">
+            <summary>
+            Дата акутуальности курса
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateModel">
+            <summary>
+            Курс валюты относительно базовой валюты
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateModel.Code">
+            <summary>
+            Код валюты, в которой нужно узнать курс
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateModel.Value">
+            <summary>
+            Курс валюты относительно базовой валюты
+            </summary>
+        </member>
+    </members>
+</doc>
