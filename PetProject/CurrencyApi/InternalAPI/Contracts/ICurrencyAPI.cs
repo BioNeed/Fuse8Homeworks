@@ -1,7 +1,6 @@
-﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
-using InternalAPI.Models;
+﻿using InternalAPI.Models;
 
-namespace Fuse8_ByteMinds.SummerSchool.InternalApi.Contracts;
+namespace InternalAPI.Contracts;
 
 public interface ICurrencyAPI
 {

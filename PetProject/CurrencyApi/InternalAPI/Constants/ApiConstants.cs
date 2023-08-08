@@ -1,4 +1,4 @@
-﻿namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Constants
+﻿namespace InternalAPI.Constants
 {
     public static class ApiConstants
     {
@@ -24,9 +24,15 @@
                 "The selected currencies is invalid.";
         }
 
-        public static class ValidationRules
+        public static class Formats
         {
             public const string DateFormat = "yyyy-MM-dd";
+            public const string FileNameDateTimeFormat = "yyyy-MM-dd HH-mm-ss";
+        }
+
+        public static class RelativePaths
+        {
+            public const string CachedCurrenciesOnDates = @"/Cache/CachedCurrenciesOnDates";
         }
     }
 }

@@ -4,13 +4,27 @@ using InternalAPI.Models;
 
 namespace InternalAPI.JsonConverters
 {
-    public class AllExchangeRatesJsonConverter : JsonConverter<ExchangeRateModel[]>
+    public class AllExchangeRatesHistoricalJsonConverter : JsonConverter<ExchangeRatesHistoricalModel>
     {
-        public override ExchangeRateModel[] Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override ExchangeRatesHistoricalModel Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             if (reader.TokenType != JsonTokenType.StartObject)
             {
                 throw new JsonException();
+            }
+
+            ExchangeRatesHistoricalModel result = new ExchangeRatesHistoricalModel();
+
+            while (reader.Read())
+            {
+                if (reader.TokenType == JsonTokenType.PropertyName
+                    && reader.GetString() == "last_updated_at")
+                {
+                    reader.Read();
+                    result.LastUpdatedAt = reader.GetDateTime();
+
+                    break;
+                }
             }
 
             List<ExchangeRateModel> exchangeRates = new List<ExchangeRateModel>();
@@ -28,7 +42,9 @@ namespace InternalAPI.JsonConverters
 
             while (reader.Read())
             {
-                if (reader.TokenType != JsonTokenType.PropertyName)
+                if (reader.TokenType != JsonTokenType.PropertyName ||
+                    reader.GetString() != "code" ||
+                    reader.GetString() != "value")
                 {
                     continue;
                 }
@@ -51,15 +67,15 @@ namespace InternalAPI.JsonConverters
                         break;
                 }
 
-                exchangeRates.Add(exchangeRate);
+                result.Currencies.Add(exchangeRate);
             }
 
-            return exchangeRates.ToArray();
+            return result;
         }
 
-        public override void Write(Utf8JsonWriter writer, ExchangeRateModel[] value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, ExchangeRatesHistoricalModel value, JsonSerializerOptions options)
         {
-            throw new InvalidOperationException();
+            throw new NotImplementedException();
         }
     }
 }

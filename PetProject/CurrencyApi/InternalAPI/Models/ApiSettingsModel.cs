@@ -1,4 +1,4 @@
-﻿namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Models
+﻿namespace InternalAPI.Models
 {
     public record ApiSettingsModel
     {

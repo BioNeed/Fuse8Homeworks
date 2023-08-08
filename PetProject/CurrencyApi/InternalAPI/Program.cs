@@ -1,4 +1,4 @@
-using Fuse8_ByteMinds.SummerSchool.PublicApi;
+using InternalAPI;
 using Microsoft.AspNetCore;
 
 var webHost = WebHost

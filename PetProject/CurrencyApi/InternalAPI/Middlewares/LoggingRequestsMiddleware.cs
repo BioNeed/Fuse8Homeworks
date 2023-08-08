@@ -1,4 +1,4 @@
-﻿namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Middlewares
+﻿namespace InternalAPI.Middlewares
 {
     public class LoggingRequestsMiddleware
     {

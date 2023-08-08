@@ -1,4 +1,4 @@
-﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
+﻿using InternalAPI.Models;
 
 namespace InternalAPI.Models
 {
@@ -15,6 +15,6 @@ namespace InternalAPI.Models
         /// <summary>
         /// Список курсов валют
         /// </summary>
-        public ExchangeRateModel[] Currencies { get; set; }
+        public List<ExchangeRateModel> Currencies { get; set; } = new List<ExchangeRateModel>();
     }
 }

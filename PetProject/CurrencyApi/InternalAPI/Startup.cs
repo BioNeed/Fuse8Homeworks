@@ -1,17 +1,16 @@
 ﻿using System.Text.Json.Serialization;
 using Audit.Http;
 using Audit.NET.Serilog.Providers;
-using Fuse8_ByteMinds.SummerSchool.InternalApi.Contracts;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Filters;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Middlewares;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Services;
 using InternalAPI.Contracts;
+using InternalAPI.Filters;
+using InternalAPI.Middlewares;
+using InternalAPI.Models;
+using InternalAPI.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Serilog;
 
-namespace Fuse8_ByteMinds.SummerSchool.PublicApi;
+namespace InternalAPI;
 
 public class Startup
 {

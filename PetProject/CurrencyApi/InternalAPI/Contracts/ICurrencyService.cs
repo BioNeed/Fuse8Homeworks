@@ -1,18 +1,17 @@
-﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
+﻿using InternalAPI.Models;
 
-namespace InternalAPI.Contracts
+namespace InternalAPI.Contracts;
+
+public interface ICurrencyService
 {
-    public interface ICurrencyService
-    {
-        Task<ExchangeRateModel> GetExchangeRateAsync(
-            CurrencyConfigurationModel currencyConfig,
-            string? currencyCode);
+    Task<ExchangeRateModel> GetExchangeRateAsync(
+        CurrencyConfigurationModel currencyConfig,
+        string? currencyCode);
 
-        Task<ExchangeRateHistoricalModel> GetExchangeRateByDateAsync(
-            CurrencyConfigurationModel currencyConfig,
-            string currencyCode,
-            string dateString);
+    Task<ExchangeRateHistoricalModel> GetExchangeRateByDateAsync(
+        CurrencyConfigurationModel currencyConfig,
+        string currencyCode,
+        string dateString);
 
-        Task<CurrencyConfigurationModel> GetSettingsAsync(CurrencyConfigurationModel currencyConfig);
-    }
+    Task<CurrencyConfigurationModel> GetSettingsAsync(CurrencyConfigurationModel currencyConfig);
 }

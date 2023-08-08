@@ -1,12 +1,12 @@
 ﻿using System.Globalization;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
+using InternalAPI.Constants;
+using InternalAPI.Exceptions;
+using InternalAPI.Models;
 using InternalAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers;
+namespace InternalAPI.Controllers;
 
 /// <summary>
 /// Методы для работы с Currencyapi API
@@ -95,7 +95,7 @@ public class CurrencyController : ControllerBase
     private bool IsDateValid(string dateString)
     {
         if (DateTime.TryParseExact(dateString,
-            ApiConstants.ValidationRules.DateFormat,
+            ApiConstants.Formats.DateFormat,
             CultureInfo.InvariantCulture,
             DateTimeStyles.None,
             out _) == false)

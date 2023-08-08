@@ -5,7 +5,7 @@ namespace InternalAPI.Models
     /// <summary>
     /// Курс валюты
     /// </summary>
-    public class CurrencyDTOModel
+    public class ExchangeRateDTOModel
     {
         /// <summary>
         /// Валюта

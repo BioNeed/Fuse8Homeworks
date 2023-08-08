@@ -2,16 +2,13 @@
 using System.Net;
 using System.Text.Json;
 using System.Web;
-using Fuse8_ByteMinds.SummerSchool.InternalApi.Contracts;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.JsonConverters;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
+using InternalAPI.Constants;
 using InternalAPI.Contracts;
+using InternalAPI.Exceptions;
 using InternalAPI.JsonConverters;
 using InternalAPI.Models;
 
-namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
+namespace InternalAPI.Services
 {
     public class CurrencyService : ICurrencyService, ICurrencyAPI
     {
@@ -199,17 +196,12 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
 
             JsonSerializerOptions options = new JsonSerializerOptions()
             {
-                Converters = { new AllExchangeRatesJsonConverter() },
+                Converters = { new AllExchangeRatesHistoricalJsonConverter() },
             };
 
-            ExchangeRateModel[] exchangeRates = JsonSerializer.Deserialize<ExchangeRateModel[]>(
+            ExchangeRatesHistoricalModel exchangeRatesOnDate =
+                JsonSerializer.Deserialize<ExchangeRatesHistoricalModel>(
                 responseString, options);
-
-            var exchangeRatesOnDate = new ExchangeRatesHistoricalModel
-            {
-                LastUpdatedAt = date.ToDateTime(updateTime, DateTimeKind.Utc),
-                Currencies = exchangeRates!,
-            };
 
             return exchangeRatesOnDate;
         }

@@ -1,4 +1,4 @@
-﻿namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Models
+﻿namespace InternalAPI.Models
 {
     /// <summary>
     /// Курс валюты относительно базовой валюты

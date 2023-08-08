@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using static Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult;
+using static InternalAPI.Controllers.HealthCheckResult;
 
-namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers;
+namespace InternalAPI.Controllers;
 
 /// <summary>
-/// Методы для проверки работоспособности PublicApi
+/// Методы для проверки работоспособности InternalAPI
 /// </summary>
 [Route("healthcheck")]
 public class HealthCheckController : ControllerBase
