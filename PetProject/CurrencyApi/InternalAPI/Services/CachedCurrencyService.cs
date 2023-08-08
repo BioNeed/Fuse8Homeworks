@@ -56,7 +56,6 @@ namespace InternalAPI.Services
                 GetAllCurrentCurrenciesAsync(currencyType.ToString(), cancellationToken);
 
 
-
             throw new NotImplementedException();
         }
 

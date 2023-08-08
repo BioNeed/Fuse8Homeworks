@@ -181,7 +181,7 @@ namespace InternalAPI.Services
 
             NameValueCollection requestQuery = HttpUtility.ParseQueryString(string.Empty);
             requestQuery["base_currency"] = baseCurrency;
-            requestQuery["date"] = date.ToString();
+            requestQuery["date"] = date.ToString(ApiConstants.Formats.DateFormat);
 
             string requestPath = ApiConstants.Uris.GetCurrencyHistorical + requestQuery.ToString();
 
