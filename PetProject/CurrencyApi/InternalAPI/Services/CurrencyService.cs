@@ -2,16 +2,21 @@
 using System.Net;
 using System.Text.Json;
 using System.Web;
+using Fuse8_ByteMinds.SummerSchool.InternalApi.Contracts;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.JsonConverters;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
+using InternalAPI.Contracts;
+using InternalAPI.JsonConverters;
+using InternalAPI.Models;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
 {
-    public class CurrencyService : ICurrencyService
+    public class CurrencyService : ICurrencyService, ICurrencyAPI
     {
         private readonly HttpClient _httpClient;
+        private readonly TimeOnly updateTime = new TimeOnly(23, 59, 59);
 
         public CurrencyService(HttpClient httpClient)
         {
@@ -136,6 +141,77 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
                 RequestCount = apiStatusFromJson.UsedRequests,
                 RequestLimit = apiStatusFromJson.TotalRequests,
             };
+        }
+
+        public async Task<ExchangeRateModel[]> GetAllCurrentCurrenciesAsync(string baseCurrency, CancellationToken cancellationToken)
+        {
+            if (await IsRequestAvailableAsync() == false)
+            {
+                throw new ApiRequestLimitException(ApiConstants.ErrorMessages.RequestLimitExceptionMessage);
+            }
+
+            NameValueCollection requestQuery = HttpUtility.ParseQueryString(string.Empty);
+            requestQuery["base_currency"] = baseCurrency;
+
+            string requestPath = ApiConstants.Uris.GetCurrency + requestQuery.ToString();
+
+            HttpResponseMessage response = await _httpClient.GetAsync(requestPath);
+
+            if (response.IsSuccessStatusCode == false)
+            {
+                await RaiseExceptionAsync(response);
+            }
+
+            string responseString = await response.Content.ReadAsStringAsync();
+
+            JsonSerializerOptions options = new JsonSerializerOptions()
+            {
+                Converters = { new AllExchangeRatesJsonConverter() },
+            };
+
+            ExchangeRateModel[] exchangeRates = JsonSerializer.Deserialize<ExchangeRateModel[]>(
+                responseString, options);
+
+            return exchangeRates;
+        }
+
+        public async Task<ExchangeRatesHistoricalModel> GetAllCurrenciesOnDateAsync(string baseCurrency, DateOnly date, CancellationToken cancellationToken)
+        {
+            if (await IsRequestAvailableAsync() == false)
+            {
+                throw new ApiRequestLimitException(ApiConstants.ErrorMessages.RequestLimitExceptionMessage);
+            }
+
+            NameValueCollection requestQuery = HttpUtility.ParseQueryString(string.Empty);
+            requestQuery["base_currency"] = baseCurrency;
+            requestQuery["date"] = date.ToString();
+
+            string requestPath = ApiConstants.Uris.GetCurrencyHistorical + requestQuery.ToString();
+
+            HttpResponseMessage response = await _httpClient.GetAsync(requestPath);
+
+            if (response.IsSuccessStatusCode == false)
+            {
+                await RaiseExceptionAsync(response);
+            }
+
+            string responseString = await response.Content.ReadAsStringAsync();
+
+            JsonSerializerOptions options = new JsonSerializerOptions()
+            {
+                Converters = { new AllExchangeRatesJsonConverter() },
+            };
+
+            ExchangeRateModel[] exchangeRates = JsonSerializer.Deserialize<ExchangeRateModel[]>(
+                responseString, options);
+
+            var exchangeRatesOnDate = new ExchangeRatesHistoricalModel
+            {
+                LastUpdatedAt = date.ToDateTime(updateTime, DateTimeKind.Utc),
+                Currencies = exchangeRates!,
+            };
+
+            return exchangeRatesOnDate;
         }
 
         private async Task RaiseExceptionAsync(HttpResponseMessage response)

@@ -1,10 +1,12 @@
 ﻿using System.Text.Json.Serialization;
 using Audit.Http;
 using Audit.NET.Serilog.Providers;
+using Fuse8_ByteMinds.SummerSchool.InternalApi.Contracts;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Filters;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Middlewares;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Services;
+using InternalAPI.Contracts;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -45,6 +47,8 @@ public class Startup
                 .IncludeRequestBody()
                 .IncludeResponseBody()
                 .IncludeContentHeaders());
+
+        services.AddScoped<ICurrencyAPI, CurrencyService>();
 
         services.AddControllers(options =>
             options.Filters.Add(typeof(GlobalExceptionFilter)))

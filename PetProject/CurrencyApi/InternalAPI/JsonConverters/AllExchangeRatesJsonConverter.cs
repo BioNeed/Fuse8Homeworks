@@ -2,18 +2,18 @@
 using System.Text.Json.Serialization;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 
-namespace Fuse8_ByteMinds.SummerSchool.PublicApi.JsonConverters
+namespace InternalAPI.JsonConverters
 {
-    public class ExchangeRateJsonConverter : JsonConverter<ExchangeRateModel>
+    public class AllExchangeRatesJsonConverter : JsonConverter<ExchangeRateModel[]>
     {
-        public override ExchangeRateModel Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override ExchangeRateModel[] Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             if (reader.TokenType != JsonTokenType.StartObject)
             {
                 throw new JsonException();
             }
 
-            ExchangeRateModel exchangeRate = new ExchangeRateModel();
+            List<ExchangeRateModel> exchangeRates = new List<ExchangeRateModel>();
 
             while (reader.Read())
             {
@@ -26,7 +26,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.JsonConverters
 
             reader.Read();
 
-            while (reader.Read() && reader.TokenType != JsonTokenType.EndObject)
+            while (reader.Read())
             {
                 if (reader.TokenType != JsonTokenType.PropertyName)
                 {
@@ -36,6 +36,8 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.JsonConverters
                 string propertyName = reader.GetString();
 
                 reader.Read();
+
+                ExchangeRateModel exchangeRate = new ExchangeRateModel();
 
                 switch (propertyName)
                 {
@@ -48,16 +50,14 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.JsonConverters
                         exchangeRate.Value = value;
                         break;
                 }
+
+                exchangeRates.Add(exchangeRate);
             }
 
-            while (reader.Read())
-            {
-            }
-
-            return exchangeRate;
+            return exchangeRates.ToArray();
         }
 
-        public override void Write(Utf8JsonWriter writer, ExchangeRateModel value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, ExchangeRateModel[] value, JsonSerializerOptions options)
         {
             throw new InvalidOperationException();
         }
