@@ -67,9 +67,10 @@ namespace InternalAPI.JsonConverters
                         break;
                 }
 
-                result.Currencies.Add(exchangeRate);
+                exchangeRates.Add(exchangeRate);
             }
 
+            result.Currencies = exchangeRates.ToArray();
             return result;
         }
 
