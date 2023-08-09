@@ -2,8 +2,8 @@
 {
     public enum CurrencyType
     {
-        Usd, 
-        Rub, 
+        Usd,
+        Rub,
         Kzt,
     }
 }

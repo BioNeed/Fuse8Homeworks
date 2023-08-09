@@ -26,71 +26,43 @@ namespace InternalAPI.Services
             _cacheExpirationTime = TimeSpan.FromHours(apiSettings.Value.CacheExpirationTimeInHours);
         }
 
-        public async Task<ExchangeRateDTOModel> GetCurrentCurrencyAsync(CurrencyType currencyType, CancellationToken cancellationToken)
+        public async Task<ExchangeRateDTOModel> GetCurrentCurrencyAsync(
+            CurrencyType currencyType, CancellationToken cancellationToken)
         {
-            string projectDirectoryPath = Directory
-                .GetParent(Environment.CurrentDirectory)
-                .Parent.Parent.FullName;
-
-
-
-
-
-            // ЭТО МОЖНО ВЫНЕСТИ В readonly поле
-            string _cachedCurrenciesDirectoryPath = projectDirectoryPath
-                    + ApiConstants.RelativePaths.CachedCurrenciesOnDates;
-
             IEnumerable<string> relativeFileNames = Directory
                 .GetFiles(_cachedCurrenciesDirectoryPath)
                 .Select(f => Path.GetFileName(f));
 
             DateTime currentDateTime = DateTime.UtcNow;
 
-            DateTime maxDateTime = DateTime.MinValue;
-            string latestRelativeFileName = string.Empty;
-
-            foreach (string relativeFileName in relativeFileNames)
+            if (relativeFileNames.Any() == true)
             {
-                string dateString = relativeFileName[..^JsonExtension.Length];
+                (DateTime latestDateTime, string latestRelativeFileName) =
+                    FindLatestFileAndDateTime(relativeFileNames);
 
-                DateTime fileDateTime = DateTime.ParseExact(dateString,
-                    ApiConstants.Formats.FileNameDateTimeFormat,
-                    CultureInfo.InvariantCulture,
-                    DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
-
-                if (fileDateTime > maxDateTime)
+                if (currentDateTime - latestDateTime < _cacheExpirationTime)
                 {
-                    maxDateTime = fileDateTime;
-                    latestRelativeFileName = relativeFileName;
+                    ExchangeRateModel[] exchangeRatesFromFile = ReadCachedExchangeRatesFromFile(latestRelativeFileName);
+
+                    return FindExchangeRateDTOByType(currencyType, exchangeRatesFromFile);
                 }
             }
 
-            if (currentDateTime - maxDateTime < _cacheExpirationTime)
-            {
-                // найти нужное значение
-                string fileFullName = _cachedCurrenciesDirectoryPath + "/" + 
-                    latestRelativeFileName;
-
-                string jsonStringFromFile = File.ReadAllText(fileFullName);
-                ExchangeRateModel[] result = JsonSerializer.Deserialize<ExchangeRateModel[]>(jsonStringFromFile)!;
-
-                foreach (ExchangeRateModel exchangeRate in result)
-                {
-
-                }
-
-                throw new NotImplementedException();
-            }
-
-            ExchangeRateModel[] exchangeRates = await _currencyAPI.
+            ExchangeRateModel[] currentExchangeRates = await _currencyAPI.
                 GetAllCurrentCurrenciesAsync(currencyType.ToString(), cancellationToken);
 
-            string newFileFullName = _cachedCurrenciesDirectoryPath + "/" +
-                currentDateTime.ToString(ApiConstants.Formats.FileNameDateTimeFormat) + 
-                JsonExtension;
-            string jsonStringToWrite = JsonSerializer.Serialize(exchangeRates);
-            File.WriteAllText(newFileFullName, jsonStringToWrite);
+            CacheExchangeRatesToFile(currentDateTime, currentExchangeRates);
 
+            return FindExchangeRateDTOByType(currencyType, currentExchangeRates);
+        }
+
+        public async Task<ExchangeRateDTOModel> GetCurrencyOnDateAsync(CurrencyType currencyType, DateOnly date, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        private ExchangeRateDTOModel FindExchangeRateDTOByType(CurrencyType currencyType, ExchangeRateModel[] exchangeRates)
+        {
             foreach (ExchangeRateModel exchangeRate in exchangeRates)
             {
                 if (currencyType.ToString() == exchangeRate.Code)
@@ -106,9 +78,50 @@ namespace InternalAPI.Services
             throw new InvalidOperationException();
         }
 
-        public async Task<ExchangeRateDTOModel> GetCurrencyOnDateAsync(CurrencyType currencyType, DateOnly date, CancellationToken cancellationToken)
+        private (DateTime, string) FindLatestFileAndDateTime(IEnumerable<string> relativeFileNames)
         {
-            throw new NotImplementedException();
+            DateTime latestDateTime = DateTime.MinValue;
+            string latestRelativeFileName = string.Empty;
+
+            foreach (string relativeFileName in relativeFileNames)
+            {
+                string dateString = relativeFileName[..^JsonExtension.Length];
+
+                DateTime fileDateTime = DateTime.ParseExact(dateString,
+                    ApiConstants.Formats.FileNameDateTimeFormat,
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
+
+                if (fileDateTime > latestDateTime)
+                {
+                    latestDateTime = fileDateTime;
+                    latestRelativeFileName = relativeFileName;
+                }
+            }
+
+            return (latestDateTime, latestRelativeFileName);
+        }
+
+        private ExchangeRateModel[] ReadCachedExchangeRatesFromFile(string relativeFileName)
+        {
+            string fileFullName = Path.Combine(_cachedCurrenciesDirectoryPath, relativeFileName);
+
+            string jsonStringFromFile = File.ReadAllText(fileFullName);
+            ExchangeRateModel[] exchangeRatesFromFile = JsonSerializer
+                .Deserialize<ExchangeRateModel[]>(jsonStringFromFile)!;
+
+            return exchangeRatesFromFile;
+        }
+
+        private void CacheExchangeRatesToFile(DateTime currentDateTime, ExchangeRateModel[] currentExchangeRates)
+        {
+            string relativeFileName = currentDateTime.ToString(ApiConstants.Formats.FileNameDateTimeFormat) +
+                    JsonExtension;
+            string newFileFullName = Path.Combine(_cachedCurrenciesDirectoryPath,
+                relativeFileName);
+
+            string jsonStringToWrite = JsonSerializer.Serialize(currentExchangeRates);
+            File.WriteAllText(newFileFullName, jsonStringToWrite);
         }
     }
 }

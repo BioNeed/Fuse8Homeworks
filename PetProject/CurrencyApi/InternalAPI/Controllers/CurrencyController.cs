@@ -1,8 +1,8 @@
 ﻿using System.Globalization;
 using InternalAPI.Constants;
+using InternalAPI.Contracts;
 using InternalAPI.Exceptions;
 using InternalAPI.Models;
-using InternalAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
