@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -15,8 +15,12 @@
   <ItemGroup>
     <PackageReference Include="Audit.HttpClient" Version="21.0.3" />
     <PackageReference Include="Audit.NET.Serilog" Version="21.0.3" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.55.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.56.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.4" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0" />
     <PackageReference Include="Serilog.Expressions" Version="3.4.1" />
@@ -42,6 +46,10 @@
 
   <ItemGroup>
     <Folder Include="Cache\CachedCurrenciesOnDates\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Contracts\GrpcContracts\GrpcCurrency.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>

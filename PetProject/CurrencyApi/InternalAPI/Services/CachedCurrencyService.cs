@@ -26,7 +26,7 @@ namespace InternalAPI.Services
             _cacheExpirationTime = TimeSpan.FromHours(apiSettings.Value.CacheExpirationTimeInHours);
         }
 
-        public async Task<ExchangeRateDTOModel> GetCurrentCurrencyAsync(
+        public async Task<ExchangeRateDTOModel> GetCurrentExchangeRateAsync(
             CurrencyType currencyType, CancellationToken cancellationToken)
         {
             IEnumerable<string> cacheDateTimeStrings = Directory
@@ -59,7 +59,7 @@ namespace InternalAPI.Services
             return FindExchangeRateDTOByType(currencyType, currentExchangeRates);
         }
 
-        public async Task<ExchangeRateDTOModel> GetCurrencyOnDateAsync(CurrencyType currencyType, DateOnly date, CancellationToken cancellationToken)
+        public async Task<ExchangeRateDTOModel> GetExchangeRateOnDateAsync(CurrencyType currencyType, DateOnly date, CancellationToken cancellationToken)
         {
             string dateString = date.ToString(ApiConstants.Formats.DateFormat);
 

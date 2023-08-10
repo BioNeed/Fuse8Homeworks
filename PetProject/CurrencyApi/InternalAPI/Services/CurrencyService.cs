@@ -13,7 +13,6 @@ namespace InternalAPI.Services
     public class CurrencyService : ICurrencyService, ICurrencyAPI
     {
         private readonly HttpClient _httpClient;
-        private readonly TimeOnly updateTime = new TimeOnly(23, 59, 59);
 
         public CurrencyService(HttpClient httpClient)
         {
@@ -152,7 +151,7 @@ namespace InternalAPI.Services
 
             string requestPath = ApiConstants.Uris.GetCurrency + requestQuery.ToString();
 
-            HttpResponseMessage response = await _httpClient.GetAsync(requestPath);
+            HttpResponseMessage response = await _httpClient.GetAsync(requestPath, cancellationToken);
 
             if (response.IsSuccessStatusCode == false)
             {
@@ -185,7 +184,7 @@ namespace InternalAPI.Services
 
             string requestPath = ApiConstants.Uris.GetCurrencyHistorical + requestQuery.ToString();
 
-            HttpResponseMessage response = await _httpClient.GetAsync(requestPath);
+            HttpResponseMessage response = await _httpClient.GetAsync(requestPath, cancellationToken);
 
             if (response.IsSuccessStatusCode == false)
             {

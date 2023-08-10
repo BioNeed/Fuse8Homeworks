@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+option csharp_namespace = "InternalAPI.Contracts.GrpcContracts";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+// Сервис для работы с валютами
+service GrpcCurrency {
+
+  // Получает текущий курс определенной валюты
+  rpc GetCurrentExchangeRate (CurrencyInfo) returns (ExchangeRate);
+
+  // Получает курс определенной валюты на конкретную дату
+  rpc GetExchangeRateOnDate (CurrencyOnDateRequest) returns (ExchangeRate);
+
+  // Получает настройки API
+  rpc GetApiSettings (google.protobuf.Empty) returns (ApiSettings);
+}
+
+// Курс валюты
+message ExchangeRate {
+
+	// Код валюты, в которой узнать курс
+    string code = 1;
+
+    // Значение курса валют
+	DecimalValue value = 2;
+}
+
+// Нужен оператор для конвертирования в decimal число в C#
+// Пример: 12345.6789 -> { целая часть = 12345, нано-часть = 678900000 }
+message DecimalValue {
+
+    // Целая часть числа
+    int64 units = 1;
+
+    // Нано разряды числа (10^-9)
+    // Знаки у целой и нано-части должны совпадать
+    sfixed32 nanos = 2;
+}
+
+// Информация о валюте
+message CurrencyInfo {
+
+    // Перечисление типов валют
+    enum CurrencyType {
+        CURRENCY_TYPE_USD = 0;
+        CURRENCY_TYPE_RUB = 1;
+        CURRENCY_TYPE_KZT = 2;
+    }
+
+    // Тип валюты
+    CurrencyType currency_type = 1;
+}
+
+// Запрос курса валют на дату
+message CurrencyOnDateRequest {
+    
+    // Информация о валюте, в которой узнать курс валюты
+    CurrencyInfo currencyInfo = 1;
+
+    // Дата, на которую получить курс валют
+    google.protobuf.Timestamp date = 2;
+}
+
+// Настройки API
+message ApiSettings {
+
+    // Тип базовой валюты
+    CurrencyInfo baseCurrency = 1;
+
+    // Есть ли ещё доступные запросы
+    bool isRequestAvailable = 2;
+}
