@@ -29,7 +29,7 @@ public class Startup
         IConfigurationSection apiSettingsSection = _configuration.GetRequiredSection("ApiSettings");
         services.Configure<ApiSettingsModel>(apiSettingsSection);
 
-        services.AddHttpClient<ICurrencyService, CurrencyService>((provider, client) =>
+        services.AddHttpClient<IGettingApiConfigService, CurrencyService>((provider, client) =>
             {
                 var apiSettings = provider.GetRequiredService<IOptionsMonitor<ApiSettingsModel>>();
                 client.BaseAddress = new Uri(apiSettings.CurrentValue.BaseAddress);

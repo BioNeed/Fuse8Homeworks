@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using InternalAPI.Constants;
 using InternalAPI.Contracts;
+using InternalAPI.Enums;
 using InternalAPI.Exceptions;
 using InternalAPI.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -9,23 +10,26 @@ using Microsoft.Extensions.Options;
 namespace InternalAPI.Controllers;
 
 /// <summary>
-/// Методы для работы с Currencyapi API
+/// [InternalApi] Методы для работы с Currencyapi API
 /// </summary>
 [Route("currency")]
 public class CurrencyController : ControllerBase
 {
-    private readonly ICurrencyService _currencyService;
+    private readonly IGettingApiConfigService _gettingApiConfigService;
+    private readonly ICachedCurrencyAPI _cachedCurrencyService;
 
-    public CurrencyController(ICurrencyService currencyService)
+    public CurrencyController(IGettingApiConfigService gettingApiConfigService, ICachedCurrencyAPI cachedCurrencyService)
     {
-        _currencyService = currencyService;
+        _gettingApiConfigService = gettingApiConfigService;
+        _cachedCurrencyService = cachedCurrencyService;
     }
 
     /// <summary>
     /// Получить курс валют
     /// </summary>
     /// <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
-    /// <param name="currencyCode">(Необязателен) Код валюты, в которой узнать курс базовой валюты. Если не указан, используется RUB</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    /// <param name="currencyType">(Необязателен) Код валюты, в которой узнать курс базовой валюты. Если не указан, используется RUB</param>
     /// <response code="200">
     /// Возвращает, если удалось получить курс валюты
     /// </response>
@@ -41,16 +45,18 @@ public class CurrencyController : ControllerBase
     [HttpGet]
     public async Task<ExchangeRateModel> GetExchangeRateAsync(
         [FromServices] IOptionsSnapshot<CurrencyConfigurationModel> currencyConfig,
-        [FromQuery] string? currencyCode)
+        [FromServices] CancellationToken cancellationToken,
+        [FromQuery] CurrencyType? currencyType)
     {
-        return await _currencyService.GetExchangeRateAsync(currencyConfig.Value, currencyCode);
+        _cachedCurrencyService.GetCurrentExchangeRateAsync(currencyType, cancellationToken);
     }
 
     /// <summary>
     /// Получить курс валют на выбранную дату
     /// </summary>
     /// <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
-    /// <param name="currencyCode">Код валюты, в которой узнать курс базовой валюты</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    /// <param name="currencyType">Код валюты, в которой узнать курс базовой валюты</param>
     /// <param name="dateString">Выбранная дата в формате yyyy-MM-dd</param>
     /// <response code="200">
     /// Возвращает, если удалось получить курс валюты на выбранную дату
@@ -67,7 +73,8 @@ public class CurrencyController : ControllerBase
     [HttpGet("{currencyCode}/{date}")]
     public async Task<ExchangeRateHistoricalModel> GetExchangeRateByDateAsync(
         [FromServices] IOptionsSnapshot<CurrencyConfigurationModel> currencyConfig,
-        [FromRoute] string currencyCode,
+        [FromServices] CancellationToken cancellationToken,
+        [FromRoute] CurrencyType currencyType,
         [FromRoute(Name = "date")] string dateString)
     {
         if (IsDateValid(dateString) == false)
@@ -75,7 +82,7 @@ public class CurrencyController : ControllerBase
             throw new InvalidDateFormatException(ApiConstants.ErrorMessages.InvalidDateFormatExceptionMessage);
         }
 
-        return await _currencyService.GetExchangeRateByDateAsync(currencyConfig.Value, currencyCode, dateString);
+        return await _currencyService.GetExchangeRateByDateAsync(currencyConfig.Value, currencyType, dateString);
     }
 
     /// <summary>

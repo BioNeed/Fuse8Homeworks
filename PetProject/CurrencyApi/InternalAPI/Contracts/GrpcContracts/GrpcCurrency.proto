@@ -14,8 +14,8 @@ service GrpcCurrency {
   // Получает курс определенной валюты на конкретную дату
   rpc GetExchangeRateOnDate (CurrencyOnDateRequest) returns (ExchangeRate);
 
-  // Получает настройки API
-  rpc GetApiSettings (google.protobuf.Empty) returns (ApiSettings);
+  // Получает информацию об API
+  rpc GetApiInfo (google.protobuf.Empty) returns (ApiInfo);
 }
 
 // Курс валюты
@@ -43,33 +43,26 @@ message DecimalValue {
 // Информация о валюте
 message CurrencyInfo {
 
-    // Перечисление типов валют
-    enum CurrencyType {
-        CURRENCY_TYPE_USD = 0;
-        CURRENCY_TYPE_RUB = 1;
-        CURRENCY_TYPE_KZT = 2;
-    }
-
-    // Тип валюты
-    CurrencyType currency_type = 1;
+    // Код валюты, в которой узнать курс базовой валюты
+    string currency_code = 1;
 }
 
 // Запрос курса валют на дату
 message CurrencyOnDateRequest {
     
-    // Информация о валюте, в которой узнать курс валюты
-    CurrencyInfo currencyInfo = 1;
+    // Код валюты, в которой узнать курс базовой валюты
+    string currency_code = 1;
 
     // Дата, на которую получить курс валют
     google.protobuf.Timestamp date = 2;
 }
 
 // Настройки API
-message ApiSettings {
+message ApiInfo {
 
     // Тип базовой валюты
-    CurrencyInfo baseCurrency = 1;
+    string base_currency = 1;
 
     // Есть ли ещё доступные запросы
-    bool isRequestAvailable = 2;
+    bool is_request_available = 2;
 }

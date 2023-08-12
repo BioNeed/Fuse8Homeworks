@@ -93,20 +93,12 @@
             Информация о валюте
             </summary>
         </member>
-        <member name="F:InternalAPI.Contracts.GrpcContracts.CurrencyInfo.CurrencyTypeFieldNumber">
-            <summary>Field number for the "currency_type" field.</summary>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.CurrencyInfo.CurrencyCodeFieldNumber">
+            <summary>Field number for the "currency_code" field.</summary>
         </member>
-        <member name="P:InternalAPI.Contracts.GrpcContracts.CurrencyInfo.CurrencyType">
+        <member name="P:InternalAPI.Contracts.GrpcContracts.CurrencyInfo.CurrencyCode">
             <summary>
-            Тип валюты
-            </summary>
-        </member>
-        <member name="T:InternalAPI.Contracts.GrpcContracts.CurrencyInfo.Types">
-            <summary>Container for nested types declared in the CurrencyInfo message type.</summary>
-        </member>
-        <member name="T:InternalAPI.Contracts.GrpcContracts.CurrencyInfo.Types.CurrencyType">
-            <summary>
-            Перечисление типов валют
+            Код валюты, в которой узнать курс базовой валюты
             </summary>
         </member>
         <member name="T:InternalAPI.Contracts.GrpcContracts.CurrencyOnDateRequest">
@@ -114,12 +106,12 @@
             Запрос курса валют на дату
             </summary>
         </member>
-        <member name="F:InternalAPI.Contracts.GrpcContracts.CurrencyOnDateRequest.CurrencyInfoFieldNumber">
-            <summary>Field number for the "currencyInfo" field.</summary>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.CurrencyOnDateRequest.CurrencyCodeFieldNumber">
+            <summary>Field number for the "currency_code" field.</summary>
         </member>
-        <member name="P:InternalAPI.Contracts.GrpcContracts.CurrencyOnDateRequest.CurrencyInfo">
+        <member name="P:InternalAPI.Contracts.GrpcContracts.CurrencyOnDateRequest.CurrencyCode">
             <summary>
-            Информация о валюте, в которой узнать курс валюты
+            Код валюты, в которой узнать курс базовой валюты
             </summary>
         </member>
         <member name="F:InternalAPI.Contracts.GrpcContracts.CurrencyOnDateRequest.DateFieldNumber">
@@ -130,23 +122,23 @@
             Дата, на которую получить курс валют
             </summary>
         </member>
-        <member name="T:InternalAPI.Contracts.GrpcContracts.ApiSettings">
+        <member name="T:InternalAPI.Contracts.GrpcContracts.ApiInfo">
             <summary>
             Настройки API
             </summary>
         </member>
-        <member name="F:InternalAPI.Contracts.GrpcContracts.ApiSettings.BaseCurrencyFieldNumber">
-            <summary>Field number for the "baseCurrency" field.</summary>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.ApiInfo.BaseCurrencyFieldNumber">
+            <summary>Field number for the "base_currency" field.</summary>
         </member>
-        <member name="P:InternalAPI.Contracts.GrpcContracts.ApiSettings.BaseCurrency">
+        <member name="P:InternalAPI.Contracts.GrpcContracts.ApiInfo.BaseCurrency">
             <summary>
             Тип базовой валюты
             </summary>
         </member>
-        <member name="F:InternalAPI.Contracts.GrpcContracts.ApiSettings.IsRequestAvailableFieldNumber">
-            <summary>Field number for the "isRequestAvailable" field.</summary>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.ApiInfo.IsRequestAvailableFieldNumber">
+            <summary>Field number for the "is_request_available" field.</summary>
         </member>
-        <member name="P:InternalAPI.Contracts.GrpcContracts.ApiSettings.IsRequestAvailable">
+        <member name="P:InternalAPI.Contracts.GrpcContracts.ApiInfo.IsRequestAvailable">
             <summary>
             Есть ли ещё доступные запросы
             </summary>
@@ -178,9 +170,9 @@
             <param name="context">The context of the server-side call handler being invoked.</param>
             <returns>The response to send back to the client (wrapped by a task).</returns>
         </member>
-        <member name="M:InternalAPI.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyBase.GetApiSettings(Google.Protobuf.WellKnownTypes.Empty,Grpc.Core.ServerCallContext)">
+        <member name="M:InternalAPI.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyBase.GetApiInfo(Google.Protobuf.WellKnownTypes.Empty,Grpc.Core.ServerCallContext)">
             <summary>
-            Получает настройки API
+            Получает информацию об API
             </summary>
             <param name="request">The request received from the client.</param>
             <param name="context">The context of the server-side call handler being invoked.</param>
