@@ -74,42 +74,57 @@ public class CurrencyController : ControllerBase
     public async Task<ExchangeRateHistoricalModel> GetExchangeRateByDateAsync(
         [FromServices] IOptionsSnapshot<CurrencyConfigurationModel> currencyConfig,
         [FromServices] CancellationToken cancellationToken,
-        [FromRoute] CurrencyType currencyType,
+        [FromRoute(Name = "currencyCode")] CurrencyType currencyType,
         [FromRoute(Name = "date")] string dateString)
     {
-        if (IsDateValid(dateString) == false)
+        if (TryParseDate(dateString, out DateOnly date) == false)
         {
             throw new InvalidDateFormatException(ApiConstants.ErrorMessages.InvalidDateFormatExceptionMessage);
         }
 
-        return await _currencyService.GetExchangeRateByDateAsync(currencyConfig.Value, currencyType, dateString);
+        ExchangeRateDTOModel exchangeRateDTO = await _cachedCurrencyService
+            .GetExchangeRateOnDateAsync(currencyType, date, cancellationToken);
+
+
+
+        return new ExchangeRateHistoricalModel
+        {
+            Code = exchangeRateDTO.CurrencyType.ToString(),
+            DateString = dateString,
+            Value = exchangeRateDTO.Value,
+        };
     }
 
     /// <summary>
     /// Получить настройки приложения
     /// </summary>
     /// <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
+    /// <param name="cancellationToken">Токен отмены</param>
     /// <response code="200">
     /// Возвращает, если удалось получить настройки приложения
     /// </response>
     [Route("/settings")]
     [HttpGet]
-    public async Task<CurrencyConfigurationModel> GetConfigSettingsAsync([FromServices] IOptionsSnapshot<CurrencyConfigurationModel> currencyConfig)
+    public async Task<CurrencyConfigurationModel> GetConfigSettingsAsync(
+        [FromServices] IOptionsSnapshot<CurrencyConfigurationModel> currencyConfig,
+        [FromServices] CancellationToken cancellationToken)
     {
-        return await _currencyService.GetSettingsAsync(currencyConfig.Value);
+        return await _gettingApiConfigService.GetApiConfigAsync(currencyConfig.Value, cancellationToken);
     }
 
-    private bool IsDateValid(string dateString)
+    private bool TryParseDate(string dateString, out DateOnly date)
     {
+        date = DateOnly.MinValue;
         if (DateTime.TryParseExact(dateString,
             ApiConstants.Formats.DateFormat,
             CultureInfo.InvariantCulture,
             DateTimeStyles.None,
-            out _) == false)
+            out DateTime dateTime) == false)
         {
             return false;
         }
 
+        date = DateOnly.FromDateTime(dateTime);
         return true;
     }
 }

@@ -12,6 +12,7 @@ namespace InternalAPI.Services
     {
         private const string JsonExtension = ".json";
 
+        private readonly string _baseCurrency;
         private readonly ICurrencyAPI _currencyAPI;
         private readonly TimeSpan _cacheExpirationTime;
         private readonly string _cachedCurrenciesDirectoryPath =
@@ -20,10 +21,12 @@ namespace InternalAPI.Services
             + ApiConstants.RelativePaths.CachedCurrenciesOnDates;
 
         public CachedCurrencyService(ICurrencyAPI currencyAPI,
-            IOptionsSnapshot<ApiSettingsModel> apiSettings)
+            IOptionsSnapshot<ApiSettingsModel> apiSettings,
+            IOptionsSnapshot<CurrencyConfigurationModel> apiConfig)
         {
             _currencyAPI = currencyAPI;
             _cacheExpirationTime = TimeSpan.FromHours(apiSettings.Value.CacheExpirationTimeInHours);
+            _baseCurrency = apiConfig.Value.BaseCurrency;
         }
 
         public async Task<ExchangeRateDTOModel> GetCurrentExchangeRateAsync(
@@ -52,7 +55,7 @@ namespace InternalAPI.Services
             }
 
             ExchangeRateModel[] currentExchangeRates = await _currencyAPI.
-                GetAllCurrentCurrenciesAsync(currencyType.ToString(), cancellationToken);
+                GetAllCurrentCurrenciesAsync(_baseCurrency, cancellationToken);
 
             CacheExchangeRatesToFile(currentDateTime, currentExchangeRates);
 
@@ -83,7 +86,7 @@ namespace InternalAPI.Services
             }
 
             ExchangeRatesHistoricalModel exchangeRatesHistorical = await _currencyAPI
-                .GetAllCurrenciesOnDateAsync(currencyType.ToString(), date, cancellationToken);
+                .GetAllCurrenciesOnDateAsync(_baseCurrency, date, cancellationToken);
 
             DateTime dtForFileName = exchangeRatesHistorical.LastUpdatedAt;
             CacheExchangeRatesToFile(dtForFileName, exchangeRatesHistorical.Currencies);
