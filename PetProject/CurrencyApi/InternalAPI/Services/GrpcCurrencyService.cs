@@ -25,7 +25,7 @@ namespace InternalAPI.Services
 
         public override async Task<ExchangeRate> GetCurrentExchangeRate(CurrencyInfo currencyInfo, ServerCallContext context)
         {
-            CurrencyType currencyType = System.Enum.Parse<CurrencyType>(currencyInfo.CurrencyCode);
+            CurrencyType currencyType = System.Enum.Parse<CurrencyType>(currencyInfo.CurrencyCode, true);
             ExchangeRateDTOModel exchangeRateDto = await _cachedCurrencyAPI
                 .GetCurrentExchangeRateAsync(currencyType, context.CancellationToken);
 
@@ -34,7 +34,7 @@ namespace InternalAPI.Services
 
         public override async Task<ExchangeRate> GetExchangeRateOnDate(CurrencyOnDateRequest currencyOnDate, ServerCallContext context)
         {
-            CurrencyType currencyType = System.Enum.Parse<CurrencyType>(currencyOnDate.CurrencyCode);
+            CurrencyType currencyType = System.Enum.Parse<CurrencyType>(currencyOnDate.CurrencyCode, true);
             DateOnly date = DateOnly.FromDateTime(currencyOnDate.Date.ToDateTime());
 
             ExchangeRateDTOModel exchangeRateDto = await _cachedCurrencyAPI
