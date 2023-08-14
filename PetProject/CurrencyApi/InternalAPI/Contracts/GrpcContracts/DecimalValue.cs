@@ -1,5 +1,9 @@
 ﻿namespace InternalAPI.Contracts.GrpcContracts
 {
+    /// <summary>
+    /// Класс-оболочка для decimal типа с операторами преобразования
+    /// в decimal и обратно.
+    /// </summary>
     public partial class DecimalValue
     {
         private const decimal NanoFactor = 1_000_000_000;

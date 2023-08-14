@@ -14,9 +14,9 @@ namespace InternalAPI.Services
     {
         private readonly HttpClient _httpClient;
 
-        public CurrencyService(HttpClient httpClient)
+        public CurrencyService(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClient;
+            _httpClient = httpClientFactory.CreateClient(ApiConstants.HttpClientNames.Default);
         }
 
         public async Task<CurrencyConfigurationModel> GetApiConfigAsync(
@@ -31,7 +31,7 @@ namespace InternalAPI.Services
                 await RaiseExceptionAsync(response);
             }
 
-            string responseString = await response.Content.ReadAsStringAsync();
+            string responseString = await response.Content.ReadAsStringAsync(cancellationToken);
 
             JsonSerializerOptions options = new JsonSerializerOptions()
             {
@@ -67,7 +67,7 @@ namespace InternalAPI.Services
                 await RaiseExceptionAsync(response);
             }
 
-            string responseString = await response.Content.ReadAsStringAsync();
+            string responseString = await response.Content.ReadAsStringAsync(cancellationToken);
 
             JsonSerializerOptions options = new JsonSerializerOptions()
             {
@@ -100,7 +100,7 @@ namespace InternalAPI.Services
                 await RaiseExceptionAsync(response);
             }
 
-            string responseString = await response.Content.ReadAsStringAsync();
+            string responseString = await response.Content.ReadAsStringAsync(cancellationToken);
 
             JsonSerializerOptions options = new JsonSerializerOptions()
             {

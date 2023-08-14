@@ -34,5 +34,10 @@
         {
             public const string CachedCurrenciesOnDates = @"/Cache/CachedCurrenciesOnDates";
         }
+
+        public static class HttpClientNames
+        {
+            public const string Default = "CurrencyApiClient";
+        }
     }
 }

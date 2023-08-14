@@ -16,9 +16,8 @@ namespace InternalAPI.Services
         private readonly ICurrencyAPI _currencyAPI;
         private readonly TimeSpan _cacheExpirationTime;
         private readonly string _cachedCurrenciesDirectoryPath =
-            Directory.GetParent(Environment.CurrentDirectory)
-                .Parent.Parent.FullName
-            + ApiConstants.RelativePaths.CachedCurrenciesOnDates;
+            Environment.CurrentDirectory
+                + ApiConstants.RelativePaths.CachedCurrenciesOnDates;
 
         public CachedCurrencyService(ICurrencyAPI currencyAPI,
             IOptionsSnapshot<ApiSettingsModel> apiSettings,
@@ -98,7 +97,7 @@ namespace InternalAPI.Services
         {
             foreach (ExchangeRateModel exchangeRate in exchangeRates)
             {
-                if (currencyType.ToString() == exchangeRate.Code)
+                if (exchangeRate.Code.Equals(currencyType.ToString(), StringComparison.OrdinalIgnoreCase))
                 {
                     return new ExchangeRateDTOModel
                     {

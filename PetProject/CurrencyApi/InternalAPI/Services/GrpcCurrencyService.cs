@@ -1,10 +1,8 @@
 ﻿using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
-using InternalAPI.Constants;
 using InternalAPI.Contracts;
 using InternalAPI.Contracts.GrpcContracts;
 using InternalAPI.Enums;
-using InternalAPI.Exceptions;
 using InternalAPI.Models;
 using Microsoft.Extensions.Options;
 
@@ -27,13 +25,6 @@ namespace InternalAPI.Services
 
         public override async Task<ExchangeRate> GetCurrentExchangeRate(CurrencyInfo currencyInfo, ServerCallContext context)
         {
-            ApiInfo apiInfo = await GetApiInfo(new Empty(), context);
-
-            if (apiInfo.IsRequestAvailable == false)
-            {
-                throw new ApiRequestLimitException(ApiConstants.ErrorMessages.RequestLimitExceptionMessage);
-            }
-
             CurrencyType currencyType = System.Enum.Parse<CurrencyType>(currencyInfo.CurrencyCode);
             ExchangeRateDTOModel exchangeRateDto = await _cachedCurrencyAPI
                 .GetCurrentExchangeRateAsync(currencyType, context.CancellationToken);
@@ -43,13 +34,6 @@ namespace InternalAPI.Services
 
         public override async Task<ExchangeRate> GetExchangeRateOnDate(CurrencyOnDateRequest currencyOnDate, ServerCallContext context)
         {
-            ApiInfo apiInfo = await GetApiInfo(new Empty(), context);
-
-            if (apiInfo.IsRequestAvailable == false)
-            {
-                throw new ApiRequestLimitException(ApiConstants.ErrorMessages.RequestLimitExceptionMessage);
-            }
-
             CurrencyType currencyType = System.Enum.Parse<CurrencyType>(currencyOnDate.CurrencyCode);
             DateOnly date = DateOnly.FromDateTime(currencyOnDate.Date.ToDateTime());
 

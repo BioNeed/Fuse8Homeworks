@@ -2,11 +2,13 @@
 
 namespace InternalAPI.Enums
 {
-    // [JsonConverter(typeof(JsonStringEnumConverter))]
+    /// <summary>
+    /// Тип валюты
+    /// </summary>
     public enum CurrencyType
     {
-        Usd,
         Rub,
+        Usd,
         Kzt,
     }
 }

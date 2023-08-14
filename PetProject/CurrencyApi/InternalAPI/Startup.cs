@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Audit.Http;
 using Audit.NET.Serilog.Providers;
+using InternalAPI.Constants;
 using InternalAPI.Contracts;
 using InternalAPI.Filters;
 using InternalAPI.Middlewares;
@@ -29,7 +30,20 @@ public class Startup
         IConfigurationSection apiSettingsSection = _configuration.GetRequiredSection("ApiSettings");
         services.Configure<ApiSettingsModel>(apiSettingsSection);
 
-        services.AddHttpClient<IGettingApiConfigService, CurrencyService>((provider, client) =>
+        services.AddControllers(options =>
+            options.Filters.Add(typeof(GlobalExceptionFilter)))
+
+            // Добавляем глобальные настройки для преобразования Json
+            .AddJsonOptions(
+                options =>
+                {
+                    // Добавляем конвертер для енама
+                    // По умолчанию енам преобразуется в цифровое значение
+                    // Этим конвертером задаем перевод в строковое занчение
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                });
+
+        services.AddHttpClient(ApiConstants.HttpClientNames.Default, (provider, client) =>
             {
                 var apiSettings = provider.GetRequiredService<IOptionsMonitor<ApiSettingsModel>>();
                 client.BaseAddress = new Uri(apiSettings.CurrentValue.BaseAddress);
@@ -48,19 +62,9 @@ public class Startup
                 .IncludeContentHeaders());
 
         services.AddScoped<ICurrencyAPI, CurrencyService>();
+        services.AddScoped<IGettingApiConfigService, CurrencyService>();
+        services.AddScoped<ICachedCurrencyAPI, CachedCurrencyService>();
 
-        services.AddControllers(options =>
-            options.Filters.Add(typeof(GlobalExceptionFilter)))
-
-            // Добавляем глобальные настройки для преобразования Json
-            .AddJsonOptions(
-                options =>
-                {
-                    // Добавляем конвертер для енама
-                    // По умолчанию енам преобразуется в цифровое значение
-                    // Этим конвертером задаем перевод в строковое занчение
-                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-                });
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(
             c =>

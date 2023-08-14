@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using InternalAPI.Constants;
 using InternalAPI.Contracts;
 using InternalAPI.Enums;
@@ -28,8 +29,8 @@ public class CurrencyController : ControllerBase
     /// Получить курс валют
     /// </summary>
     /// <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
-    /// <param name="cancellationToken">Токен отмены</param>
     /// <param name="currencyType">(Необязателен) Код валюты, в которой узнать курс базовой валюты. Если не указан, используется RUB</param>
+    /// <param name="cancellationToken">Токен отмены</param>
     /// <response code="200">
     /// Возвращает, если удалось получить курс валюты
     /// </response>
@@ -45,19 +46,28 @@ public class CurrencyController : ControllerBase
     [HttpGet]
     public async Task<ExchangeRateModel> GetExchangeRateAsync(
         [FromServices] IOptionsSnapshot<CurrencyConfigurationModel> currencyConfig,
-        [FromServices] CancellationToken cancellationToken,
-        [FromQuery] CurrencyType? currencyType)
+        [FromQuery] CurrencyType? currencyType,
+        CancellationToken cancellationToken)
     {
-        _cachedCurrencyService.GetCurrentExchangeRateAsync(currencyType, cancellationToken);
+        CurrencyType requestCurrencyType = currencyType ??
+            Enum.Parse<CurrencyType>(currencyConfig.Value.DefaultCurrency, true);
+
+        ExchangeRateDTOModel exchangeRateDTO = await _cachedCurrencyService
+            .GetCurrentExchangeRateAsync(requestCurrencyType, cancellationToken);
+
+        return new ExchangeRateModel
+        {
+            Code = exchangeRateDTO.CurrencyType.ToString(),
+            Value = exchangeRateDTO.Value,
+        };
     }
 
     /// <summary>
     /// Получить курс валют на выбранную дату
     /// </summary>
-    /// <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
-    /// <param name="cancellationToken">Токен отмены</param>
     /// <param name="currencyType">Код валюты, в которой узнать курс базовой валюты</param>
     /// <param name="dateString">Выбранная дата в формате yyyy-MM-dd</param>
+    /// <param name="cancellationToken">Токен отмены</param>
     /// <response code="200">
     /// Возвращает, если удалось получить курс валюты на выбранную дату
     /// </response>
@@ -72,10 +82,9 @@ public class CurrencyController : ControllerBase
     /// </response>
     [HttpGet("{currencyCode}/{date}")]
     public async Task<ExchangeRateHistoricalModel> GetExchangeRateByDateAsync(
-        [FromServices] IOptionsSnapshot<CurrencyConfigurationModel> currencyConfig,
-        [FromServices] CancellationToken cancellationToken,
         [FromRoute(Name = "currencyCode")] CurrencyType currencyType,
-        [FromRoute(Name = "date")] string dateString)
+        [FromRoute(Name = "date")] string dateString,
+        CancellationToken cancellationToken)
     {
         if (TryParseDate(dateString, out DateOnly date) == false)
         {
@@ -85,12 +94,10 @@ public class CurrencyController : ControllerBase
         ExchangeRateDTOModel exchangeRateDTO = await _cachedCurrencyService
             .GetExchangeRateOnDateAsync(currencyType, date, cancellationToken);
 
-
-
         return new ExchangeRateHistoricalModel
         {
             Code = exchangeRateDTO.CurrencyType.ToString(),
-            DateString = dateString,
+            Date = dateString,
             Value = exchangeRateDTO.Value,
         };
     }
@@ -107,7 +114,7 @@ public class CurrencyController : ControllerBase
     [HttpGet]
     public async Task<CurrencyConfigurationModel> GetConfigSettingsAsync(
         [FromServices] IOptionsSnapshot<CurrencyConfigurationModel> currencyConfig,
-        [FromServices] CancellationToken cancellationToken)
+        CancellationToken cancellationToken)
     {
         return await _gettingApiConfigService.GetApiConfigAsync(currencyConfig.Value, cancellationToken);
     }

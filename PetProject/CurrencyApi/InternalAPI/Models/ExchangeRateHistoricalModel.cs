@@ -18,6 +18,6 @@
         /// <summary>
         /// Дата акутуальности курса
         /// </summary>
-        public string DateString { get; init; }
+        public string Date { get; init; }
     }
 }

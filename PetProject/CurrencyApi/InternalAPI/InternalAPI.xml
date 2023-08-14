@@ -4,39 +4,32 @@
         <name>InternalAPI</name>
     </assembly>
     <members>
-        <member name="M:InternalAPI.Contracts.ICachedCurrencyAPI.GetCurrentExchangeRateAsync(InternalAPI.Enums.CurrencyType,System.Threading.CancellationToken)">
+        <member name="T:InternalAPI.Contracts.GrpcContracts.DecimalValue">
             <summary>
-            Получает текущий курс
+            Класс-оболочка для decimal типа с операторами преобразования
+            в decimal и обратно.
             </summary>
-            <param name="currencyType">Валюта, для которой необходимо получить курс</param>
-            <param name="cancellationToken">Токен отмены</param>
-            <returns>Текущий курс</returns>
+            <summary>
+            Нужен оператор для конвертирования в decimal число в C#
+            Пример: 12345.6789 -> { целая часть = 12345, нано-часть = 678900000 }
+            </summary>
         </member>
-        <member name="M:InternalAPI.Contracts.ICachedCurrencyAPI.GetExchangeRateOnDateAsync(InternalAPI.Enums.CurrencyType,System.DateOnly,System.Threading.CancellationToken)">
-            <summary>
-            Получает курс валюты, актуальный на <paramref name="date"/>
-            </summary>
-            <param name="currencyType">Валюта, для которой необходимо получить курс</param>
-            <param name="date">Дата, на которую нужно получить курс валют</param>
-            <param name="cancellationToken">Токен отмены</param>
-            <returns>Курс на дату</returns>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.DecimalValue.UnitsFieldNumber">
+            <summary>Field number for the "units" field.</summary>
         </member>
-        <member name="M:InternalAPI.Contracts.ICurrencyAPI.GetAllCurrentCurrenciesAsync(System.String,System.Threading.CancellationToken)">
+        <member name="P:InternalAPI.Contracts.GrpcContracts.DecimalValue.Units">
             <summary>
-            Получает текущий курс для всех валют
+            Целая часть числа
             </summary>
-            <param name="baseCurrency">Базовая валюта, относительно которой необходимо получить курс</param>
-            <param name="cancellationToken">Токен отмены</param>
-            <returns>Список курсов валют</returns>
         </member>
-        <member name="M:InternalAPI.Contracts.ICurrencyAPI.GetAllCurrenciesOnDateAsync(System.String,System.DateOnly,System.Threading.CancellationToken)">
+        <member name="F:InternalAPI.Contracts.GrpcContracts.DecimalValue.NanosFieldNumber">
+            <summary>Field number for the "nanos" field.</summary>
+        </member>
+        <member name="P:InternalAPI.Contracts.GrpcContracts.DecimalValue.Nanos">
             <summary>
-            Получает курс для всех валют, актуальный на <paramref name="date"/>
+            Нано разряды числа (10^-9)
+            Знаки у целой и нано-части должны совпадать
             </summary>
-            <param name="baseCurrency">Базовая валюта, относительно которой необходимо получить курс</param>
-            <param name="date">Дата, на которую нужно получить курс валют</param>
-            <param name="cancellationToken">Токен отмены</param>
-            <returns>Список курсов валют на дату</returns>
         </member>
         <member name="T:InternalAPI.Contracts.GrpcContracts.GrpcCurrencyReflection">
             <summary>Holder for reflection information generated from Contracts/GrpcContracts/GrpcCurrency.proto</summary>
@@ -63,29 +56,6 @@
         <member name="P:InternalAPI.Contracts.GrpcContracts.ExchangeRate.Value">
             <summary>
             Значение курса валют
-            </summary>
-        </member>
-        <member name="T:InternalAPI.Contracts.GrpcContracts.DecimalValue">
-            <summary>
-            Нужен оператор для конвертирования в decimal число в C#
-            Пример: 12345.6789 -> { целая часть = 12345, нано-часть = 678900000 }
-            </summary>
-        </member>
-        <member name="F:InternalAPI.Contracts.GrpcContracts.DecimalValue.UnitsFieldNumber">
-            <summary>Field number for the "units" field.</summary>
-        </member>
-        <member name="P:InternalAPI.Contracts.GrpcContracts.DecimalValue.Units">
-            <summary>
-            Целая часть числа
-            </summary>
-        </member>
-        <member name="F:InternalAPI.Contracts.GrpcContracts.DecimalValue.NanosFieldNumber">
-            <summary>Field number for the "nanos" field.</summary>
-        </member>
-        <member name="P:InternalAPI.Contracts.GrpcContracts.DecimalValue.Nanos">
-            <summary>
-            Нано разряды числа (10^-9)
-            Знаки у целой и нано-части должны совпадать
             </summary>
         </member>
         <member name="T:InternalAPI.Contracts.GrpcContracts.CurrencyInfo">
@@ -188,17 +158,52 @@
             <param name="serviceBinder">Service methods will be bound by calling <c>AddMethod</c> on this object.</param>
             <param name="serviceImpl">An object implementing the server-side handling logic.</param>
         </member>
+        <member name="M:InternalAPI.Contracts.ICachedCurrencyAPI.GetCurrentExchangeRateAsync(InternalAPI.Enums.CurrencyType,System.Threading.CancellationToken)">
+            <summary>
+            Получает текущий курс
+            </summary>
+            <param name="currencyType">Валюта, для которой необходимо получить курс</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Текущий курс</returns>
+        </member>
+        <member name="M:InternalAPI.Contracts.ICachedCurrencyAPI.GetExchangeRateOnDateAsync(InternalAPI.Enums.CurrencyType,System.DateOnly,System.Threading.CancellationToken)">
+            <summary>
+            Получает курс валюты, актуальный на <paramref name="date"/>
+            </summary>
+            <param name="currencyType">Валюта, для которой необходимо получить курс</param>
+            <param name="date">Дата, на которую нужно получить курс валют</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Курс на дату</returns>
+        </member>
+        <member name="M:InternalAPI.Contracts.ICurrencyAPI.GetAllCurrentCurrenciesAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Получает текущий курс для всех валют
+            </summary>
+            <param name="baseCurrency">Базовая валюта, относительно которой необходимо получить курс</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Список курсов валют</returns>
+        </member>
+        <member name="M:InternalAPI.Contracts.ICurrencyAPI.GetAllCurrenciesOnDateAsync(System.String,System.DateOnly,System.Threading.CancellationToken)">
+            <summary>
+            Получает курс для всех валют, актуальный на <paramref name="date"/>
+            </summary>
+            <param name="baseCurrency">Базовая валюта, относительно которой необходимо получить курс</param>
+            <param name="date">Дата, на которую нужно получить курс валют</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Список курсов валют на дату</returns>
+        </member>
         <member name="T:InternalAPI.Controllers.CurrencyController">
             <summary>
-            Методы для работы с Currencyapi API
+            [InternalApi] Методы для работы с Currencyapi API
             </summary>
         </member>
-        <member name="M:InternalAPI.Controllers.CurrencyController.GetExchangeRateAsync(Microsoft.Extensions.Options.IOptionsSnapshot{InternalAPI.Models.CurrencyConfigurationModel},System.String)">
+        <member name="M:InternalAPI.Controllers.CurrencyController.GetExchangeRateAsync(Microsoft.Extensions.Options.IOptionsSnapshot{InternalAPI.Models.CurrencyConfigurationModel},System.Nullable{InternalAPI.Enums.CurrencyType},System.Threading.CancellationToken)">
             <summary>
             Получить курс валют
             </summary>
             <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
-            <param name="currencyCode">(Необязателен) Код валюты, в которой узнать курс базовой валюты. Если не указан, используется RUB</param>
+            <param name="currencyType">(Необязателен) Код валюты, в которой узнать курс базовой валюты. Если не указан, используется RUB</param>
+            <param name="cancellationToken">Токен отмены</param>
             <response code="200">
             Возвращает, если удалось получить курс валюты
             </response>
@@ -212,13 +217,13 @@
             Возвращает в случае других ошибок
             </response>
         </member>
-        <member name="M:InternalAPI.Controllers.CurrencyController.GetExchangeRateByDateAsync(Microsoft.Extensions.Options.IOptionsSnapshot{InternalAPI.Models.CurrencyConfigurationModel},System.String,System.String)">
+        <member name="M:InternalAPI.Controllers.CurrencyController.GetExchangeRateByDateAsync(InternalAPI.Enums.CurrencyType,System.String,System.Threading.CancellationToken)">
             <summary>
             Получить курс валют на выбранную дату
             </summary>
-            <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
-            <param name="currencyCode">Код валюты, в которой узнать курс базовой валюты</param>
+            <param name="currencyType">Код валюты, в которой узнать курс базовой валюты</param>
             <param name="dateString">Выбранная дата в формате yyyy-MM-dd</param>
+            <param name="cancellationToken">Токен отмены</param>
             <response code="200">
             Возвращает, если удалось получить курс валюты на выбранную дату
             </response>
@@ -232,11 +237,12 @@
             Возвращает в случае других ошибок
             </response>
         </member>
-        <member name="M:InternalAPI.Controllers.CurrencyController.GetConfigSettingsAsync(Microsoft.Extensions.Options.IOptionsSnapshot{InternalAPI.Models.CurrencyConfigurationModel})">
+        <member name="M:InternalAPI.Controllers.CurrencyController.GetConfigSettingsAsync(Microsoft.Extensions.Options.IOptionsSnapshot{InternalAPI.Models.CurrencyConfigurationModel},System.Threading.CancellationToken)">
             <summary>
             Получить настройки приложения
             </summary>
             <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
+            <param name="cancellationToken">Токен отмены</param>
             <response code="200">
             Возвращает, если удалось получить настройки приложения
             </response>
@@ -286,6 +292,11 @@
         <member name="F:InternalAPI.Controllers.HealthCheckResult.CheckStatus.Failed">
             <summary>
             Ошибка в работе API
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Enums.CurrencyType">
+            <summary>
+            Тип валюты
             </summary>
         </member>
         <member name="T:InternalAPI.Models.CurrencyConfigurationModel">
