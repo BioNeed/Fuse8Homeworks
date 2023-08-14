@@ -38,33 +38,34 @@ namespace InternalAPI.JsonConverters
                 }
             }
 
-            reader.Read();
-
             while (reader.Read())
             {
-                if (reader.TokenType != JsonTokenType.PropertyName ||
-                    reader.GetString() != "code" ||
-                    reader.GetString() != "value")
+                if (reader.TokenType != JsonTokenType.PropertyName)
                 {
                     continue;
                 }
 
-                string propertyName = reader.GetString();
-
-                reader.Read();
-
                 ExchangeRateModel exchangeRate = new ExchangeRateModel();
 
-                switch (propertyName)
+                while (reader.TokenType != JsonTokenType.EndObject)
                 {
-                    case "code":
-                        string currencyCode = reader.GetString();
-                        exchangeRate.Code = currencyCode!;
-                        break;
-                    case "value":
-                        decimal value = reader.GetDecimal();
-                        exchangeRate.Value = value;
-                        break;
+                    string propertyName = reader.GetString();
+
+                    reader.Read();
+
+                    switch (propertyName)
+                    {
+                        case "code":
+                            string currencyCode = reader.GetString();
+                            exchangeRate.Code = currencyCode!;
+                            break;
+                        case "value":
+                            decimal value = reader.GetDecimal();
+                            exchangeRate.Value = value;
+                            break;
+                    }
+
+                    reader.Read();
                 }
 
                 exchangeRates.Add(exchangeRate);
