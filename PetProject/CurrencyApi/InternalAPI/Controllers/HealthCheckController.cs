@@ -1,7 +1,7 @@
-﻿using InternalAPI.Contracts;
+﻿using System.Net;
+using InternalAPI.Contracts;
 using InternalAPI.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 using static InternalAPI.Models.HealthCheckResult;
 
 namespace InternalAPI.Controllers;
@@ -23,6 +23,7 @@ public class HealthCheckController : ControllerBase
     /// Проверить что API работает
     /// </summary>
     /// <param name="checkExternalApi">Необходимо проверить работоспособность внешнего API. Если FALSE или NULL - проверяется работоспособность только текущего API</param>
+    /// <param name="cancellationToken">Токен отмены</param>
     /// <response code="200">
     /// Возвращает если удалось получить доступ к API
     /// </response>

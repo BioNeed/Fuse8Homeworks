@@ -31,4 +31,10 @@
       <ProjectReference Include="..\InternalAPI\InternalAPI.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Contracts\GrpcContracts\GrpcCurrency.proto">
+        <GrpcServices>Server</GrpcServices>
+      </None>
+    </ItemGroup>
+
 </Project>
