@@ -28,7 +28,7 @@ namespace InternalAPI.Services
 
             if (response.IsSuccessStatusCode == false)
             {
-                await RaiseExceptionAsync(response);
+                throw new Exception(ApiConstants.ErrorMessages.UnknownExceptionMessage);
             }
 
             string responseString = await response.Content.ReadAsStringAsync(cancellationToken);
@@ -64,7 +64,7 @@ namespace InternalAPI.Services
 
             if (response.IsSuccessStatusCode == false)
             {
-                await RaiseExceptionAsync(response);
+                throw new Exception(ApiConstants.ErrorMessages.UnknownExceptionMessage);
             }
 
             string responseString = await response.Content.ReadAsStringAsync(cancellationToken);
@@ -97,7 +97,7 @@ namespace InternalAPI.Services
 
             if (response.IsSuccessStatusCode == false)
             {
-                await RaiseExceptionAsync(response);
+                throw new Exception(ApiConstants.ErrorMessages.UnknownExceptionMessage);
             }
 
             string responseString = await response.Content.ReadAsStringAsync(cancellationToken);
@@ -112,26 +112,6 @@ namespace InternalAPI.Services
                 responseString, options);
 
             return exchangeRatesOnDate;
-        }
-
-        private async Task RaiseExceptionAsync(HttpResponseMessage response)
-        {
-            await HandleIfUnknownCurrencyAsync(response);
-
-            throw new Exception(ApiConstants.ErrorMessages.UnknownExceptionMessage);
-        }
-
-        private async Task HandleIfUnknownCurrencyAsync(HttpResponseMessage badResponse)
-        {
-            if (badResponse.StatusCode == HttpStatusCode.UnprocessableEntity)
-            {
-                string responseString = await badResponse.Content.ReadAsStringAsync();
-
-                if (responseString.Contains(ApiConstants.ErrorMessages.InvalidCurrencyMessage))
-                {
-                    throw new CurrencyNotFoundException(ApiConstants.ErrorMessages.InvalidCurrencyMessage);
-                }
-            }
         }
 
         private async Task<bool> IsRequestAvailableAsync()

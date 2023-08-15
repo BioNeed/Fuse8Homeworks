@@ -19,9 +19,6 @@
 
             public const string InvalidDateFormatExceptionMessage =
                 "Неверно указана дата";
-
-            public const string InvalidCurrencyMessage =
-                "The selected currencies is invalid.";
         }
 
         public static class Formats
