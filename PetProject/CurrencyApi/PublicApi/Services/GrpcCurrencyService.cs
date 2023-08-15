@@ -29,10 +29,11 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
                 currencyInfo,
                 cancellationToken: cancellationToken);
 
+            decimal roundedValue = decimal.Round(exchangeRate.Value, _configuration.Value.CurrencyRoundCount);
             return new ExchangeRateModel
             {
                 Code = exchangeRate.Code,
-                Value = exchangeRate.Value,
+                Value = roundedValue,
             };
         }
 
@@ -50,10 +51,11 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
             ExchangeRate exchangeRate = await _grpcCurrencyClient
                 .GetExchangeRateOnDateAsync(request, cancellationToken: cancellationToken);
 
+            decimal roundedValue = decimal.Round(exchangeRate.Value, _configuration.Value.CurrencyRoundCount);
             return new ExchangeRateModel
             {
                 Code = exchangeRate.Code,
-                Value = exchangeRate.Value,
+                Value = roundedValue,
             };
         }
 
