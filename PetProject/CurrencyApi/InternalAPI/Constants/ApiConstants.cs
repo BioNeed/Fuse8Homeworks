@@ -1,4 +1,6 @@
-﻿namespace InternalAPI.Constants
+﻿using Grpc.Net.Client.Balancer;
+
+namespace InternalAPI.Constants
 {
     public static class ApiConstants
     {
@@ -35,6 +37,12 @@
         public static class HttpClientNames
         {
             public const string Default = "CurrencyApiClient";
+        }
+
+        public static class PortNames
+        {
+            public const string GrpcPort = "GrpcPort";
+            public const string RestApiPort = "RestApiPort";
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions;
+using Grpc.Core;
 using InternalAPI.Constants;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -18,21 +19,15 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Filters
         {
             switch (context.Exception)
             {
-                case ApiRequestLimitException:
-                    {
-                        HandleRequestLimitException(context);
-                        break;
-                    }
-
-                case CurrencyNotFoundException:
-                    {
-                        HandleCurrencyNotFoundException(context);
-                        break;
-                    }
-
                 case InvalidDateFormatException:
                     {
                         HandleAnyOtherException(context, context.Exception.Message);
+                        break;
+                    }
+
+                case RpcException ex when ex.Status.StatusCode == StatusCode.ResourceExhausted:
+                    {
+                        HandleRequestLimitException(context, ex.Status.Detail);
                         break;
                     }
 
@@ -44,16 +39,10 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Filters
             }
         }
 
-        private void HandleRequestLimitException(ExceptionContext context)
+        private void HandleRequestLimitException(ExceptionContext context, string message)
         {
-            _logger.LogError("Ошибка! {message}", context.Exception.Message);
+            _logger.LogError("Ошибка! {message}", message);
             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.TooManyRequests;
-            context.ExceptionHandled = true;
-        }
-
-        private void HandleCurrencyNotFoundException(ExceptionContext context)
-        {
-            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
             context.ExceptionHandled = true;
         }
 

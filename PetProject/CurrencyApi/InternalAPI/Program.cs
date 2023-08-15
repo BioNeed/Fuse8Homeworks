@@ -1,4 +1,5 @@
 using InternalAPI;
+using InternalAPI.Constants;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 
@@ -7,7 +8,8 @@ var webHost = WebHost
     .UseStartup<Startup>()
     .UseKestrel((builderContext, options) =>
     {
-        int grpcPort = builderContext.Configuration.GetValue<int>("GrpcPort");
+        int grpcPort = builderContext.Configuration.GetValue<int>(
+            ApiConstants.PortNames.GrpcPort);
 
         options.ConfigureEndpointDefaults(p =>
         {

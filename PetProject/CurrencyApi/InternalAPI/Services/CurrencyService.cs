@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text.Json;
 using System.Web;
+using Grpc.Core;
 using InternalAPI.Constants;
 using InternalAPI.Contracts;
 using InternalAPI.Exceptions;
@@ -13,17 +14,22 @@ namespace InternalAPI.Services
 {
     public class CurrencyService : IGettingApiConfigService, ICurrencyAPI
     {
-        private readonly IOptionsSnapshot<ApiInfoModel> _configuration;
+        private readonly IOptionsSnapshot<ApiInfoModel> _apiConfig;
         private readonly HttpClient _httpClient;
+        private readonly bool _usingByGrpc;
 
-        public CurrencyService(IHttpClientFactory httpClientFactory, IOptionsSnapshot<ApiInfoModel> configuration)
+        public CurrencyService(IHttpClientFactory httpClientFactory,
+                               IOptionsSnapshot<ApiInfoModel> apiConfig,
+                               IHttpContextAccessor httpContextAccessor,
+                               IConfiguration configuration)
         {
             _httpClient = httpClientFactory.CreateClient(ApiConstants.HttpClientNames.Default);
-            _configuration = configuration;
+            _apiConfig = apiConfig;
+            _usingByGrpc = httpContextAccessor.HttpContext.Connection.LocalPort ==
+                configuration.GetValue<int>(ApiConstants.PortNames.GrpcPort);
         }
 
-        public async Task<ApiInfoModel> GetApiConfigAsync(
-            CancellationToken cancellationToken)
+        public async Task<ApiInfoModel> GetApiConfigAsync(CancellationToken cancellationToken)
         {
             HttpResponseMessage response = await _httpClient.GetAsync(
                 ApiConstants.Uris.GetStatus, cancellationToken);
@@ -43,19 +49,28 @@ namespace InternalAPI.Services
             ApiStatusModel apiStatusFromJson =
                 JsonSerializer.Deserialize<ApiStatusModel>(responseString, options);
 
-            return _configuration.Value with
+            return _apiConfig.Value with
             {
                 NewRequestsAvailable = apiStatusFromJson.UsedRequests <
                     apiStatusFromJson.TotalRequests,
             };
         }
 
-        public async Task<ExchangeRateModel[]> GetAllCurrentCurrenciesAsync(string baseCurrency, CancellationToken cancellationToken)
+        public async Task<ExchangeRateModel[]> GetAllCurrentCurrenciesAsync(
+            string baseCurrency,
+            CancellationToken cancellationToken)
         {
-            ApiInfoModel config = await GetApiConfigAsync(cancellationToken);
+            ApiInfoModel apiInfo = await GetApiConfigAsync(cancellationToken);
 
-            if (config.NewRequestsAvailable == false)
+            if (apiInfo.NewRequestsAvailable == false)
             {
+                if (_usingByGrpc == true)
+                {
+                    throw new RpcException(
+                        status: new Status(StatusCode.ResourceExhausted,
+                            ApiConstants.ErrorMessages.RequestLimitExceptionMessage));
+                }
+
                 throw new ApiRequestLimitException(ApiConstants.ErrorMessages.RequestLimitExceptionMessage);
             }
 
@@ -84,12 +99,22 @@ namespace InternalAPI.Services
             return exchangeRates;
         }
 
-        public async Task<ExchangeRatesHistoricalModel> GetAllCurrenciesOnDateAsync(string baseCurrency, DateOnly date, CancellationToken cancellationToken)
+        public async Task<ExchangeRatesHistoricalModel> GetAllCurrenciesOnDateAsync(
+            string baseCurrency,
+            DateOnly date,
+            CancellationToken cancellationToken)
         {
-            ApiInfoModel config = await GetApiConfigAsync(cancellationToken);
+            ApiInfoModel apiInfo = await GetApiConfigAsync(cancellationToken);
 
-            if (config.NewRequestsAvailable == false)
+            if (apiInfo.NewRequestsAvailable == true)
             {
+                if (_usingByGrpc == true)
+                {
+                    throw new RpcException(
+                        status: new Status(StatusCode.ResourceExhausted,
+                            ApiConstants.ErrorMessages.RequestLimitExceptionMessage));
+                }
+
                 throw new ApiRequestLimitException(ApiConstants.ErrorMessages.RequestLimitExceptionMessage);
             }
 

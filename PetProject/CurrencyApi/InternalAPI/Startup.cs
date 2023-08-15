@@ -67,6 +67,7 @@ public class Startup
         services.AddScoped<IHealthCheck, HealthCheckService>();
 
         services.AddGrpc();
+        services.AddHttpContextAccessor();
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(
@@ -97,7 +98,7 @@ public class Startup
 
         app.UseWhen(
             predicate: context => context.Connection.LocalPort ==
-                _configuration.GetValue<int>("GrpcPort"),
+                _configuration.GetValue<int>(ApiConstants.PortNames.GrpcPort),
             configuration: grpcBuilder =>
             {
                 grpcBuilder.UseRouting().UseEndpoints(endpoints =>
@@ -106,7 +107,7 @@ public class Startup
 
         app.UseWhen(
             predicate: context => context.Connection.LocalPort ==
-                _configuration.GetValue<int>("RestApiPort"),
+                _configuration.GetValue<int>(ApiConstants.PortNames.RestApiPort),
             configuration: restApiBuilder =>
             {
                 restApiBuilder.UseRouting().UseEndpoints(endpoints =>
