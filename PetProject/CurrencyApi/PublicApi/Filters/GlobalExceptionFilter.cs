@@ -1,6 +1,6 @@
 ﻿using System.Net;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions;
+using InternalAPI.Constants;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Filters

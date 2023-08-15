@@ -21,7 +21,7 @@ namespace InternalAPI.Services
 
         public CachedCurrencyService(ICurrencyAPI currencyAPI,
             IOptionsSnapshot<ApiSettingsModel> apiSettings,
-            IOptionsSnapshot<CurrencyConfigurationModel> apiConfig)
+            IOptionsSnapshot<ApiInfoModel> apiConfig)
         {
             _currencyAPI = currencyAPI;
             _cacheExpirationTime = TimeSpan.FromHours(apiSettings.Value.CacheExpirationTimeInHours);

@@ -197,12 +197,11 @@
             [InternalApi] Методы для работы с Currencyapi API
             </summary>
         </member>
-        <member name="M:InternalAPI.Controllers.CurrencyController.GetExchangeRateAsync(Microsoft.Extensions.Options.IOptionsSnapshot{InternalAPI.Models.CurrencyConfigurationModel},System.Nullable{InternalAPI.Enums.CurrencyType},System.Threading.CancellationToken)">
+        <member name="M:InternalAPI.Controllers.CurrencyController.GetExchangeRateAsync(InternalAPI.Enums.CurrencyType,System.Threading.CancellationToken)">
             <summary>
             Получить курс валют
             </summary>
-            <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
-            <param name="currencyType">(Необязателен) Код валюты, в которой узнать курс базовой валюты. Если не указан, используется RUB</param>
+            <param name="currencyType">Код валюты, в которой узнать курс базовой валюты</param>
             <param name="cancellationToken">Токен отмены</param>
             <response code="200">
             Возвращает, если удалось получить курс валюты
@@ -231,11 +230,10 @@
             Возвращает в случае других ошибок
             </response>
         </member>
-        <member name="M:InternalAPI.Controllers.CurrencyController.GetConfigSettingsAsync(Microsoft.Extensions.Options.IOptionsSnapshot{InternalAPI.Models.CurrencyConfigurationModel},System.Threading.CancellationToken)">
+        <member name="M:InternalAPI.Controllers.CurrencyController.GetConfigSettingsAsync(System.Threading.CancellationToken)">
             <summary>
             Получить настройки приложения
             </summary>
-            <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
             <param name="cancellationToken">Токен отмены</param>
             <response code="200">
             Возвращает, если удалось получить настройки приложения
@@ -251,6 +249,7 @@
             Проверить что API работает
             </summary>
             <param name="checkExternalApi">Необходимо проверить работоспособность внешнего API. Если FALSE или NULL - проверяется работоспособность только текущего API</param>
+            <param name="cancellationToken">Токен отмены</param>
             <response code="200">
             Возвращает если удалось получить доступ к API
             </response>
@@ -263,34 +262,19 @@
             Тип валюты
             </summary>
         </member>
-        <member name="T:InternalAPI.Models.CurrencyConfigurationModel">
+        <member name="T:InternalAPI.Models.ApiInfoModel">
             <summary>
             Настройки приложения и доступные запросы
             </summary>
         </member>
-        <member name="P:InternalAPI.Models.CurrencyConfigurationModel.DefaultCurrency">
-            <summary>
-            Валюта по умолчанию
-            </summary>
-        </member>
-        <member name="P:InternalAPI.Models.CurrencyConfigurationModel.BaseCurrency">
+        <member name="P:InternalAPI.Models.ApiInfoModel.BaseCurrency">
             <summary>
             Базовая валюта
             </summary>
         </member>
-        <member name="P:InternalAPI.Models.CurrencyConfigurationModel.CurrencyRoundCount">
+        <member name="P:InternalAPI.Models.ApiInfoModel.NewRequestsAvailable">
             <summary>
-            Количество знаков после запятой у курса валют
-            </summary>
-        </member>
-        <member name="P:InternalAPI.Models.CurrencyConfigurationModel.RequestLimit">
-            <summary>
-            Максимальное количество запросов к внешнему API
-            </summary>
-        </member>
-        <member name="P:InternalAPI.Models.CurrencyConfigurationModel.RequestCount">
-            <summary>
-            Количество отправленных запросов к внешнему API
+            Есть ли ещё доступные запросы
             </summary>
         </member>
         <member name="T:InternalAPI.Models.ExchangeRateDTOModel">

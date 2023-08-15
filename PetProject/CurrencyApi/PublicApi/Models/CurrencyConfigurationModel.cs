@@ -21,13 +21,8 @@
         public int CurrencyRoundCount { get; init; }
 
         /// <summary>
-        /// Максимальное количество запросов к внешнему API
+        /// Есть ли ещё доступные запросы
         /// </summary>
-        public int RequestLimit { get; init; }
-
-        /// <summary>
-        /// Количество отправленных запросов к внешнему API
-        /// </summary>
-        public int RequestCount { get; init; }
+        public bool NewRequestsAvailable { get; init; }
     }
 }

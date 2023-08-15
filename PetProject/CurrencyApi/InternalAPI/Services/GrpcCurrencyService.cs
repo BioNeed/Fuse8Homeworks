@@ -4,7 +4,6 @@ using InternalAPI.Contracts;
 using InternalAPI.Contracts.GrpcContracts;
 using InternalAPI.Enums;
 using InternalAPI.Models;
-using Microsoft.Extensions.Options;
 
 namespace InternalAPI.Services
 {
@@ -12,15 +11,12 @@ namespace InternalAPI.Services
     {
         private readonly IGettingApiConfigService _gettingApiConfigService;
         private readonly ICachedCurrencyAPI _cachedCurrencyAPI;
-        private readonly IOptionsSnapshot<CurrencyConfigurationModel> _apiConfig;
 
         public GrpcCurrencyService(IGettingApiConfigService gettingApiConfigService,
-                                   ICachedCurrencyAPI cachedCurrencyAPI,
-                                   IOptionsSnapshot<CurrencyConfigurationModel> apiConfig)
+                                   ICachedCurrencyAPI cachedCurrencyAPI)
         {
             _gettingApiConfigService = gettingApiConfigService;
             _cachedCurrencyAPI = cachedCurrencyAPI;
-            _apiConfig = apiConfig;
         }
 
         public override async Task<ExchangeRate> GetCurrentExchangeRate(CurrencyInfo currencyInfo, ServerCallContext context)
@@ -45,12 +41,12 @@ namespace InternalAPI.Services
 
         public override async Task<ApiInfo> GetApiInfo(Empty emptyRequest, ServerCallContext context)
         {
-            CurrencyConfigurationModel fullApiSettings = await _gettingApiConfigService
-                .GetApiConfigAsync(_apiConfig.Value, context.CancellationToken);
+            ApiInfoModel config = await _gettingApiConfigService
+                .GetApiConfigAsync(context.CancellationToken);
             return new ApiInfo
             {
-                BaseCurrency = fullApiSettings.BaseCurrency,
-                IsRequestAvailable = fullApiSettings.RequestCount < fullApiSettings.RequestLimit,
+                BaseCurrency = config.BaseCurrency,
+                IsRequestAvailable = config.NewRequestsAvailable,
             };
         }
 

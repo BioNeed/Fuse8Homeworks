@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
+using InternalAPI.Models;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.JsonConverters
 {

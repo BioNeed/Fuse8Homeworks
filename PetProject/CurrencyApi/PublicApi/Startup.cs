@@ -1,6 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 using Audit.Http;
 using Audit.NET.Serilog.Providers;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Filters;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Middlewares;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
@@ -28,13 +30,13 @@ public class Startup
         IConfigurationSection apiSettingsSection = _configuration.GetRequiredSection("ApiSettings");
         services.Configure<ApiSettingsModel>(apiSettingsSection);
 
-        services.AddHttpClient<ICurrencyService, CurrencyService>((provider, client) =>
-            {
-                var apiSettings = provider.GetRequiredService<IOptionsMonitor<ApiSettingsModel>>();
-                client.BaseAddress = new Uri(apiSettings.CurrentValue.BaseAddress);
-                client.DefaultRequestHeaders.Add("apikey", apiSettings.CurrentValue.ApiKey);
-            })
-            .AddAuditHandler(audit =>
+        services.AddScoped<ICurrencyService, GrpcCurrencyService>();
+
+        services.AddGrpcClient<GrpcCurrency.GrpcCurrencyClient>((provider, options) =>
+        {
+            var apiSettings = provider.GetRequiredService<IOptionsMonitor<ApiSettingsModel>>();
+            options.Address = new Uri(apiSettings.CurrentValue.BaseAddress);
+        }).AddAuditHandler(audit =>
                 audit
                 .AuditDataProvider(new SerilogDataProvider(config =>
                     config.Logger(new LoggerConfiguration()
@@ -66,7 +68,7 @@ public class Startup
                     "v1",
                     new OpenApiInfo()
                     {
-                        Title = "[Fuse8_ByteMinds Internship] API for working with Currencyapi API",
+                        Title = "[PublicAPI] API for working with Currencyapi API",
                         Version = "v1",
                         Description = "Developed by Alexey Goncharov",
                     });

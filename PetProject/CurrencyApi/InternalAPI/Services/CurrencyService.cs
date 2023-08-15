@@ -7,20 +7,22 @@ using InternalAPI.Contracts;
 using InternalAPI.Exceptions;
 using InternalAPI.JsonConverters;
 using InternalAPI.Models;
+using Microsoft.Extensions.Options;
 
 namespace InternalAPI.Services
 {
     public class CurrencyService : IGettingApiConfigService, ICurrencyAPI
     {
+        private readonly IOptionsSnapshot<ApiInfoModel> _configuration;
         private readonly HttpClient _httpClient;
 
-        public CurrencyService(IHttpClientFactory httpClientFactory)
+        public CurrencyService(IHttpClientFactory httpClientFactory, IOptionsSnapshot<ApiInfoModel> configuration)
         {
             _httpClient = httpClientFactory.CreateClient(ApiConstants.HttpClientNames.Default);
+            _configuration = configuration;
         }
 
-        public async Task<CurrencyConfigurationModel> GetApiConfigAsync(
-            CurrencyConfigurationModel currencyConfig,
+        public async Task<ApiInfoModel> GetApiConfigAsync(
             CancellationToken cancellationToken)
         {
             HttpResponseMessage response = await _httpClient.GetAsync(
@@ -41,16 +43,18 @@ namespace InternalAPI.Services
             ApiStatusModel apiStatusFromJson =
                 JsonSerializer.Deserialize<ApiStatusModel>(responseString, options);
 
-            return currencyConfig with
+            return _configuration.Value with
             {
-                RequestCount = apiStatusFromJson.UsedRequests,
-                RequestLimit = apiStatusFromJson.TotalRequests,
+                NewRequestsAvailable = apiStatusFromJson.UsedRequests <
+                    apiStatusFromJson.TotalRequests,
             };
         }
 
         public async Task<ExchangeRateModel[]> GetAllCurrentCurrenciesAsync(string baseCurrency, CancellationToken cancellationToken)
         {
-            if (await IsRequestAvailableAsync() == false)
+            ApiInfoModel config = await GetApiConfigAsync(cancellationToken);
+
+            if (config.NewRequestsAvailable == false)
             {
                 throw new ApiRequestLimitException(ApiConstants.ErrorMessages.RequestLimitExceptionMessage);
             }
@@ -82,7 +86,9 @@ namespace InternalAPI.Services
 
         public async Task<ExchangeRatesHistoricalModel> GetAllCurrenciesOnDateAsync(string baseCurrency, DateOnly date, CancellationToken cancellationToken)
         {
-            if (await IsRequestAvailableAsync() == false)
+            ApiInfoModel config = await GetApiConfigAsync(cancellationToken);
+
+            if (config.NewRequestsAvailable == false)
             {
                 throw new ApiRequestLimitException(ApiConstants.ErrorMessages.RequestLimitExceptionMessage);
             }
@@ -112,24 +118,6 @@ namespace InternalAPI.Services
                 responseString, options);
 
             return exchangeRatesOnDate;
-        }
-
-        private async Task<bool> IsRequestAvailableAsync()
-        {
-            HttpResponseMessage response = await _httpClient.GetAsync(
-                ApiConstants.Uris.GetStatus);
-
-            string responseString = await response.Content.ReadAsStringAsync();
-
-            JsonSerializerOptions options = new JsonSerializerOptions()
-            {
-                Converters = { new ApiStatusJsonConverter() },
-            };
-
-            ApiStatusModel apiStatusFromJson =
-                JsonSerializer.Deserialize<ApiStatusModel>(responseString, options);
-
-            return apiStatusFromJson.UsedRequests < apiStatusFromJson.TotalRequests;
         }
     }
 }

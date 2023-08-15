@@ -4,23 +4,266 @@
         <name>PublicApi</name>
     </assembly>
     <members>
-        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController">
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.DecimalValue">
+            <summary>
+            Класс-оболочка для decimal типа с операторами преобразования
+            в decimal и обратно.
+            </summary>
+            <summary>
+            Нужен оператор для конвертирования в decimal число в C#
+            Пример: 12345.6789 -> { целая часть = 12345, нано-часть = 678900000 }
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.DecimalValue.UnitsFieldNumber">
+            <summary>Field number for the "units" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.DecimalValue.Units">
+            <summary>
+            Целая часть числа
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.DecimalValue.NanosFieldNumber">
+            <summary>Field number for the "nanos" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.DecimalValue.Nanos">
+            <summary>
+            Нано разряды числа (10^-9)
+            Знаки у целой и нано-части должны совпадать
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrencyReflection">
+            <summary>Holder for reflection information generated from Contracts/GrpcContracts/GrpcCurrency.proto</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrencyReflection.Descriptor">
+            <summary>File descriptor for Contracts/GrpcContracts/GrpcCurrency.proto</summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRate">
+            <summary>
+            Курс валюты
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRate.CodeFieldNumber">
+            <summary>Field number for the "code" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRate.Code">
+            <summary>
+            Код валюты, в которой узнать курс
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRate.ValueFieldNumber">
+            <summary>Field number for the "value" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRate.Value">
+            <summary>
+            Значение курса валют
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyInfo">
+            <summary>
+            Информация о валюте
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyInfo.CurrencyCodeFieldNumber">
+            <summary>Field number for the "currency_code" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyInfo.CurrencyCode">
+            <summary>
+            Код валюты, в которой узнать курс базовой валюты
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyOnDateRequest">
+            <summary>
+            Запрос курса валют на дату
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyOnDateRequest.CurrencyCodeFieldNumber">
+            <summary>Field number for the "currency_code" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyOnDateRequest.CurrencyCode">
+            <summary>
+            Код валюты, в которой узнать курс базовой валюты
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyOnDateRequest.DateFieldNumber">
+            <summary>Field number for the "date" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyOnDateRequest.Date">
+            <summary>
+            Дата, на которую получить курс валют
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ApiInfo">
+            <summary>
+            Настройки API
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ApiInfo.BaseCurrencyFieldNumber">
+            <summary>Field number for the "base_currency" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ApiInfo.BaseCurrency">
+            <summary>
+            Тип базовой валюты
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ApiInfo.IsRequestAvailableFieldNumber">
+            <summary>Field number for the "is_request_available" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ApiInfo.IsRequestAvailable">
+            <summary>
+            Есть ли ещё доступные запросы
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency">
+            <summary>
+            Сервис для работы с валютами
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.Descriptor">
+            <summary>Service descriptor</summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient">
+            <summary>Client for GrpcCurrency</summary>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.#ctor(Grpc.Core.ChannelBase)">
+            <summary>Creates a new client for GrpcCurrency</summary>
+            <param name="channel">The channel to use to make remote calls.</param>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.#ctor(Grpc.Core.CallInvoker)">
+            <summary>Creates a new client for GrpcCurrency that uses a custom <c>CallInvoker</c>.</summary>
+            <param name="callInvoker">The callInvoker to use to make remote calls.</param>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.#ctor">
+            <summary>Protected parameterless constructor to allow creation of test doubles.</summary>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.#ctor(Grpc.Core.ClientBase.ClientBaseConfiguration)">
+            <summary>Protected constructor to allow creation of configured clients.</summary>
+            <param name="configuration">The client configuration.</param>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetCurrentExchangeRate(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyInfo,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Получает текущий курс определенной валюты
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetCurrentExchangeRate(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyInfo,Grpc.Core.CallOptions)">
+            <summary>
+            Получает текущий курс определенной валюты
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetCurrentExchangeRateAsync(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyInfo,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Получает текущий курс определенной валюты
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetCurrentExchangeRateAsync(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyInfo,Grpc.Core.CallOptions)">
+            <summary>
+            Получает текущий курс определенной валюты
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetExchangeRateOnDate(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyOnDateRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Получает курс определенной валюты на конкретную дату
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetExchangeRateOnDate(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyOnDateRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Получает курс определенной валюты на конкретную дату
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetExchangeRateOnDateAsync(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyOnDateRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Получает курс определенной валюты на конкретную дату
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetExchangeRateOnDateAsync(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyOnDateRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Получает курс определенной валюты на конкретную дату
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetApiInfo(Google.Protobuf.WellKnownTypes.Empty,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Получает информацию об API
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetApiInfo(Google.Protobuf.WellKnownTypes.Empty,Grpc.Core.CallOptions)">
+            <summary>
+            Получает информацию об API
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetApiInfoAsync(Google.Protobuf.WellKnownTypes.Empty,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Получает информацию об API
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetApiInfoAsync(Google.Protobuf.WellKnownTypes.Empty,Grpc.Core.CallOptions)">
+            <summary>
+            Получает информацию об API
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.NewInstance(Grpc.Core.ClientBase.ClientBaseConfiguration)">
+            <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController">
             <summary>
             Методы для работы с Currencyapi API
             </summary>
         </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController.GetExchangeRateAsync(Microsoft.Extensions.Options.IOptionsSnapshot{Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel},System.String)">
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController.GetCurrentExchangeRateAsync(System.Nullable{InternalAPI.Enums.CurrencyType},System.Threading.CancellationToken)">
             <summary>
             Получить курс валют
             </summary>
-            <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
-            <param name="currencyCode">(Необязателен) Код валюты, в которой узнать курс базовой валюты. Если не указан, используется RUB</param>
+            <param name="currencyType">Код валюты, в которой узнать курс базовой валюты. Если не указан, используется RUB</param>
+            <param name="cancellationToken">Токен отмены</param>
             <response code="200">
             Возвращает, если удалось получить курс валюты
             </response>
-            <response code="404">
-            Возвращает, если не найдена указанная валюта
-            </response>
             <response code="429">
             Возвращает, если больше не осталось доступных запросов
             </response>
@@ -28,18 +271,15 @@
             Возвращает в случае других ошибок
             </response>
         </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController.GetExchangeRateByDateAsync(Microsoft.Extensions.Options.IOptionsSnapshot{Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel},System.String,System.String)">
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController.GetExchangeRateByDateAsync(InternalAPI.Enums.CurrencyType,System.String,System.Threading.CancellationToken)">
             <summary>
             Получить курс валют на выбранную дату
             </summary>
-            <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
-            <param name="currencyCode">Код валюты, в которой узнать курс базовой валюты</param>
+            <param name="currencyType">Код валюты, в которой узнать курс базовой валюты</param>
             <param name="dateString">Выбранная дата в формате yyyy-MM-dd</param>
+            <param name="cancellationToken">Токен отмены</param>
             <response code="200">
             Возвращает, если удалось получить курс валюты на выбранную дату
-            </response>
-            <response code="404">
-            Возвращает, если не найдена указанная валюта
             </response>
             <response code="429">
             Возвращает, если больше не осталось доступных запросов
@@ -48,61 +288,14 @@
             Возвращает в случае других ошибок
             </response>
         </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController.GetConfigSettingsAsync(Microsoft.Extensions.Options.IOptionsSnapshot{Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel})">
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController.GetConfigSettingsAsync(System.Threading.CancellationToken)">
             <summary>
             Получить настройки приложения
             </summary>
-            <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
+            <param name="cancellationToken">Токен отмены</param>
             <response code="200">
             Возвращает, если удалось получить настройки приложения
             </response>
-        </member>
-        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckController">
-            <summary>
-            Методы для проверки работоспособности PublicApi
-            </summary>
-        </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckController.Check(System.Nullable{System.Boolean})">
-            <summary>
-            Проверить что API работает
-            </summary>
-            <param name="checkExternalApi">Необходимо проверить работоспособность внешнего API. Если FALSE или NULL - проверяется работоспособность только текущего API</param>
-            <response code="200">
-            Возвращает если удалось получить доступ к API
-            </response>
-            <response code="400">
-            Возвращает если удалось не удалось получить доступ к API
-            </response>
-        </member>
-        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult">
-            <summary>
-            Результат проверки работоспособности API
-            </summary>
-        </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult.CheckedOn">
-            <summary>
-            Дата проверки
-            </summary>
-        </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult.Status">
-            <summary>
-            Статус работоспособности API
-            </summary>
-        </member>
-        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult.CheckStatus">
-            <summary>
-            Статус API
-            </summary>
-        </member>
-        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult.CheckStatus.Ok">
-            <summary>
-            API работает
-            </summary>
-        </member>
-        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult.CheckStatus.Failed">
-            <summary>
-            Ошибка в работе API
-            </summary>
         </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel">
             <summary>
@@ -124,49 +317,9 @@
             Количество знаков после запятой у курса валют
             </summary>
         </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel.RequestLimit">
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel.NewRequestsAvailable">
             <summary>
-            Максимальное количество запросов к внешнему API
-            </summary>
-        </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel.RequestCount">
-            <summary>
-            Количество отправленных запросов к внешнему API
-            </summary>
-        </member>
-        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateHistoricalModel">
-            <summary>
-            Курс валюты относительно базовой валюты
-            </summary>
-        </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateHistoricalModel.Code">
-            <summary>
-            Код валюты, в которой нужно узнать курс
-            </summary>
-        </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateHistoricalModel.Value">
-            <summary>
-            Курс валюты относительно базовой валюты
-            </summary>
-        </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateHistoricalModel.Date">
-            <summary>
-            Дата акутуальности курса
-            </summary>
-        </member>
-        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateModel">
-            <summary>
-            Курс валюты относительно базовой валюты
-            </summary>
-        </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateModel.Code">
-            <summary>
-            Код валюты, в которой нужно узнать курс
-            </summary>
-        </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateModel.Value">
-            <summary>
-            Курс валюты относительно базовой валюты
+            Есть ли ещё доступные запросы
             </summary>
         </member>
     </members>
