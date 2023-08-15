@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using static InternalAPI.Controllers.HealthCheckResult;
+﻿using InternalAPI.Contracts;
+using InternalAPI.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using static InternalAPI.Models.HealthCheckResult;
 
 namespace InternalAPI.Controllers;
 
@@ -9,6 +12,13 @@ namespace InternalAPI.Controllers;
 [Route("healthcheck")]
 public class HealthCheckController : ControllerBase
 {
+    private readonly IHealthCheck _healthCheck;
+
+    public HealthCheckController(IHealthCheck healthCheck)
+    {
+        _healthCheck = healthCheck;
+    }
+
     /// <summary>
     /// Проверить что API работает
     /// </summary>
@@ -17,40 +27,33 @@ public class HealthCheckController : ControllerBase
     /// Возвращает если удалось получить доступ к API
     /// </response>
     /// <response code="400">
-    /// Возвращает если удалось не удалось получить доступ к API
+    /// Возвращает если не удалось получить доступ к API
     /// </response>
     [HttpGet]
-    public HealthCheckResult Check(bool? checkExternalApi) => new () { Status = CheckStatus.Ok, CheckedOn = DateTimeOffset.Now };
-}
-
-/// <summary>
-/// Результат проверки работоспособности API
-/// </summary>
-public record HealthCheckResult
-{
-    /// <summary>
-    /// Дата проверки
-    /// </summary>
-    public DateTimeOffset CheckedOn { get; init; }
-
-    /// <summary>
-    /// Статус работоспособности API
-    /// </summary>
-    public CheckStatus Status { get; init; }
-
-    /// <summary>
-    /// Статус API
-    /// </summary>
-    public enum CheckStatus
+    public async Task<HealthCheckResult> CheckAsync(bool? checkExternalApi, CancellationToken cancellationToken)
     {
-        /// <summary>
-        /// API работает
-        /// </summary>
-        Ok = 1,
+        if (checkExternalApi == null || checkExternalApi == false)
+        {
+            HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
+            return new HealthCheckResult
+            {
+                Status = CheckStatus.Ok,
+                CheckedOn = DateTimeOffset.Now,
+            };
+        }
 
-        /// <summary>
-        /// Ошибка в работе API
-        /// </summary>
-        Failed = 2,
+        HealthCheckResult healthCheckResult = await _healthCheck
+            .CheckExternalApiAsync(cancellationToken);
+
+        if (healthCheckResult.Status == CheckStatus.Ok)
+        {
+            HttpContext.Response.StatusCode = (int)HttpStatusCode.OK;
+        }
+        else
+        {
+            HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+        }
+
+        return healthCheckResult;
     }
 }

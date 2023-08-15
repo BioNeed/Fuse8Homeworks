@@ -246,7 +246,7 @@
             Методы для проверки работоспособности InternalAPI
             </summary>
         </member>
-        <member name="M:InternalAPI.Controllers.HealthCheckController.Check(System.Nullable{System.Boolean})">
+        <member name="M:InternalAPI.Controllers.HealthCheckController.CheckAsync(System.Nullable{System.Boolean},System.Threading.CancellationToken)">
             <summary>
             Проверить что API работает
             </summary>
@@ -255,38 +255,8 @@
             Возвращает если удалось получить доступ к API
             </response>
             <response code="400">
-            Возвращает если удалось не удалось получить доступ к API
+            Возвращает если не удалось получить доступ к API
             </response>
-        </member>
-        <member name="T:InternalAPI.Controllers.HealthCheckResult">
-            <summary>
-            Результат проверки работоспособности API
-            </summary>
-        </member>
-        <member name="P:InternalAPI.Controllers.HealthCheckResult.CheckedOn">
-            <summary>
-            Дата проверки
-            </summary>
-        </member>
-        <member name="P:InternalAPI.Controllers.HealthCheckResult.Status">
-            <summary>
-            Статус работоспособности API
-            </summary>
-        </member>
-        <member name="T:InternalAPI.Controllers.HealthCheckResult.CheckStatus">
-            <summary>
-            Статус API
-            </summary>
-        </member>
-        <member name="F:InternalAPI.Controllers.HealthCheckResult.CheckStatus.Ok">
-            <summary>
-            API работает
-            </summary>
-        </member>
-        <member name="F:InternalAPI.Controllers.HealthCheckResult.CheckStatus.Failed">
-            <summary>
-            Ошибка в работе API
-            </summary>
         </member>
         <member name="T:InternalAPI.Enums.CurrencyType">
             <summary>
@@ -386,6 +356,36 @@
         <member name="P:InternalAPI.Models.ExchangeRatesHistoricalModel.Currencies">
             <summary>
             Список курсов валют
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Models.HealthCheckResult">
+            <summary>
+            Результат проверки работоспособности API
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.HealthCheckResult.CheckedOn">
+            <summary>
+            Дата проверки
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.HealthCheckResult.Status">
+            <summary>
+            Статус работоспособности API
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Models.HealthCheckResult.CheckStatus">
+            <summary>
+            Статус API
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Models.HealthCheckResult.CheckStatus.Ok">
+            <summary>
+            API работает
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Models.HealthCheckResult.CheckStatus.Failed">
+            <summary>
+            Ошибка в работе API
             </summary>
         </member>
     </members>

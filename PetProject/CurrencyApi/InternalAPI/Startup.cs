@@ -64,6 +64,7 @@ public class Startup
         services.AddScoped<ICurrencyAPI, CurrencyService>();
         services.AddScoped<IGettingApiConfigService, CurrencyService>();
         services.AddScoped<ICachedCurrencyAPI, CachedCurrencyService>();
+        services.AddScoped<IHealthCheck, HealthCheckService>();
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(

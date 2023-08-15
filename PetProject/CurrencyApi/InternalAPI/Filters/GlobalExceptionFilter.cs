@@ -24,12 +24,6 @@ namespace InternalAPI.Filters
                         break;
                     }
 
-                case CurrencyNotFoundException:
-                    {
-                        HandleCurrencyNotFoundException(context);
-                        break;
-                    }
-
                 case InvalidDateFormatException:
                     {
                         HandleAnyOtherException(context, context.Exception.Message);
@@ -48,12 +42,6 @@ namespace InternalAPI.Filters
         {
             _logger.LogError("Ошибка! {message}", context.Exception.Message);
             context.HttpContext.Response.StatusCode = (int)HttpStatusCode.TooManyRequests;
-            context.ExceptionHandled = true;
-        }
-
-        private void HandleCurrencyNotFoundException(ExceptionContext context)
-        {
-            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
             context.ExceptionHandled = true;
         }
 
