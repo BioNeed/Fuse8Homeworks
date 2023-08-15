@@ -66,6 +66,8 @@ public class Startup
         services.AddScoped<ICachedCurrencyAPI, CachedCurrencyService>();
         services.AddScoped<IHealthCheck, HealthCheckService>();
 
+        services.AddGrpc();
+
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(
             c =>
@@ -93,7 +95,22 @@ public class Startup
 
         app.UseMiddleware<LoggingRequestsMiddleware>();
 
-        app.UseRouting()
-            .UseEndpoints(endpoints => endpoints.MapControllers());
+        app.UseWhen(
+            predicate: context => context.Connection.LocalPort ==
+                _configuration.GetValue<int>("GrpcPort"),
+            configuration: grpcBuilder =>
+            {
+                grpcBuilder.UseRouting().UseEndpoints(endpoints =>
+                    endpoints.MapGrpcService<GrpcCurrencyService>());
+            });
+
+        app.UseWhen(
+            predicate: context => context.Connection.LocalPort ==
+                _configuration.GetValue<int>("RestApiPort"),
+            configuration: restApiBuilder =>
+            {
+                restApiBuilder.UseRouting().UseEndpoints(endpoints =>
+                    endpoints.MapControllers());
+            });
     }
 }
