@@ -106,7 +106,7 @@ namespace InternalAPI.Services
         {
             ApiInfoModel apiInfo = await GetApiConfigAsync(cancellationToken);
 
-            if (apiInfo.NewRequestsAvailable == true)
+            if (apiInfo.NewRequestsAvailable == false)
             {
                 if (_usingByGrpc == true)
                 {
