@@ -1,5 +1,6 @@
 ﻿using InternalAPI.Constants;
 using InternalAPI.DataAccess.Configurations;
+using InternalAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace InternalAPI.DataAccess
@@ -10,6 +11,8 @@ namespace InternalAPI.DataAccess
             : base(options)
         {
         }
+
+        public DbSet<ExchangeRateModel> ExchangeRates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

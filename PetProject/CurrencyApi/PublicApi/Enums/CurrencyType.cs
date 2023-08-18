@@ -1,4 +1,4 @@
-﻿namespace InternalAPI.Enums
+﻿namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Enums
 {
     /// <summary>
     /// Тип валюты

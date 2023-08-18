@@ -255,7 +255,7 @@
             Методы для работы с Currencyapi API
             </summary>
         </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController.GetCurrentExchangeRateAsync(System.Nullable{InternalAPI.Enums.CurrencyType},System.Threading.CancellationToken)">
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController.GetCurrentExchangeRateAsync(System.Nullable{Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType},System.Threading.CancellationToken)">
             <summary>
             Получить курс валют
             </summary>
@@ -271,7 +271,7 @@
             Возвращает в случае других ошибок
             </response>
         </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController.GetExchangeRateByDateAsync(InternalAPI.Enums.CurrencyType,System.String,System.Threading.CancellationToken)">
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController.GetExchangeRateByDateAsync(Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType,System.String,System.Threading.CancellationToken)">
             <summary>
             Получить курс валют на выбранную дату
             </summary>
@@ -297,6 +297,11 @@
             Возвращает, если удалось получить настройки приложения
             </response>
         </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType">
+            <summary>
+            Тип валюты
+            </summary>
+        </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel">
             <summary>
             Настройки приложения и доступные запросы
@@ -320,6 +325,41 @@
         <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel.NewRequestsAvailable">
             <summary>
             Есть ли ещё доступные запросы
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateHistoricalModel">
+            <summary>
+            Курс валюты относительно базовой валюты
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateHistoricalModel.Code">
+            <summary>
+            Код валюты, в которой нужно узнать курс
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateHistoricalModel.Value">
+            <summary>
+            Курс валюты относительно базовой валюты
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateHistoricalModel.Date">
+            <summary>
+            Дата акутуальности курса
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateModel">
+            <summary>
+            Курс валюты относительно базовой валюты
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateModel.Code">
+            <summary>
+            Код валюты, в которой нужно узнать курс
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateModel.Value">
+            <summary>
+            Курс валюты относительно базовой валюты
             </summary>
         </member>
     </members>

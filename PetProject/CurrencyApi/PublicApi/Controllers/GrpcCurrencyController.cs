@@ -1,10 +1,9 @@
 ﻿using System.Globalization;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Enums;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
-using InternalAPI.Constants;
-using InternalAPI.Enums;
-using InternalAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 

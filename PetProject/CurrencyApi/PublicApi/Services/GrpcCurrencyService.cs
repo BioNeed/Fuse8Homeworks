@@ -2,7 +2,6 @@
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 using Google.Protobuf.WellKnownTypes;
-using InternalAPI.Models;
 using Microsoft.Extensions.Options;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services

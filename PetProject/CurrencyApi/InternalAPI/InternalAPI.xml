@@ -262,6 +262,18 @@
             Тип валюты
             </summary>
         </member>
+        <member name="T:InternalAPI.Migrations.InitialCreate">
+            <inheritdoc />
+        </member>
+        <member name="M:InternalAPI.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:InternalAPI.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:InternalAPI.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
         <member name="T:InternalAPI.Models.ApiInfoModel">
             <summary>
             Настройки приложения и доступные запросы
