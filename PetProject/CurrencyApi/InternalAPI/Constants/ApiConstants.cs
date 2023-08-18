@@ -44,5 +44,15 @@ namespace InternalAPI.Constants
             public const string GrpcPort = "GrpcPort";
             public const string RestApiPort = "RestApiPort";
         }
+
+        public static class ConnectionStringNames
+        {
+            public const string SummerSchool = "SummerSchool";
+        }
+
+        public static class SchemaNames
+        {
+            public const string Currencies = "cur";
+        }
     }
 }

@@ -3,10 +3,14 @@ using Audit.Http;
 using Audit.NET.Serilog.Providers;
 using InternalAPI.Constants;
 using InternalAPI.Contracts;
+using InternalAPI.DataAccess;
 using InternalAPI.Filters;
 using InternalAPI.Middlewares;
 using InternalAPI.Models;
 using InternalAPI.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -22,7 +26,7 @@ public class Startup
         _configuration = configuration;
     }
 
-    public void ConfigureServices(IServiceCollection services)
+    public void ConfigureServices(IServiceCollection services, IWebHostEnvironment env)
     {
         IConfigurationSection settingsSection = _configuration.GetRequiredSection("Settings");
         services.Configure<ApiInfoModel>(settingsSection);
@@ -68,6 +72,34 @@ public class Startup
 
         services.AddGrpc();
         services.AddHttpContextAccessor();
+
+        services.AddDbContext<CurrenciesDbContext>(
+            optionsBuilder =>
+            {
+                if (env.IsDevelopment())
+                {
+                    optionsBuilder.EnableDetailedErrors();
+                }
+
+                optionsBuilder.UseNpgsql(
+                    connectionString: _configuration.GetConnectionString(
+                        ApiConstants.ConnectionStringNames.SummerSchool),
+                    npgsqlOptionsAction: sqlOptionsBuilder =>
+                    {
+                        sqlOptionsBuilder.EnableRetryOnFailure()
+                            .MigrationsHistoryTable(
+                                HistoryRepository.DefaultTableName,
+                                ApiConstants.SchemaNames.Currencies);
+                    })
+                .UseSnakeCaseNamingConvention()
+                .UseAllCheckConstraints()
+                .ConfigureWarnings(
+                    config => config
+                        .Log(
+                            (CoreEventId.StartedTracking, LogLevel.Information),
+                            (RelationalEventId.TransactionRolledBack, LogLevel.Warning),
+                            (RelationalEventId.CommandCanceled, LogLevel.Warning)));
+            });
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(
