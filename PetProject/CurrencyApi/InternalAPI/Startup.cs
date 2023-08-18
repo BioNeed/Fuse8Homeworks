@@ -20,13 +20,15 @@ namespace InternalAPI;
 public class Startup
 {
     private readonly IConfiguration _configuration;
+    private readonly IWebHostEnvironment _environment;
 
-    public Startup(IConfiguration configuration)
+    public Startup(IConfiguration configuration, IWebHostEnvironment environment)
     {
         _configuration = configuration;
+        _environment = environment;
     }
 
-    public void ConfigureServices(IServiceCollection services, IWebHostEnvironment env)
+    public void ConfigureServices(IServiceCollection services)
     {
         IConfigurationSection settingsSection = _configuration.GetRequiredSection("Settings");
         services.Configure<ApiInfoModel>(settingsSection);
@@ -76,7 +78,7 @@ public class Startup
         services.AddDbContext<CurrenciesDbContext>(
             optionsBuilder =>
             {
-                if (env.IsDevelopment())
+                if (_environment.IsDevelopment())
                 {
                     optionsBuilder.EnableDetailedErrors();
                 }
