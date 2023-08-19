@@ -302,6 +302,16 @@
             Тип валюты
             </summary>
         </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ApiSettingsModel">
+            <summary>
+            Настройки API
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ApiSettingsModel.BaseAddress">
+            <summary>
+            Базовый адрес для работы с InternalApi
+            </summary>
+        </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel">
             <summary>
             Настройки приложения и доступные запросы

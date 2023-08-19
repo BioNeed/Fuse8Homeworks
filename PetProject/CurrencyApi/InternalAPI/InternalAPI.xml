@@ -274,6 +274,18 @@
         <member name="M:InternalAPI.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:InternalAPI.Migrations.CreatedTableCachedExchangeRates">
+            <inheritdoc />
+        </member>
+        <member name="M:InternalAPI.Migrations.CreatedTableCachedExchangeRates.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:InternalAPI.Migrations.CreatedTableCachedExchangeRates.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:InternalAPI.Migrations.CreatedTableCachedExchangeRates.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
         <member name="T:InternalAPI.Models.ApiInfoModel">
             <summary>
             Настройки приложения и доступные запросы
@@ -287,6 +299,41 @@
         <member name="P:InternalAPI.Models.ApiInfoModel.NewRequestsAvailable">
             <summary>
             Есть ли ещё доступные запросы
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Models.ApiSettingsModel">
+            <summary>
+            Настройки API
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.ApiSettingsModel.BaseAddress">
+            <summary>
+            Базовый адрес для работы с внешним API
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.ApiSettingsModel.ApiKey">
+            <summary>
+            Токен, по которому есть доступ к внешнему API
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.ApiSettingsModel.CacheExpirationTimeInHours">
+            <summary>
+            Время устаревания кэша
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Models.ApiStatusModel">
+            <summary>
+            Статус API
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.ApiStatusModel.TotalRequests">
+            <summary>
+            Полное количество запросов
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.ApiStatusModel.UsedRequests">
+            <summary>
+            Количество использованных запросов
             </summary>
         </member>
         <member name="T:InternalAPI.Models.ExchangeRateDTOModel">
