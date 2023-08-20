@@ -5,8 +5,10 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts
 {
     public interface ISettingsRepository
     {
-        Task<Settings> GetApplicationSettings(CancellationToken cancellationToken);
+        Task<Settings> GetApplicationSettingsAsync(CancellationToken cancellationToken);
 
         Task SetDefaultCurrencyAsync(CurrencyType newDefaultCurrency, CancellationToken cancellationToken);
+
+        Task SetCurrencyRoundCountAsync(int newRoundCount, CancellationToken cancellationToken);
     }
 }

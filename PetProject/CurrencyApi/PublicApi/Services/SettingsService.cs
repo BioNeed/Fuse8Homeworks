@@ -13,15 +13,21 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
             _settingsRepository = settingsRepository;
         }
 
-        public async Task<Settings> GetApplicationSettings(CancellationToken cancellationToken)
+        public async Task<Settings> GetApplicationSettingsAsync(CancellationToken cancellationToken)
         {
-            return await _settingsRepository.GetApplicationSettings(cancellationToken);
+            return await _settingsRepository.GetApplicationSettingsAsync(cancellationToken);
         }
 
         public async Task SetDefaultCurrencyAsync(CurrencyType currencyType,
                                                   CancellationToken cancellationToken)
         {
             await _settingsRepository.SetDefaultCurrencyAsync(currencyType, cancellationToken);
+        }
+
+        public async Task SetCurrencyRoundCountAsync(int newRoundCount,
+                                          CancellationToken cancellationToken)
+        {
+            await _settingsRepository.SetCurrencyRoundCountAsync(newRoundCount, cancellationToken);
         }
     }
 }

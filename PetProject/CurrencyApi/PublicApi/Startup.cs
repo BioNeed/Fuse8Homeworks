@@ -31,9 +31,6 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        IConfigurationSection settingsSection = _configuration.GetRequiredSection("Settings");
-        services.Configure<CurrencyConfigurationModel>(settingsSection);
-
         IConfigurationSection apiSettingsSection = _configuration.GetRequiredSection("ApiSettings");
         services.Configure<ApiSettingsModel>(apiSettingsSection);
 

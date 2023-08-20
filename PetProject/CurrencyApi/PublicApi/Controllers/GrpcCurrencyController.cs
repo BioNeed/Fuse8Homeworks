@@ -17,14 +17,11 @@ public class GrpcCurrencyController : ControllerBase
 {
     private readonly IGrpcCurrencyService _grpcCurrencyService;
     private readonly ISettingsService _settingsService;
-    private readonly IOptionsSnapshot<CurrencyConfigurationModel> _configuration;
 
     public GrpcCurrencyController(IGrpcCurrencyService currencyService,
-                                  IOptionsSnapshot<CurrencyConfigurationModel> configuration,
                                   ISettingsService settingsService)
     {
         _grpcCurrencyService = currencyService;
-        _configuration = configuration;
         _settingsService = settingsService;
     }
 
@@ -48,7 +45,7 @@ public class GrpcCurrencyController : ControllerBase
         CancellationToken cancellationToken)
     {
         CurrencyType requestCurrencyType = currencyType ??
-            (await _settingsService.GetApplicationSettings(cancellationToken))
+            (await _settingsService.GetApplicationSettingsAsync(cancellationToken))
             .DefaultCurrency;
 
         return await _grpcCurrencyService.GetExchangeRateAsync(

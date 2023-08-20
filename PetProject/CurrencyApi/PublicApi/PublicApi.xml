@@ -259,7 +259,7 @@
             <summary>
             Получить курс валют
             </summary>
-            <param name="currencyType">Код валюты, в которой узнать курс базовой валюты. Если не указан, используется RUB</param>
+            <param name="currencyType">Код валюты, в которой узнать курс базовой валюты</param>
             <param name="cancellationToken">Токен отмены</param>
             <response code="200">
             Возвращает, если удалось получить курс валюты
@@ -299,7 +299,7 @@
         </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.SettingsController">
             <summary>
-            Методы для редактирования настроек приложения
+            Методы для управления настройками приложения
             </summary>
         </member>
         <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.SettingsController.SetDefaultCurrencyAsync(Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType,System.Threading.CancellationToken)">
@@ -310,6 +310,16 @@
             <param name="cancellationToken">Токен отмены</param>
             <response code="200">
             Возвращает, если удалось изменить валюту по умолчанию
+            </response>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.SettingsController.SetCurrencyRoundCountAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Изменить количество знаков после запятой для округления
+            </summary>
+            <param name="newRoundCount">Новое значение - количество знаков после запятой у курса валют</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="200">
+            Возвращает, если удалось изменить количество знаков после запятой
             </response>
         </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType">
