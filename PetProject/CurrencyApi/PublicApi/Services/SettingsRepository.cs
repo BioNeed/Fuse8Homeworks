@@ -15,6 +15,11 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
             _userDbContext = userDbContext;
         }
 
+        public async Task<Settings> GetApplicationSettings(CancellationToken cancellationToken)
+        {
+            return await _userDbContext.Settings.AsNoTracking().FirstAsync(cancellationToken);
+        }
+
         public async Task SetDefaultCurrencyAsync(CurrencyType newDefaultCurrency,
                                                   CancellationToken cancellationToken)
         {

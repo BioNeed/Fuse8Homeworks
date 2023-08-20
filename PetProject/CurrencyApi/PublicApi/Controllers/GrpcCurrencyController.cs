@@ -16,18 +16,22 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers;
 public class GrpcCurrencyController : ControllerBase
 {
     private readonly IGrpcCurrencyService _grpcCurrencyService;
+    private readonly ISettingsService _settingsService;
     private readonly IOptionsSnapshot<CurrencyConfigurationModel> _configuration;
 
-    public GrpcCurrencyController(IGrpcCurrencyService currencyService, IOptionsSnapshot<CurrencyConfigurationModel> configuration)
+    public GrpcCurrencyController(IGrpcCurrencyService currencyService,
+                                  IOptionsSnapshot<CurrencyConfigurationModel> configuration,
+                                  ISettingsService settingsService)
     {
         _grpcCurrencyService = currencyService;
         _configuration = configuration;
+        _settingsService = settingsService;
     }
 
     /// <summary>
     /// Получить курс валют
     /// </summary>
-    /// <param name="currencyType">Код валюты, в которой узнать курс базовой валюты. Если не указан, используется RUB</param>
+    /// <param name="currencyType">Код валюты, в которой узнать курс базовой валюты</param>
     /// <param name="cancellationToken">Токен отмены</param>
     /// <response code="200">
     /// Возвращает, если удалось получить курс валюты
@@ -44,7 +48,8 @@ public class GrpcCurrencyController : ControllerBase
         CancellationToken cancellationToken)
     {
         CurrencyType requestCurrencyType = currencyType ??
-            Enum.Parse<CurrencyType>(_configuration.Value.DefaultCurrency, true);
+            (await _settingsService.GetApplicationSettings(cancellationToken))
+            .DefaultCurrency;
 
         return await _grpcCurrencyService.GetExchangeRateAsync(
             requestCurrencyType.ToString(), cancellationToken);

@@ -9,11 +9,11 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
     /// </summary>
     public class SettingsController : Controller
     {
-        private readonly IChangingSettingsService _changingSettingsService;
+        private readonly ISettingsService _settingsService;
 
-        public SettingsController(IChangingSettingsService changingSettingsService)
+        public SettingsController(ISettingsService settingsService)
         {
-            _changingSettingsService = changingSettingsService;
+            _settingsService = settingsService;
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
             CurrencyType newDefaultCurrency,
             CancellationToken cancellationToken)
         {
-            await _changingSettingsService.SetDefaultCurrencyAsync(
+            await _settingsService.SetDefaultCurrencyAsync(
                 newDefaultCurrency, cancellationToken);
         }
     }

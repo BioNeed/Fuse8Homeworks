@@ -39,7 +39,7 @@ public class Startup
 
         services.AddScoped<IGrpcCurrencyService, GrpcCurrencyService>();
         services.AddScoped<ISettingsRepository, SettingsRepository>();
-        services.AddScoped<IChangingSettingsService, SettingsService>();
+        services.AddScoped<ISettingsService, SettingsService>();
 
         services.AddGrpcClient<GrpcCurrency.GrpcCurrencyClient>((provider, options) =>
         {
