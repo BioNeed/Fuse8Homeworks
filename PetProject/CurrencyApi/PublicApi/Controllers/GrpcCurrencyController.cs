@@ -10,7 +10,7 @@ using Microsoft.Extensions.Options;
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers;
 
 /// <summary>
-/// Методы для работы с Currencyapi API
+/// [PublicApi] Методы для работы с Currencyapi API
 /// </summary>
 [Route("currency")]
 public class GrpcCurrencyController : ControllerBase
@@ -96,7 +96,7 @@ public class GrpcCurrencyController : ControllerBase
     /// <response code="200">
     /// Возвращает, если удалось получить настройки приложения
     /// </response>
-    [Route("/public_settings")]
+    [Route("/settings")]
     [HttpGet]
     public async Task<CurrencyConfigurationModel> GetConfigSettingsAsync(CancellationToken cancellationToken)
     {

@@ -252,7 +252,7 @@
         </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController">
             <summary>
-            Методы для работы с Currencyapi API
+            [PublicApi] Методы для работы с Currencyapi API
             </summary>
         </member>
         <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController.GetCurrentExchangeRateAsync(System.Nullable{Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType},System.Threading.CancellationToken)">
@@ -301,6 +301,30 @@
             <summary>
             Тип валюты
             </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.InitialCreate">
+            <inheritdoc />
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.CreateSettingsTable">
+            <inheritdoc />
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.CreateSettingsTable.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.CreateSettingsTable.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.CreateSettingsTable.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
         </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ApiSettingsModel">
             <summary>
@@ -370,6 +394,22 @@
         <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateModel.Value">
             <summary>
             Курс валюты относительно базовой валюты
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.Settings">
+            <summary>
+            Настройки приложения
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.Settings.DefaultCurrency">
+            <summary>
+            Валюта по умолчанию, в которой узнать курс
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.Settings.CurrencyRoundCount">
+            <summary>
+            Количество знаков после запятой, до которого следует
+            округлять значение курса валют
             </summary>
         </member>
     </members>

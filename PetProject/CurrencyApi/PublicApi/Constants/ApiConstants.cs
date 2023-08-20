@@ -16,5 +16,15 @@
             public const string DateFormat = "yyyy-MM-dd";
             public const string FileNameDateTimeFormat = "yyyy-MM-dd HH-mm-ss";
         }
+
+        public static class ConnectionStringNames
+        {
+            public const string SummerSchool = "SummerSchool";
+        }
+
+        public static class SchemaNames
+        {
+            public const string User = "user";
+        }
     }
 }

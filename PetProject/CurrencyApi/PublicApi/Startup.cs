@@ -1,12 +1,17 @@
 ﻿using System.Text.Json.Serialization;
 using Audit.Http;
 using Audit.NET.Serilog.Providers;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.DataAccess;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Filters;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Middlewares;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -16,10 +21,12 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi;
 public class Startup
 {
     private readonly IConfiguration _configuration;
+    private readonly IWebHostEnvironment _environment;
 
-    public Startup(IConfiguration configuration)
+    public Startup(IConfiguration configuration, IWebHostEnvironment environment)
     {
         _configuration = configuration;
+        _environment = environment;
     }
 
     public void ConfigureServices(IServiceCollection services)
@@ -60,6 +67,36 @@ public class Startup
                     // Этим конвертером задаем перевод в строковое занчение
                     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 });
+
+        services.AddDbContext<UserDbContext>(
+            optionsBuilder =>
+            {
+                if (_environment.IsDevelopment())
+                {
+                    optionsBuilder.EnableDetailedErrors();
+                    optionsBuilder.EnableSensitiveDataLogging();
+                }
+
+                optionsBuilder.UseNpgsql(
+                    connectionString: _configuration.GetConnectionString(
+                        ApiConstants.ConnectionStringNames.SummerSchool),
+                    npgsqlOptionsAction: sqlOptionsBuilder =>
+                    {
+                        sqlOptionsBuilder.EnableRetryOnFailure()
+                            .MigrationsHistoryTable(
+                                HistoryRepository.DefaultTableName,
+                                ApiConstants.SchemaNames.User);
+                    })
+                .UseSnakeCaseNamingConvention()
+                .UseAllCheckConstraints()
+                .ConfigureWarnings(
+                    config => config
+                        .Log(
+                            (CoreEventId.StartedTracking, LogLevel.Information),
+                            (RelationalEventId.TransactionRolledBack, LogLevel.Warning),
+                            (RelationalEventId.CommandCanceled, LogLevel.Warning)));
+            });
+
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(
             c =>
@@ -68,7 +105,7 @@ public class Startup
                     "v1",
                     new OpenApiInfo()
                     {
-                        Title = "[PublicAPI] API for working with Currencyapi API",
+                        Title = "[Fuse8_ByteMinds Internship] API for working with Currencyapi API",
                         Version = "v1",
                         Description = "Developed by Alexey Goncharov",
                     });

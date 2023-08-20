@@ -2,7 +2,7 @@ using InternalAPI;
 using InternalAPI.Constants;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 
-var webHost = Host
+var host = Host
     .CreateDefaultBuilder(args)
     .ConfigureWebHostDefaults(
         webBuilder =>
@@ -23,4 +23,4 @@ var webHost = Host
         })
     .Build();
 
-await webHost.RunAsync();
+await host.RunAsync();
