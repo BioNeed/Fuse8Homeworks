@@ -12,7 +12,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers;
 /// <summary>
 /// Методы для работы с Currencyapi API
 /// </summary>
-[Route("public_currency")]
+[Route("currency")]
 public class GrpcCurrencyController : ControllerBase
 {
     private readonly ICurrencyService _currencyService;
