@@ -37,7 +37,9 @@ public class Startup
         IConfigurationSection apiSettingsSection = _configuration.GetRequiredSection("ApiSettings");
         services.Configure<ApiSettingsModel>(apiSettingsSection);
 
-        services.AddScoped<ICurrencyService, GrpcCurrencyService>();
+        services.AddScoped<IGrpcCurrencyService, GrpcCurrencyService>();
+        services.AddScoped<ISettingsRepository, SettingsRepository>();
+        services.AddScoped<IChangingSettingsService, SettingsService>();
 
         services.AddGrpcClient<GrpcCurrency.GrpcCurrencyClient>((provider, options) =>
         {

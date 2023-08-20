@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
 {
-    public class GrpcCurrencyService : ICurrencyService
+    public class GrpcCurrencyService : IGrpcCurrencyService
     {
         private readonly IOptionsSnapshot<CurrencyConfigurationModel> _configuration;
         private readonly GrpcCurrency.GrpcCurrencyClient _grpcCurrencyClient;

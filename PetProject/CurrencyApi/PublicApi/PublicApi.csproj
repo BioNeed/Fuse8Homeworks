@@ -43,8 +43,4 @@
     <Protobuf Include="Contracts\GrpcContracts\GrpcCurrency.proto" GrpcServices="Client" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DataAccess\Configurations\" />
-  </ItemGroup>
-
 </Project>

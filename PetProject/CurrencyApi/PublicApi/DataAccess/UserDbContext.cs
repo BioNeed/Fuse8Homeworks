@@ -12,7 +12,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.DataAccess
         {
         }
 
-        DbSet<Settings> Settings { get; set; }
+        public DbSet<Settings> Settings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

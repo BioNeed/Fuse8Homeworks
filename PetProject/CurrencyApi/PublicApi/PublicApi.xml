@@ -252,7 +252,7 @@
         </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController">
             <summary>
-            [PublicApi] Методы для работы с Currencyapi API
+            [PublicApi] Методы для работы с Internal API
             </summary>
         </member>
         <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController.GetCurrentExchangeRateAsync(System.Nullable{Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType},System.Threading.CancellationToken)">
@@ -295,6 +295,21 @@
             <param name="cancellationToken">Токен отмены</param>
             <response code="200">
             Возвращает, если удалось получить настройки приложения
+            </response>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.SettingsController">
+            <summary>
+            Методы для редактирования настроек приложения
+            </summary>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.SettingsController.SetDefaultCurrencyAsync(Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType,System.Threading.CancellationToken)">
+            <summary>
+            Изменить валюту по умолчанию
+            </summary>
+            <param name="newDefaultCurrency">Новая валюта по умолчанию</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="200">
+            Возвращает, если удалось изменить валюту по умолчанию
             </response>
         </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType">

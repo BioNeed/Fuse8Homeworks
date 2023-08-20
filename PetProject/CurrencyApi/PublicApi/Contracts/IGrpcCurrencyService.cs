@@ -2,7 +2,7 @@
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts
 {
-    public interface ICurrencyService
+    public interface IGrpcCurrencyService
     {
         Task<ExchangeRateModel> GetExchangeRateAsync(string currencyCode, CancellationToken cancellationToken);
 

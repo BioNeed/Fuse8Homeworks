@@ -9,7 +9,10 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<Settings> builder)
         {
-            builder.HasKey(s => new { s.DefaultCurrency, s.CurrencyRoundCount });
+            builder.Property<int>("Id")
+                .HasColumnType("int")
+                .ValueGeneratedOnAdd();
+            builder.HasKey("Id");
         }
     }
 }

@@ -24,15 +24,22 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations
 
             modelBuilder.Entity("Fuse8_ByteMinds.SummerSchool.PublicApi.Models.Settings", b =>
                 {
-                    b.Property<int>("DefaultCurrency")
-                        .HasColumnType("integer")
-                        .HasColumnName("default_currency");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CurrencyRoundCount")
                         .HasColumnType("integer")
                         .HasColumnName("currency_round_count");
 
-                    b.HasKey("DefaultCurrency", "CurrencyRoundCount")
+                    b.Property<int>("DefaultCurrency")
+                        .HasColumnType("integer")
+                        .HasColumnName("default_currency");
+
+                    b.HasKey("Id")
                         .HasName("pk_settings");
 
                     b.ToTable("settings", "user", t =>

@@ -10,17 +10,17 @@ using Microsoft.Extensions.Options;
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers;
 
 /// <summary>
-/// [PublicApi] Методы для работы с Currencyapi API
+/// [PublicApi] Методы для работы с Internal API
 /// </summary>
 [Route("currency")]
 public class GrpcCurrencyController : ControllerBase
 {
-    private readonly ICurrencyService _currencyService;
+    private readonly IGrpcCurrencyService _grpcCurrencyService;
     private readonly IOptionsSnapshot<CurrencyConfigurationModel> _configuration;
 
-    public GrpcCurrencyController(ICurrencyService currencyService, IOptionsSnapshot<CurrencyConfigurationModel> configuration)
+    public GrpcCurrencyController(IGrpcCurrencyService currencyService, IOptionsSnapshot<CurrencyConfigurationModel> configuration)
     {
-        _currencyService = currencyService;
+        _grpcCurrencyService = currencyService;
         _configuration = configuration;
     }
 
@@ -46,7 +46,7 @@ public class GrpcCurrencyController : ControllerBase
         CurrencyType requestCurrencyType = currencyType ??
             Enum.Parse<CurrencyType>(_configuration.Value.DefaultCurrency, true);
 
-        return await _currencyService.GetExchangeRateAsync(
+        return await _grpcCurrencyService.GetExchangeRateAsync(
             requestCurrencyType.ToString(), cancellationToken);
     }
 
@@ -76,7 +76,7 @@ public class GrpcCurrencyController : ControllerBase
             throw new InvalidDateFormatException(ApiConstants.ErrorMessages.InvalidDateFormatExceptionMessage);
         }
 
-        ExchangeRateModel exchangeRate = await _currencyService.GetExchangeRateOnDateTimeAsync(
+        ExchangeRateModel exchangeRate = await _grpcCurrencyService.GetExchangeRateOnDateTimeAsync(
             currencyType.ToString(),
             dateTime,
             cancellationToken);
@@ -100,7 +100,7 @@ public class GrpcCurrencyController : ControllerBase
     [HttpGet]
     public async Task<CurrencyConfigurationModel> GetConfigSettingsAsync(CancellationToken cancellationToken)
     {
-        return await _currencyService.GetSettingsAsync(cancellationToken);
+        return await _grpcCurrencyService.GetSettingsAsync(cancellationToken);
     }
 
     private bool TryParseDateTime(string dateString, out DateTime dateTime)
