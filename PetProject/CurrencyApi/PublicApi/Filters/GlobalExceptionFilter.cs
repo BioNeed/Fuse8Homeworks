@@ -31,6 +31,12 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Filters
                         break;
                     }
 
+                case RpcException ex:
+                    {
+                        HandleAnyOtherException(context, ex.Status.Detail);
+                        break;
+                    }
+
                 default:
                     {
                         HandleAnyOtherException(context);
