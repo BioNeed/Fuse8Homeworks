@@ -396,7 +396,7 @@
             Дата обновления данных
             </summary>
         </member>
-        <member name="P:InternalAPI.Models.ExchangeRatesHistoricalModel.Currencies">
+        <member name="P:InternalAPI.Models.ExchangeRatesHistoricalModel.ExchangeRates">
             <summary>
             Список курсов валют
             </summary>

@@ -6,7 +6,6 @@ using InternalAPI.Enums;
 using InternalAPI.Exceptions;
 using InternalAPI.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace InternalAPI.Controllers;
 

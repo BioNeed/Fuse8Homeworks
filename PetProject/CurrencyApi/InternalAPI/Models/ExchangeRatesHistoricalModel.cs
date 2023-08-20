@@ -15,6 +15,6 @@ namespace InternalAPI.Models
         /// <summary>
         /// Список курсов валют
         /// </summary>
-        public ExchangeRateModel[] Currencies { get; set; }
+        public ExchangeRateModel[] ExchangeRates { get; set; }
     }
 }

@@ -71,6 +71,7 @@ public class Startup
         services.AddScoped<IGettingApiConfigService, CurrencyService>();
         services.AddScoped<ICachedCurrencyAPI, CachedCurrencyService>();
         services.AddScoped<IHealthCheck, HealthCheckService>();
+        services.AddScoped<IExchangeRatesRepository, ExchangeRatesRepository>();
 
         services.AddGrpc();
         services.AddHttpContextAccessor();
@@ -81,6 +82,7 @@ public class Startup
                 if (_environment.IsDevelopment())
                 {
                     optionsBuilder.EnableDetailedErrors();
+                    optionsBuilder.EnableSensitiveDataLogging();
                 }
 
                 optionsBuilder.UseNpgsql(
