@@ -30,6 +30,12 @@ namespace InternalAPI.Filters
                         break;
                     }
 
+                case CacheBaseCurrencyNotFoundException:
+                    {
+                        HandleAnyOtherException(context, context.Exception.Message);
+                        break;
+                    }
+
                 default:
                     {
                         HandleAnyOtherException(context);

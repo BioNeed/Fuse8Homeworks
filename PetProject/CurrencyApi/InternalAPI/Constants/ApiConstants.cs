@@ -21,6 +21,9 @@ namespace InternalAPI.Constants
 
             public const string InvalidDateFormatExceptionMessage =
                 "Неверно указана дата";
+
+            public const string CacheBaseCurrencyNotFoundExceptionMessage =
+                "Не найдена указанная базовая валюта. Проверьте BaseCurrency в appsettings.json";
         }
 
         public static class Formats

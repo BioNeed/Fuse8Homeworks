@@ -29,5 +29,10 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
                     predicate: f => f.Name == name,
                     cancellationToken: cancellationToken);
         }
+
+        public async Task AddFavouriteAsync(string name, string currency, string baseCurrency)
+        {
+
+        }
     }
 }

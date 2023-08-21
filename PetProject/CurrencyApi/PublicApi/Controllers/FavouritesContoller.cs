@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Enums;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -76,6 +77,29 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
             return favourite;
         }
 
+        /// <summary>
+        /// Добавить новое Избранное
+        /// </summary>
+        /// <param name="newFavouriteName">Название нового Избранного</param>
+        /// <param name="currency">Валюта Избранного</param>
+        /// <param name="baseCurrency">Базовая валюта Избранного</param>
+        /// <param name="cancellationToken">Токен отмены</param>
+        /// <response code="200">
+        /// Возвращает, если удалось добавить новое Избранное
+        /// </response>
+        /// <response code="500">
+        /// Возвращает в случае других ошибок
+        /// </response>
+        [HttpPut("{newFavouriteName}")]
+        public async Task AddFavourite(
+            string newFavouriteName,
+            CurrencyType currency,
+            CurrencyType baseCurrency,
+            CancellationToken cancellationToken)
+        {
+            await _favouritesService
+                .GetFavouriteByNameAsync(favouriteName, cancellationToken);
+        }
 
     }
 }

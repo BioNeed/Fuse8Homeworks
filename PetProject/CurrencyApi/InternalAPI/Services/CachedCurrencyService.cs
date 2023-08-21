@@ -1,8 +1,8 @@
-﻿using System.Globalization;
-using System.Text.Json;
+﻿using Grpc.Core;
 using InternalAPI.Constants;
 using InternalAPI.Contracts;
 using InternalAPI.Enums;
+using InternalAPI.Exceptions;
 using InternalAPI.Models;
 using Microsoft.Extensions.Options;
 
@@ -16,13 +16,35 @@ namespace InternalAPI.Services
         private readonly TimeSpan _cacheExpirationTime;
 
         public CachedCurrencyService(ICurrencyAPI currencyAPI,
-            IExchangeRatesRepository exchangeRatesRepository,
-            IOptionsSnapshot<ApiSettingsModel> apiSettings,
-            IOptionsSnapshot<ApiInfoModel> apiConfig)
+                                     IExchangeRatesRepository exchangeRatesRepository,
+                                     IOptionsSnapshot<ApiSettingsModel> apiSettings,
+                                     IOptionsSnapshot<ApiInfoModel> apiConfig,
+                                     IHttpContextAccessor httpContextAccessor,
+                                     IConfiguration configuration)
         {
             _currencyAPI = currencyAPI;
             _exchangeRatesRepository = exchangeRatesRepository;
             _cacheExpirationTime = TimeSpan.FromHours(apiSettings.Value.CacheExpirationTimeInHours);
+
+            if (Enum.TryParse<CurrencyType>(
+                apiConfig.Value.BaseCurrency,
+                true,
+                out _) == false)
+            {
+                bool usingByGrpc = httpContextAccessor.HttpContext.Connection.LocalPort ==
+                    configuration.GetValue<int>(ApiConstants.PortNames.GrpcPort);
+
+                if (usingByGrpc == true)
+                {
+                    throw new RpcException(
+                        new Status(StatusCode.Internal,
+                            ApiConstants.ErrorMessages.CacheBaseCurrencyNotFoundExceptionMessage));
+                }
+
+                throw new CacheBaseCurrencyNotFoundException(ApiConstants
+                    .ErrorMessages.CacheBaseCurrencyNotFoundExceptionMessage);
+            }
+
             _baseCurrency = apiConfig.Value.BaseCurrency;
         }
 
