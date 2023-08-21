@@ -14,6 +14,8 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.DataAccess
 
         public DbSet<Settings> Settings { get; set; }
 
+        public DbSet<FavouriteExchangeRate> Favourites { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema(ApiConstants.SchemaNames.User);

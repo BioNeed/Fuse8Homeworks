@@ -250,6 +250,42 @@
         <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.NewInstance(Grpc.Core.ClientBase.ClientBaseConfiguration)">
             <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
         </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.FavouritesContoller">
+            <summary>
+            Методы для управления Избранными курсами валют
+            </summary>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.FavouritesContoller.GetFavouriteByNameAsync(System.Threading.CancellationToken)">
+            <summary>
+            Получить все Избранные
+            </summary>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="200">
+            Возвращает, если удалось получить курс валюты
+            </response>
+            <response code="404">
+            Возвращает, если нет ни одного Избранного
+            </response>
+            <response code="500">
+            Возвращает в случае других ошибок
+            </response>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.FavouritesContoller.GetFavouriteByNameAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Получить Избранное по названию
+            </summary>
+            <param name="favouriteName">Название Избранного</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="200">
+            Возвращает, если удалось получить курс валюты
+            </response>
+            <response code="404">
+            Возвращает, если не найдено Избранное (Избранного с таким именем не существует)
+            </response>
+            <response code="500">
+            Возвращает в случае других ошибок
+            </response>
+        </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController">
             <summary>
             [PublicApi] Методы для работы с Internal API
@@ -349,6 +385,30 @@
             <inheritdoc />
         </member>
         <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.CreateSettingsTable.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.CreateFavouriteExchangeRatesTable">
+            <inheritdoc />
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.CreateFavouriteExchangeRatesTable.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.CreateFavouriteExchangeRatesTable.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.CreateFavouriteExchangeRatesTable.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.UpdateTableName">
+            <inheritdoc />
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.UpdateTableName.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.UpdateTableName.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.UpdateTableName.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ApiSettingsModel">

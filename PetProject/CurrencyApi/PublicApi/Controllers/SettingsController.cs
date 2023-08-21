@@ -1,13 +1,14 @@
-﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts;
+﻿using System.ComponentModel.DataAnnotations;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Enums;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
 {
     /// <summary>
     /// Методы для управления настройками приложения
     /// </summary>
+    [Route("settings")]
     public class SettingsController : Controller
     {
         private readonly ISettingsService _settingsService;
@@ -25,7 +26,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
         /// <response code="200">
         /// Возвращает, если удалось изменить валюту по умолчанию
         /// </response>
-        [HttpPost("/settings/default_currency/{newDefaultCurrency}")]
+        [HttpPost("default_currency/{newDefaultCurrency}")]
         public async Task SetDefaultCurrencyAsync(
             CurrencyType newDefaultCurrency,
             CancellationToken cancellationToken)
@@ -42,7 +43,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
         /// <response code="200">
         /// Возвращает, если удалось изменить количество знаков после запятой
         /// </response>
-        [HttpPost("/settings/round_count/{newRoundCount}")]
+        [HttpPost("round_count/{newRoundCount}")]
         public async Task SetCurrencyRoundCountAsync(
             [Range(1, 8)] int newRoundCount,
             CancellationToken cancellationToken)

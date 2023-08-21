@@ -15,9 +15,15 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.DataAccess.Configurations
             builder.HasKey("Id");
 
             builder.Property(f => f.Name).IsRequired();
+            builder.Property(f => f.BaseCurrency).IsRequired();
+            builder.Property(f => f.Currency).IsRequired();
 
-            builder.HasCheckConstraint("not_equal_currencies", "currency != base_currency");
+            builder.ToTable(tableBuilder => tableBuilder.HasCheckConstraint(
+                name: "not_equal_currencies",
+                sql: "currency != base_currency"));
+
             builder.HasIndex(f => f.Name).IsUnique();
+            builder.HasIndex(f => new { f.Currency, f.BaseCurrency }).IsUnique();
         }
     }
 }

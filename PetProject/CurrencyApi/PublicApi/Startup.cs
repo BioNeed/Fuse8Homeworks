@@ -37,6 +37,8 @@ public class Startup
         services.AddScoped<IGrpcCurrencyService, GrpcCurrencyService>();
         services.AddScoped<ISettingsRepository, SettingsRepository>();
         services.AddScoped<ISettingsService, SettingsService>();
+        services.AddScoped<IFavouritesRepository, FavouritesRepository>();
+        services.AddScoped<IFavouritesService, FavouritesService>();
 
         services.AddGrpcClient<GrpcCurrency.GrpcCurrencyClient>((provider, options) =>
         {

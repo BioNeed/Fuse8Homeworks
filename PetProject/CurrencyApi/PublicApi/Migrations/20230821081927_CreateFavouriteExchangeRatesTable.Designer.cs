@@ -2,6 +2,7 @@
 using Fuse8_ByteMinds.SummerSchool.PublicApi.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    partial class UserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230821081927_CreateFavouriteExchangeRatesTable")]
+    partial class CreateFavouriteExchangeRatesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,21 +52,21 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations
                         .HasColumnName("name");
 
                     b.HasKey("Id")
-                        .HasName("pk_favourites");
+                        .HasName("pk_favourite_exchange_rate");
 
                     b.HasIndex("Name")
                         .IsUnique()
-                        .HasDatabaseName("ix_favourites_name");
+                        .HasDatabaseName("ix_favourite_exchange_rate_name");
 
                     b.HasIndex("Currency", "BaseCurrency")
                         .IsUnique()
-                        .HasDatabaseName("ix_favourites_currency_base_currency");
+                        .HasDatabaseName("ix_favourite_exchange_rate_currency_base_currency");
 
-                    b.ToTable("favourites", "user", t =>
+                    b.ToTable("favourite_exchange_rate", "user", t =>
                         {
-                            t.HasCheckConstraint("CK_favourites_base_currency_MinLength", "LENGTH(base_currency) >= 3");
+                            t.HasCheckConstraint("CK_favourite_exchange_rate_base_currency_MinLength", "LENGTH(base_currency) >= 3");
 
-                            t.HasCheckConstraint("CK_favourites_currency_MinLength", "LENGTH(currency) >= 3");
+                            t.HasCheckConstraint("CK_favourite_exchange_rate_currency_MinLength", "LENGTH(currency) >= 3");
 
                             t.HasCheckConstraint("not_equal_currencies", "currency != base_currency");
                         });
