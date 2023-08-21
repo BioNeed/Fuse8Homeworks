@@ -62,6 +62,9 @@ public class CurrencyController : ControllerBase
     /// <response code="200">
     /// Возвращает, если удалось получить курс валюты на выбранную дату
     /// </response>
+    /// <response code="422">
+    /// Возвращает, если неверно введена дата
+    /// </response>
     /// <response code="429">
     /// Возвращает, если больше не осталось доступных запросов
     /// </response>

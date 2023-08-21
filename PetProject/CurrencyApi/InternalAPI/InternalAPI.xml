@@ -223,6 +223,9 @@
             <response code="200">
             Возвращает, если удалось получить курс валюты на выбранную дату
             </response>
+            <response code="422">
+            Возвращает, если неверно введена дата
+            </response>
             <response code="429">
             Возвращает, если больше не осталось доступных запросов
             </response>
@@ -260,6 +263,901 @@
         <member name="T:InternalAPI.Enums.CurrencyType">
             <summary>
             Тип валюты
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.RUB">
+            <summary>
+            Russian Ruble
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.AED">
+            <summary>
+            United Arab Emirates Dirham
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.AFN">
+            <summary>
+            Afghan Afghani
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ALL">
+            <summary>
+            Albanian Lek
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.AMD">
+            <summary>
+            Armenian Dram
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ANG">
+            <summary>
+            NL Antillean Guilder
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.AOA">
+            <summary>
+            Angolan Kwanza
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ARS">
+            <summary>
+            Argentine Peso
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.AUD">
+            <summary>
+            Australian Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.AWG">
+            <summary>
+            Aruban Florin
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.AZN">
+            <summary>
+            Azerbaijani Manat
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BAM">
+            <summary>
+            Bosnia-Herzegovina Convertible Mark
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BBD">
+            <summary>
+            Barbadian Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BDT">
+            <summary>
+            Bangladeshi Taka
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BGN">
+            <summary>
+            Bulgarian Lev
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BHD">
+            <summary>
+            Bahraini Dinar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BIF">
+            <summary>
+            Burundian Franc
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BMD">
+            <summary>
+            Bermudan Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BND">
+            <summary>
+            Brunei Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BOB">
+            <summary>
+            Bolivian Boliviano
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BRL">
+            <summary>
+            Brazilian Real
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BSD">
+            <summary>
+            Bahamian Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BTN">
+            <summary>
+            Bhutanese Ngultrum
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BWP">
+            <summary>
+            Botswanan Pula
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BYN">
+            <summary>
+            Belarusian ruble
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BYR">
+            <summary>
+            Belarusian Ruble
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BZD">
+            <summary>
+            Belize Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.CAD">
+            <summary>
+            Canadian Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.CDF">
+            <summary>
+            Congolese Franc
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.CHF">
+            <summary>
+            Swiss Franc
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.CLF">
+            <summary>
+            Unidad de Fomento
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.CLP">
+            <summary>
+            Chilean Peso
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.CNY">
+            <summary>
+            Chinese Yuan
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.COP">
+            <summary>
+            Coombian Peso
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.CRC">
+            <summary>
+            Costa Rican Colón
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.CUC">
+            <summary>
+            Cuban Convertible Peso
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.CUP">
+            <summary>
+            Cuban Peso
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.CVE">
+            <summary>
+            Cape Verdean Escudo
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.CZK">
+            <summary>
+            Czech Republic Koruna
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.DJF">
+            <summary>
+            Djiboutian Franc
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.DKK">
+            <summary>
+            Danish Krone
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.DOP">
+            <summary>
+            Dominican Peso
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.DZD">
+            <summary>
+            Algerian Dinar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.EGP">
+            <summary>
+            Egyptian Pound
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ERN">
+            <summary>
+            Eritrean Nakfa
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ETB">
+            <summary>
+            Ethiopian Birr
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.EUR">
+            <summary>
+            Euro
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.FJD">
+            <summary>
+            Fijian Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.FKP">
+            <summary>
+            Falkland Islands Pound
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.GBP">
+            <summary>
+            British Pound Sterling
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.GEL">
+            <summary>
+            Georgian Lari
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.GGP">
+            <summary>
+            Guernsey pound
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.GHS">
+            <summary>
+            Ghanaian Cedi
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.GIP">
+            <summary>
+            Gibraltar Pound
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.GMD">
+            <summary>
+            Gambian Dalasi
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.GNF">
+            <summary>
+            Guinean Franc
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.GTQ">
+            <summary>
+            Guatemalan Quetzal
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.GYD">
+            <summary>
+            Guyanaese Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.HKD">
+            <summary>
+            Hong Kong Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.HNL">
+            <summary>
+            Honduran Lempira
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.HRK">
+            <summary>
+            Croatian Kuna
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.HTG">
+            <summary>
+            Haitian Gourde
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.HUF">
+            <summary>
+            Hungarian Forint
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.IDR">
+            <summary>
+            Indonesian Rupiah
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ILS">
+            <summary>
+            Israeli New Sheqel
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.IMP">
+            <summary>
+            Manx pound
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.INR">
+            <summary>
+            Indian Rupee
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.IQD">
+            <summary>
+            Iraqi Dinar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.IRR">
+            <summary>
+            Iranian Rial
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ISK">
+            <summary>
+            Icelandic Króna
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.JEP">
+            <summary>
+            Jersey pound
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.JMD">
+            <summary>
+            Jamaican Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.JOD">
+            <summary>
+            Jordanian Dinar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.JPY">
+            <summary>
+            Japanese Yen
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.KES">
+            <summary>
+            Kenyan Shilling
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.KGS">
+            <summary>
+            Kyrgystani Som
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.KHR">
+            <summary>
+            Cambodian Riel
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.KMF">
+            <summary>
+            Comorian Franc
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.KPW">
+            <summary>
+            North Korean Won
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.KRW">
+            <summary>
+            South Korean Won
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.KWD">
+            <summary>
+            Kuwaiti Dinar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.KYD">
+            <summary>
+            Cayman Islands Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.KZT">
+            <summary>
+            Kazakhstani Tenge
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.LAK">
+            <summary>
+            Laotian Kip
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.LBP">
+            <summary>
+            Lebanese Pound
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.LKR">
+            <summary>
+            Sri Lankan Rupee
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.LRD">
+            <summary>
+            Liberian Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.LSL">
+            <summary>
+            Lesotho Loti
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.LTL">
+            <summary>
+            Lithuanian Litas
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.LVL">
+            <summary>
+            Latvian Lats
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.LYD">
+            <summary>
+            Libyan Dinar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MAD">
+            <summary>
+            Moroccan Dirham
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MDL">
+            <summary>
+            Moldovan Leu
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MGA">
+            <summary>
+            Malagasy Ariary
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MKD">
+            <summary>
+            Macedonian Denar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MMK">
+            <summary>
+            Myanma Kyat
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MNT">
+            <summary>
+            Mongolian Tugrik
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MOP">
+            <summary>
+            Macanese Pataca
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MRO">
+            <summary>
+            Mauritanian ouguiya
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MUR">
+            <summary>
+            Mauritian Rupee
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MVR">
+            <summary>
+            Maldivian Rufiyaa
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MWK">
+            <summary>
+            Malawian Kwacha
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MXN">
+            <summary>
+            Mexican Peso
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MYR">
+            <summary>
+            Malaysian Ringgit
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MZN">
+            <summary>
+            Mozambican Metical
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.NAD">
+            <summary>
+            Namibian Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.NGN">
+            <summary>
+            Nigerian Naira
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.NIO">
+            <summary>
+            Nicaraguan Córdoba
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.NOK">
+            <summary>
+            Norwegian Krone
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.NPR">
+            <summary>
+            Nepalese Rupee
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.NZD">
+            <summary>
+            New Zealand Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.OMR">
+            <summary>
+            Omani Rial
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.PAB">
+            <summary>
+            Panamanian Balboa
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.PEN">
+            <summary>
+            Peruvian Nuevo Sol
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.PGK">
+            <summary>
+            Papua New Guinean Kina
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.PHP">
+            <summary>
+            Philippine Peso
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.PKR">
+            <summary>
+            Pakistani Rupee
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.PLN">
+            <summary>
+            Polish Zloty
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.PYG">
+            <summary>
+            Paraguayan Guarani
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.QAR">
+            <summary>
+            Qatari Rial
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.RON">
+            <summary>
+            Romanian Leu
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.RSD">
+            <summary>
+            Serbian Dinar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.RWF">
+            <summary>
+            Rwandan Franc
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SAR">
+            <summary>
+            Saudi Riyal
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SBD">
+            <summary>
+            Solomon Islands Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SCR">
+            <summary>
+            Seychellois Rupee
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SDG">
+            <summary>
+            Sudanese Pound
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SEK">
+            <summary>
+            Swedish Krona
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SGD">
+            <summary>
+            Singapore Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SHP">
+            <summary>
+            Saint Helena Pound
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SLL">
+            <summary>
+            Sierra Leonean Leone
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SOS">
+            <summary>
+            Somali Shilling
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SRD">
+            <summary>
+            Surinamese Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.STD">
+            <summary>
+            São Tomé and Príncipe dobra
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SVC">
+            <summary>
+            Salvadoran Colón
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SYP">
+            <summary>
+            Syrian Pound
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SZL">
+            <summary>
+            Swazi Lilangeni
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.THB">
+            <summary>
+            Thai Baht
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.TJS">
+            <summary>
+            Tajikistani Somoni
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.TMT">
+            <summary>
+            Turkmenistani Manat
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.TND">
+            <summary>
+            Tunisian Dinar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.TOP">
+            <summary>
+            Tongan Paʻanga
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.TRY">
+            <summary>
+            Turkish Lira
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.TTD">
+            <summary>
+            Trinidad and Tobago Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.TWD">
+            <summary>
+            New Taiwan Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.TZS">
+            <summary>
+            Tanzanian Shilling
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.UAH">
+            <summary>
+            Ukrainian Hryvnia
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.UGX">
+            <summary>
+            Ugandan Shilling
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.USD">
+            <summary>
+            US Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.UYU">
+            <summary>
+            Uruguayan Peso
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.UZS">
+            <summary>
+            Uzbekistan Som
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.VEF">
+            <summary>
+            Venezuelan Bolívar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.VND">
+            <summary>
+            Vietnamese Dong
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.VUV">
+            <summary>
+            Vanuatu Vatu
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.WST">
+            <summary>
+            Samoan Tala
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.XAF">
+            <summary>
+            CFA Franc BEAC
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.XAG">
+            <summary>
+            Silver Ounce
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.XAU">
+            <summary>
+            Gold Ounce
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.XCD">
+            <summary>
+            East Caribbean Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.XDR">
+            <summary>
+            Special drawing rights
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.XOF">
+            <summary>
+            CFA Franc BCEAO
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.XPF">
+            <summary>
+            CFP Franc
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.YER">
+            <summary>
+            Yemeni Rial
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ZAR">
+            <summary>
+            South African Rand
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ZMK">
+            <summary>
+            Zambian Kwacha
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ZMW">
+            <summary>
+            Zambian Kwacha
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ZWL">
+            <summary>
+            Zimbabwean dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.XPT">
+            <summary>
+            Platinum Ounce
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.XPD">
+            <summary>
+            Palladium Ounce
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BTC">
+            <summary>
+            Bitcoin
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ETH">
+            <summary>
+            Ethereum
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BNB">
+            <summary>
+            Binance
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.XRP">
+            <summary>
+            Ripple
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SOL">
+            <summary>
+            Solana
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.DOT">
+            <summary>
+            Polkadot
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.AVAX">
+            <summary>
+            Avalanche
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MATIC">
+            <summary>
+            Matic Token
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.LTC">
+            <summary>
+            Litecoin
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ADA">
+            <summary>
+            Cardano
             </summary>
         </member>
         <member name="T:InternalAPI.Migrations.InitialCreate">

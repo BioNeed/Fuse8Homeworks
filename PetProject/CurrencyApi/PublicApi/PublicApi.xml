@@ -286,6 +286,55 @@
             Возвращает в случае других ошибок
             </response>
         </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.FavouritesContoller.AddFavourite(System.String,Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType,Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType,System.Threading.CancellationToken)">
+            <summary>
+            Добавить новое Избранное
+            </summary>
+            <param name="newFavouriteName">Название нового Избранного</param>
+            <param name="currency">Валюта Избранного (должны отличаться с базовой валютой)</param>
+            <param name="baseCurrency">Базовая валюта Избранного</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="200">
+            Возвращает, если удалось добавить новое Избранное
+            </response>
+            <response code="422">
+            Возвращает, если
+            1. Валюта совпадает с базовой валютой.
+            2. Уже существует Избранное с таким новым именем.
+            3. Уже существует Избранное с таким набором (Валюта, Базовая валюта).
+            </response>
+            <response code="500">
+            Возвращает в случае других ошибок
+            </response>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.FavouritesContoller.UpdateFavourite(System.String,System.String,System.Nullable{Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType},System.Nullable{Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType},System.Threading.CancellationToken)">
+            <summary>
+            Изменить существующее Избранное
+            </summary>
+            <param name="favouriteName">Название Избранного</param>
+            <param name="newFavouriteName">(Необязательно) Новое название Избранного</param>
+            <param name="currency">(Необязательно) Новая валюта Избранного (должны отличаться с базовой валютой)</param>
+            <param name="baseCurrency">(Необязательно) Новая базовая валюта Избранного</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="200">
+            Возвращает, если
+            1. Удалось изменить Избранное
+            2. Пользователь не ввел данные для изменения
+            3. Пользователь ввел данные для изменения, которые совпадают с уже существующими данными
+            </response>
+            <response code="404">
+            Возвращает, если не существует Избранного с таким именем
+            </response>
+            <response code="422">
+            Возвращает, если
+            1. Валюта совпадает с базовой валютой.
+            2. Уже существует Избранное с таким именем
+            3. Уже существует Избранное с таким набором (Валюта, Базовая валюта)
+            </response>
+            <response code="500">
+            Возвращает в случае других ошибок
+            </response>
+        </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController">
             <summary>
             [PublicApi] Методы для работы с Internal API
@@ -316,6 +365,9 @@
             <param name="cancellationToken">Токен отмены</param>
             <response code="200">
             Возвращает, если удалось получить курс валюты на выбранную дату
+            </response>
+            <response code="422">
+            Возвращает, если неверно введена дата
             </response>
             <response code="429">
             Возвращает, если больше не осталось доступных запросов
@@ -361,6 +413,901 @@
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType">
             <summary>
             Тип валюты
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.RUB">
+            <summary>
+            Russian Ruble
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.AED">
+            <summary>
+            United Arab Emirates Dirham
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.AFN">
+            <summary>
+            Afghan Afghani
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ALL">
+            <summary>
+            Albanian Lek
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.AMD">
+            <summary>
+            Armenian Dram
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ANG">
+            <summary>
+            NL Antillean Guilder
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.AOA">
+            <summary>
+            Angolan Kwanza
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ARS">
+            <summary>
+            Argentine Peso
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.AUD">
+            <summary>
+            Australian Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.AWG">
+            <summary>
+            Aruban Florin
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.AZN">
+            <summary>
+            Azerbaijani Manat
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BAM">
+            <summary>
+            Bosnia-Herzegovina Convertible Mark
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BBD">
+            <summary>
+            Barbadian Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BDT">
+            <summary>
+            Bangladeshi Taka
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BGN">
+            <summary>
+            Bulgarian Lev
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BHD">
+            <summary>
+            Bahraini Dinar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BIF">
+            <summary>
+            Burundian Franc
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BMD">
+            <summary>
+            Bermudan Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BND">
+            <summary>
+            Brunei Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BOB">
+            <summary>
+            Bolivian Boliviano
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BRL">
+            <summary>
+            Brazilian Real
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BSD">
+            <summary>
+            Bahamian Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BTN">
+            <summary>
+            Bhutanese Ngultrum
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BWP">
+            <summary>
+            Botswanan Pula
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BYN">
+            <summary>
+            Belarusian ruble
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BYR">
+            <summary>
+            Belarusian Ruble
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BZD">
+            <summary>
+            Belize Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.CAD">
+            <summary>
+            Canadian Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.CDF">
+            <summary>
+            Congolese Franc
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.CHF">
+            <summary>
+            Swiss Franc
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.CLF">
+            <summary>
+            Unidad de Fomento
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.CLP">
+            <summary>
+            Chilean Peso
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.CNY">
+            <summary>
+            Chinese Yuan
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.COP">
+            <summary>
+            Coombian Peso
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.CRC">
+            <summary>
+            Costa Rican Colón
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.CUC">
+            <summary>
+            Cuban Convertible Peso
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.CUP">
+            <summary>
+            Cuban Peso
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.CVE">
+            <summary>
+            Cape Verdean Escudo
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.CZK">
+            <summary>
+            Czech Republic Koruna
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.DJF">
+            <summary>
+            Djiboutian Franc
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.DKK">
+            <summary>
+            Danish Krone
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.DOP">
+            <summary>
+            Dominican Peso
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.DZD">
+            <summary>
+            Algerian Dinar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.EGP">
+            <summary>
+            Egyptian Pound
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ERN">
+            <summary>
+            Eritrean Nakfa
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ETB">
+            <summary>
+            Ethiopian Birr
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.EUR">
+            <summary>
+            Euro
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.FJD">
+            <summary>
+            Fijian Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.FKP">
+            <summary>
+            Falkland Islands Pound
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.GBP">
+            <summary>
+            British Pound Sterling
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.GEL">
+            <summary>
+            Georgian Lari
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.GGP">
+            <summary>
+            Guernsey pound
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.GHS">
+            <summary>
+            Ghanaian Cedi
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.GIP">
+            <summary>
+            Gibraltar Pound
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.GMD">
+            <summary>
+            Gambian Dalasi
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.GNF">
+            <summary>
+            Guinean Franc
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.GTQ">
+            <summary>
+            Guatemalan Quetzal
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.GYD">
+            <summary>
+            Guyanaese Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.HKD">
+            <summary>
+            Hong Kong Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.HNL">
+            <summary>
+            Honduran Lempira
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.HRK">
+            <summary>
+            Croatian Kuna
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.HTG">
+            <summary>
+            Haitian Gourde
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.HUF">
+            <summary>
+            Hungarian Forint
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.IDR">
+            <summary>
+            Indonesian Rupiah
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ILS">
+            <summary>
+            Israeli New Sheqel
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.IMP">
+            <summary>
+            Manx pound
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.INR">
+            <summary>
+            Indian Rupee
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.IQD">
+            <summary>
+            Iraqi Dinar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.IRR">
+            <summary>
+            Iranian Rial
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ISK">
+            <summary>
+            Icelandic Króna
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.JEP">
+            <summary>
+            Jersey pound
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.JMD">
+            <summary>
+            Jamaican Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.JOD">
+            <summary>
+            Jordanian Dinar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.JPY">
+            <summary>
+            Japanese Yen
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.KES">
+            <summary>
+            Kenyan Shilling
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.KGS">
+            <summary>
+            Kyrgystani Som
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.KHR">
+            <summary>
+            Cambodian Riel
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.KMF">
+            <summary>
+            Comorian Franc
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.KPW">
+            <summary>
+            North Korean Won
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.KRW">
+            <summary>
+            South Korean Won
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.KWD">
+            <summary>
+            Kuwaiti Dinar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.KYD">
+            <summary>
+            Cayman Islands Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.KZT">
+            <summary>
+            Kazakhstani Tenge
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.LAK">
+            <summary>
+            Laotian Kip
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.LBP">
+            <summary>
+            Lebanese Pound
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.LKR">
+            <summary>
+            Sri Lankan Rupee
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.LRD">
+            <summary>
+            Liberian Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.LSL">
+            <summary>
+            Lesotho Loti
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.LTL">
+            <summary>
+            Lithuanian Litas
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.LVL">
+            <summary>
+            Latvian Lats
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.LYD">
+            <summary>
+            Libyan Dinar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MAD">
+            <summary>
+            Moroccan Dirham
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MDL">
+            <summary>
+            Moldovan Leu
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MGA">
+            <summary>
+            Malagasy Ariary
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MKD">
+            <summary>
+            Macedonian Denar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MMK">
+            <summary>
+            Myanma Kyat
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MNT">
+            <summary>
+            Mongolian Tugrik
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MOP">
+            <summary>
+            Macanese Pataca
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MRO">
+            <summary>
+            Mauritanian ouguiya
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MUR">
+            <summary>
+            Mauritian Rupee
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MVR">
+            <summary>
+            Maldivian Rufiyaa
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MWK">
+            <summary>
+            Malawian Kwacha
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MXN">
+            <summary>
+            Mexican Peso
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MYR">
+            <summary>
+            Malaysian Ringgit
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MZN">
+            <summary>
+            Mozambican Metical
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.NAD">
+            <summary>
+            Namibian Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.NGN">
+            <summary>
+            Nigerian Naira
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.NIO">
+            <summary>
+            Nicaraguan Córdoba
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.NOK">
+            <summary>
+            Norwegian Krone
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.NPR">
+            <summary>
+            Nepalese Rupee
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.NZD">
+            <summary>
+            New Zealand Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.OMR">
+            <summary>
+            Omani Rial
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.PAB">
+            <summary>
+            Panamanian Balboa
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.PEN">
+            <summary>
+            Peruvian Nuevo Sol
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.PGK">
+            <summary>
+            Papua New Guinean Kina
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.PHP">
+            <summary>
+            Philippine Peso
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.PKR">
+            <summary>
+            Pakistani Rupee
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.PLN">
+            <summary>
+            Polish Zloty
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.PYG">
+            <summary>
+            Paraguayan Guarani
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.QAR">
+            <summary>
+            Qatari Rial
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.RON">
+            <summary>
+            Romanian Leu
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.RSD">
+            <summary>
+            Serbian Dinar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.RWF">
+            <summary>
+            Rwandan Franc
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SAR">
+            <summary>
+            Saudi Riyal
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SBD">
+            <summary>
+            Solomon Islands Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SCR">
+            <summary>
+            Seychellois Rupee
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SDG">
+            <summary>
+            Sudanese Pound
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SEK">
+            <summary>
+            Swedish Krona
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SGD">
+            <summary>
+            Singapore Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SHP">
+            <summary>
+            Saint Helena Pound
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SLL">
+            <summary>
+            Sierra Leonean Leone
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SOS">
+            <summary>
+            Somali Shilling
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SRD">
+            <summary>
+            Surinamese Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.STD">
+            <summary>
+            São Tomé and Príncipe dobra
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SVC">
+            <summary>
+            Salvadoran Colón
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SYP">
+            <summary>
+            Syrian Pound
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SZL">
+            <summary>
+            Swazi Lilangeni
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.THB">
+            <summary>
+            Thai Baht
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.TJS">
+            <summary>
+            Tajikistani Somoni
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.TMT">
+            <summary>
+            Turkmenistani Manat
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.TND">
+            <summary>
+            Tunisian Dinar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.TOP">
+            <summary>
+            Tongan Paʻanga
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.TRY">
+            <summary>
+            Turkish Lira
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.TTD">
+            <summary>
+            Trinidad and Tobago Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.TWD">
+            <summary>
+            New Taiwan Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.TZS">
+            <summary>
+            Tanzanian Shilling
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.UAH">
+            <summary>
+            Ukrainian Hryvnia
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.UGX">
+            <summary>
+            Ugandan Shilling
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.USD">
+            <summary>
+            US Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.UYU">
+            <summary>
+            Uruguayan Peso
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.UZS">
+            <summary>
+            Uzbekistan Som
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.VEF">
+            <summary>
+            Venezuelan Bolívar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.VND">
+            <summary>
+            Vietnamese Dong
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.VUV">
+            <summary>
+            Vanuatu Vatu
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.WST">
+            <summary>
+            Samoan Tala
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.XAF">
+            <summary>
+            CFA Franc BEAC
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.XAG">
+            <summary>
+            Silver Ounce
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.XAU">
+            <summary>
+            Gold Ounce
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.XCD">
+            <summary>
+            East Caribbean Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.XDR">
+            <summary>
+            Special drawing rights
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.XOF">
+            <summary>
+            CFA Franc BCEAO
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.XPF">
+            <summary>
+            CFP Franc
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.YER">
+            <summary>
+            Yemeni Rial
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ZAR">
+            <summary>
+            South African Rand
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ZMK">
+            <summary>
+            Zambian Kwacha
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ZMW">
+            <summary>
+            Zambian Kwacha
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ZWL">
+            <summary>
+            Zimbabwean dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.XPT">
+            <summary>
+            Platinum Ounce
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.XPD">
+            <summary>
+            Palladium Ounce
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BTC">
+            <summary>
+            Bitcoin
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ETH">
+            <summary>
+            Ethereum
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BNB">
+            <summary>
+            Binance
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.XRP">
+            <summary>
+            Ripple
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SOL">
+            <summary>
+            Solana
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.DOT">
+            <summary>
+            Polkadot
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.AVAX">
+            <summary>
+            Avalanche
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MATIC">
+            <summary>
+            Matic Token
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.LTC">
+            <summary>
+            Litecoin
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ADA">
+            <summary>
+            Cardano
             </summary>
         </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.InitialCreate">
@@ -409,6 +1356,18 @@
             <inheritdoc />
         </member>
         <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.UpdateTableName.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.AddCurrenciesToSettingsTable">
+            <inheritdoc />
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.AddCurrenciesToSettingsTable.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.AddCurrenciesToSettingsTable.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.AddCurrenciesToSettingsTable.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ApiSettingsModel">

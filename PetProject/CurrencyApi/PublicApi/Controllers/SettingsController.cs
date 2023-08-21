@@ -9,7 +9,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
     /// Методы для управления настройками приложения
     /// </summary>
     [Route("settings")]
-    public class SettingsController : Controller
+    public class SettingsController : ControllerBase
     {
         private readonly ISettingsService _settingsService;
 

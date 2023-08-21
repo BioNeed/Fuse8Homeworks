@@ -1,5 +1,5 @@
-﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Enums;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Models
 {

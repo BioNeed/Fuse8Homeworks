@@ -30,9 +30,29 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
                     cancellationToken: cancellationToken);
         }
 
-        public async Task AddFavouriteAsync(string name, string currency, string baseCurrency)
+        public async Task AddFavouriteAsync(FavouriteExchangeRate favouriteToAdd,
+                                            CancellationToken cancellationToken)
         {
+            await _userDbContext.Favourites.AddAsync(favouriteToAdd, cancellationToken);
 
+            await _userDbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task UpdateFavouriteAsync(
+            string name,
+            FavouriteExchangeRate newFavourite,
+            CancellationToken cancellationToken)
+        {
+            FavouriteExchangeRate favouriteToUpdate =
+                await _userDbContext.Favourites.FirstAsync(
+                                    predicate: f => f.Name == name,
+                                    cancellationToken: cancellationToken);
+
+            favouriteToUpdate.Name = newFavourite.Name;
+            favouriteToUpdate.Currency = newFavourite.Currency;
+            favouriteToUpdate.BaseCurrency = newFavourite.BaseCurrency;
+
+            await _userDbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }

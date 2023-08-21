@@ -20,43 +20,41 @@ namespace InternalAPI.Filters
             {
                 case ApiRequestLimitException:
                     {
-                        HandleRequestLimitException(context);
+                        HandleException(context,
+                                        context.Exception.Message,
+                                        (int)HttpStatusCode.TooManyRequests);
                         break;
                     }
 
                 case InvalidDateFormatException:
                     {
-                        HandleAnyOtherException(context, context.Exception.Message);
+                        HandleException(context,
+                                        context.Exception.Message,
+                                        (int)HttpStatusCode.UnprocessableEntity);
                         break;
                     }
 
                 case CacheBaseCurrencyNotFoundException:
                     {
-                        HandleAnyOtherException(context, context.Exception.Message);
+                        HandleException(context, context.Exception.Message);
                         break;
                     }
 
                 default:
                     {
-                        HandleAnyOtherException(context);
+                        HandleException(context);
                         break;
                     }
             }
         }
 
-        private void HandleRequestLimitException(ExceptionContext context)
-        {
-            _logger.LogError("Ошибка! {message}", context.Exception.Message);
-            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.TooManyRequests;
-            context.ExceptionHandled = true;
-        }
-
-        private void HandleAnyOtherException(
+        private void HandleException(
             ExceptionContext context,
-            string message = ApiConstants.ErrorMessages.UnknownExceptionMessage)
+            string message = ApiConstants.ErrorMessages.UnknownExceptionMessage,
+            int responseStatusCode = (int)HttpStatusCode.InternalServerError)
         {
             _logger.LogError("Ошибка! {message}", message);
-            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            context.HttpContext.Response.StatusCode = responseStatusCode;
             context.ExceptionHandled = true;
         }
     }

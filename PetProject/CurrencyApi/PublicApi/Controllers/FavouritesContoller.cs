@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Net;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Enums;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
@@ -10,7 +11,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
     /// Методы для управления Избранными курсами валют
     /// </summary>
     [Route("favourites")]
-    public class FavouritesContoller : Controller
+    public class FavouritesContoller : ControllerBase
     {
         private readonly IFavouritesService _favouritesService;
 
@@ -81,11 +82,17 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
         /// Добавить новое Избранное
         /// </summary>
         /// <param name="newFavouriteName">Название нового Избранного</param>
-        /// <param name="currency">Валюта Избранного</param>
+        /// <param name="currency">Валюта Избранного (должны отличаться с базовой валютой)</param>
         /// <param name="baseCurrency">Базовая валюта Избранного</param>
         /// <param name="cancellationToken">Токен отмены</param>
         /// <response code="200">
         /// Возвращает, если удалось добавить новое Избранное
+        /// </response>
+        /// <response code="422">
+        /// Возвращает, если
+        /// 1. Валюта совпадает с базовой валютой.
+        /// 2. Уже существует Избранное с таким новым именем.
+        /// 3. Уже существует Избранное с таким набором (Валюта, Базовая валюта).
         /// </response>
         /// <response code="500">
         /// Возвращает в случае других ошибок
@@ -93,13 +100,65 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
         [HttpPut("{newFavouriteName}")]
         public async Task AddFavourite(
             string newFavouriteName,
-            CurrencyType currency,
-            CurrencyType baseCurrency,
+            [Required] CurrencyType currency,
+            [Required] CurrencyType baseCurrency,
             CancellationToken cancellationToken)
         {
-            await _favouritesService
-                .GetFavouriteByNameAsync(favouriteName, cancellationToken);
+            await _favouritesService.TryAddFavouriteAsync(
+                name: newFavouriteName,
+                currency: currency.ToString(),
+                baseCurrency: baseCurrency.ToString(),
+                cancellationToken);
         }
 
+        /// <summary>
+        /// Изменить существующее Избранное
+        /// </summary>
+        /// <param name="favouriteName">Название Избранного</param>
+        /// <param name="newFavouriteName">(Необязательно) Новое название Избранного</param>
+        /// <param name="currency">(Необязательно) Новая валюта Избранного (должны отличаться с базовой валютой)</param>
+        /// <param name="baseCurrency">(Необязательно) Новая базовая валюта Избранного</param>
+        /// <param name="cancellationToken">Токен отмены</param>
+        /// <response code="200">
+        /// Возвращает, если
+        /// 1. Удалось изменить Избранное
+        /// 2. Пользователь не ввел данные для изменения
+        /// 3. Пользователь ввел данные для изменения, которые совпадают с уже существующими данными
+        /// </response>
+        /// <response code="404">
+        /// Возвращает, если не существует Избранного с таким именем
+        /// </response>
+        /// <response code="422">
+        /// Возвращает, если
+        /// 1. Валюта совпадает с базовой валютой.
+        /// 2. Уже существует Избранное с таким именем
+        /// 3. Уже существует Избранное с таким набором (Валюта, Базовая валюта)
+        /// </response>
+        /// <response code="500">
+        /// Возвращает в случае других ошибок
+        /// </response>
+        [HttpPost("{favouriteName}")]
+        public async Task UpdateFavourite(
+            string favouriteName,
+            string? newFavouriteName,
+            CurrencyType? currency,
+            CurrencyType? baseCurrency,
+            CancellationToken cancellationToken)
+        {
+            string? currencyString = currency != null
+                                    ? currency.ToString()
+                                    : null;
+
+            string baseCurrencyString = baseCurrency != null
+                                        ? baseCurrency.ToString()
+                                        : null;
+
+            await _favouritesService.TryUpdateFavouriteAsync(
+                name: favouriteName,
+                newName: newFavouriteName,
+                currency: currencyString,
+                baseCurrency: baseCurrencyString,
+                cancellationToken);
+        }
     }
 }

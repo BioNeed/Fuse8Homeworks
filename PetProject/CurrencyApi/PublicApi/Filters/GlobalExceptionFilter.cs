@@ -20,44 +20,49 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Filters
             switch (context.Exception)
             {
                 case InvalidDateFormatException:
+                case ViolatingDatabaseConstraintsException:
                     {
-                        HandleAnyOtherException(context, context.Exception.Message);
+                        HandleException(context,
+                                        context.Exception.Message,
+                                        (int)HttpStatusCode.UnprocessableEntity);
+                        break;
+                    }
+
+                case DatabaseElementNotFoundException:
+                    {
+                        HandleException(context,
+                                        context.Exception.Message,
+                                        (int)HttpStatusCode.NotFound);
                         break;
                     }
 
                 case RpcException ex when ex.Status.StatusCode == StatusCode.ResourceExhausted:
                     {
-                        HandleRequestLimitException(context, ex.Status.Detail);
+                        HandleException(context, ex.Status.Detail, (int)HttpStatusCode.TooManyRequests);
                         break;
                     }
 
                 case RpcException ex:
                     {
-                        HandleAnyOtherException(context, ex.Status.Detail);
+                        HandleException(context, ex.Status.Detail);
                         break;
                     }
 
                 default:
                     {
-                        HandleAnyOtherException(context);
+                        HandleException(context);
                         break;
                     }
             }
         }
 
-        private void HandleRequestLimitException(ExceptionContext context, string message)
-        {
-            _logger.LogError("Ошибка! {message}", message);
-            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.TooManyRequests;
-            context.ExceptionHandled = true;
-        }
-
-        private void HandleAnyOtherException(
+        private void HandleException(
             ExceptionContext context,
-            string message = ApiConstants.ErrorMessages.UnknownExceptionMessage)
+            string message = ApiConstants.ErrorMessages.UnknownExceptionMessage,
+            int responseStatusCode = (int)HttpStatusCode.InternalServerError)
         {
             _logger.LogError("Ошибка! {message}", message);
-            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            context.HttpContext.Response.StatusCode = responseStatusCode;
             context.ExceptionHandled = true;
         }
     }
