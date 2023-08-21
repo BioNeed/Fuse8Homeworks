@@ -79,6 +79,39 @@ namespace InternalAPI.Services
             return FindExchangeRateDTOByType(currencyType, exchangeRatesHistorical.ExchangeRates);
         }
 
+        public async Task<CachedExchangeRates> GetAllCurrentExchangeRatesAsync(
+            CancellationToken cancellationToken)
+        {
+            CachedExchangeRates? lastExchangeRates = await _exchangeRatesRepository
+                                    .GetLastCacheDataAsync(cancellationToken);
+
+            DateTime currentDateTime = DateTime.UtcNow;
+
+            if (lastExchangeRates != null)
+            {
+                if (currentDateTime - lastExchangeRates.RelevantOnDate < _cacheExpirationTime)
+                {
+                    return lastExchangeRates;
+                }
+            }
+
+            ExchangeRateModel[] currentExchangeRates = await _currencyAPI.
+                GetAllCurrentCurrenciesAsync(_baseCurrency, cancellationToken);
+
+            await _exchangeRatesRepository.SaveCacheDataAsync(
+                _baseCurrency,
+                currentExchangeRates,
+                currentDateTime,
+                cancellationToken);
+
+            return new CachedExchangeRates
+            {
+                BaseCurrency = _baseCurrency,
+                ExchangeRates = currentExchangeRates,
+                RelevantOnDate = currentDateTime,
+            };
+        }
+
         private ExchangeRateDTOModel FindExchangeRateDTOByType(CurrencyType currencyType, ExchangeRateModel[] exchangeRates)
         {
             foreach (ExchangeRateModel exchangeRate in exchangeRates)

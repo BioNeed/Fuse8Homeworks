@@ -13,6 +13,9 @@ namespace InternalAPI.DataAccess.Configurations
             builder.Property(c => c.ExchangeRatesJson).HasColumnType("jsonb").IsRequired();
             builder.Property(c => c.BaseCurrency).IsRequired();
 
+            builder.ToTable(tableBuilder => tableBuilder.HasCheckConstraint(
+                name: "date_time_before_or_equal_now",
+                sql: @"relevant_on_date at time zone 'UTC' <= timezone('UTC', now())"));
             builder.Ignore(c => c.ExchangeRates);
         }
     }
