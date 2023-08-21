@@ -11,6 +11,13 @@
 	  <DocumentationFile>$(AssemblyName).xml</DocumentationFile>
 	  <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
+	
+  <ItemGroup>
+    <Compile Remove="Cache\**" />
+    <Content Remove="Cache\**" />
+    <EmbeddedResource Remove="Cache\**" />
+    <None Remove="Cache\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Audit.HttpClient" Version="21.0.3" />
@@ -49,10 +56,6 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Cache\CachedCurrenciesOnDates\" />
   </ItemGroup>
 
   <ItemGroup>
