@@ -17,7 +17,11 @@ service GrpcCurrency {
   // Получает информацию об API
   rpc GetApiInfo (google.protobuf.Empty) returns (ApiInfo);
 
+  // Получает текущий курс для Избранного
   rpc GetCurrentFavouriteExchangeRate(FavouriteInfo) returns (ExchangeRateWithBase);
+
+  // Получает курс для Избранного на конкретную дату
+  rpc GetFavouriteExchangeRateOnDate(FavouriteOnDateRequest) returns (ExchangeRateWithBase);
 }
 
 // Курс валюты
@@ -90,4 +94,14 @@ message ExchangeRateWithBase {
 
     // Значение курса валют
 	DecimalValue value = 3;
+}
+
+// Запрос курса Избранного на дату
+message FavouriteOnDateRequest {
+
+    // Информация об Избранном
+    FavouriteInfo favourite_info = 1;
+
+    // Дата, на которую получить курс Избранного
+    google.protobuf.Timestamp date = 2;
 }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using System.Net;
 using InternalAPI.Constants;
 using InternalAPI.Contracts;
 using InternalAPI.Enums;
@@ -79,7 +80,8 @@ public class CurrencyController : ControllerBase
     {
         if (TryParseDate(dateString, out DateOnly date) == false)
         {
-            throw new InvalidDateFormatException(ApiConstants.ErrorMessages.InvalidDateFormatExceptionMessage);
+            Response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
+            return null;
         }
 
         ExchangeRateDTOModel exchangeRateDTO = await _cachedCurrencyService

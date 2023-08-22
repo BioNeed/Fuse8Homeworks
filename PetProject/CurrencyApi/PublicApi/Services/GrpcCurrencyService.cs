@@ -112,5 +112,44 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
                 Value = roundedValue,
             };
         }
+
+        public async Task<ExchangeRateWithBaseModel?> GetFavouriteExchangeRateOnDateAsync(
+            string favouriteName,
+            DateTime dateTime,
+            CancellationToken cancellationToken)
+        {
+            FavouriteExchangeRate? favourite = await _favouritesService
+                .GetFavouriteByNameAsync(favouriteName,
+                                         cancellationToken);
+
+            if (favourite == null)
+            {
+                return null;
+            }
+
+            FavouriteOnDateRequest request = new FavouriteOnDateRequest
+            {
+                FavouriteInfo = new FavouriteInfo
+                {
+                    Currency = favourite.Currency,
+                    BaseCurrency = favourite.BaseCurrency,
+                },
+                Date = Timestamp.FromDateTime(dateTime),
+            };
+
+            ExchangeRateWithBase exchangeRateWithBase = await _grpcCurrencyClient
+                .GetFavouriteExchangeRateOnDateAsync(request,
+                                                     cancellationToken: cancellationToken);
+
+            Settings settings = await _settingsService.GetApplicationSettingsAsync(cancellationToken);
+            decimal roundedValue = decimal.Round(exchangeRateWithBase.Value, settings.CurrencyRoundCount);
+
+            return new ExchangeRateWithBaseModel
+            {
+                BaseCurrency = exchangeRateWithBase.BaseCurrency,
+                Currency = exchangeRateWithBase.Currency,
+                Value = roundedValue,
+            };
+        }
     }
 }

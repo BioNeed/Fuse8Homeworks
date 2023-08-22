@@ -79,7 +79,8 @@ public class GrpcCurrencyController : ControllerBase
     {
         if (TryParseDateTime(dateString, out DateTime dateTime) == false)
         {
-            throw new InvalidDateFormatException(ApiConstants.ErrorMessages.InvalidDateFormatExceptionMessage);
+            Response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
+            return null;
         }
 
         ExchangeRateModel exchangeRate = await _grpcCurrencyService.GetExchangeRateOnDateTimeAsync(
@@ -120,6 +121,9 @@ public class GrpcCurrencyController : ControllerBase
     /// <response code="404">
     /// Возвращает, если нет Избранного с указанным именем
     /// </response>
+    /// <response code="429">
+    /// Возвращает, если больше не осталось доступных запросов
+    /// </response>
     /// <response code="500">
     /// Возвращает в случае других ошибок
     /// </response>
@@ -137,6 +141,56 @@ public class GrpcCurrencyController : ControllerBase
         }
 
         return exchangeRateWithBase;
+    }
+
+    /// <summary>
+    /// Получить курс Избранного на выбранную дату
+    /// </summary>
+    /// <param name="favouriteName">Название Избранного, для которого узнать курс</param>
+    /// <param name="dateString">Дата, на которую узнать курс избранного</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    /// <response code="200">
+    /// Возвращает, если удалось получить курс Избранного
+    /// </response>
+    /// <response code="404">
+    /// Возвращает, если нет Избранного с указанным именем
+    /// </response>
+    /// <response code="422">
+    /// Возвращает, если неверно введена дата
+    /// </response>
+    /// <response code="429">
+    /// Возвращает, если больше не осталось доступных запросов
+    /// </response>
+    /// <response code="500">
+    /// Возвращает в случае других ошибок
+    /// </response>
+    [HttpGet("favourite/{favouriteName}/{date}")]
+    public async Task<ExchangeRateWithBaseHistoricalModel> GetFavouriteExchangeRateOnDateAsync(
+        string favouriteName,
+        [FromRoute(Name = "date")] string dateString,
+        CancellationToken cancellationToken)
+    {
+        if (TryParseDateTime(dateString, out DateTime dateTime) == false)
+        {
+            Response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
+            return null;
+        }
+
+        ExchangeRateWithBaseModel? exchangeRateWithBase = await _grpcCurrencyService
+            .GetFavouriteExchangeRateOnDateAsync(favouriteName, dateTime, cancellationToken);
+
+        if (exchangeRateWithBase == null)
+        {
+            Response.StatusCode = (int)HttpStatusCode.NotFound;
+        }
+
+        return new ExchangeRateWithBaseHistoricalModel
+        {
+            BaseCurrency = exchangeRateWithBase.BaseCurrency,
+            Currency = exchangeRateWithBase.Currency,
+            Value = exchangeRateWithBase.Value,
+            Date = dateString,
+        };
     }
 
     private bool TryParseDateTime(string dateString, out DateTime dateTime)

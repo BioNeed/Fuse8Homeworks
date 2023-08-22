@@ -19,7 +19,6 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Filters
         {
             switch (context.Exception)
             {
-                case InvalidDateFormatException:
                 case ViolatingDatabaseConstraintsException:
                     {
                         HandleException(context,

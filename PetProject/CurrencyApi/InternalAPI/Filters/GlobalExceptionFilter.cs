@@ -26,14 +26,6 @@ namespace InternalAPI.Filters
                         break;
                     }
 
-                case InvalidDateFormatException:
-                    {
-                        HandleException(context,
-                                        context.Exception.Message,
-                                        (int)HttpStatusCode.UnprocessableEntity);
-                        break;
-                    }
-
                 case CacheBaseCurrencyNotFoundException:
                     {
                         HandleException(context, context.Exception.Message);

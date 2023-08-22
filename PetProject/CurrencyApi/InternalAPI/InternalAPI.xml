@@ -163,6 +163,27 @@
             Значение курса валют
             </summary>
         </member>
+        <member name="T:InternalAPI.Contracts.GrpcContracts.FavouriteOnDateRequest">
+            <summary>
+            Запрос курса Избранного на дату
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.FavouriteOnDateRequest.FavouriteInfoFieldNumber">
+            <summary>Field number for the "favourite_info" field.</summary>
+        </member>
+        <member name="P:InternalAPI.Contracts.GrpcContracts.FavouriteOnDateRequest.FavouriteInfo">
+            <summary>
+            Информация об Избранном
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.FavouriteOnDateRequest.DateFieldNumber">
+            <summary>Field number for the "date" field.</summary>
+        </member>
+        <member name="P:InternalAPI.Contracts.GrpcContracts.FavouriteOnDateRequest.Date">
+            <summary>
+            Дата, на которую получить курс Избранного
+            </summary>
+        </member>
         <member name="T:InternalAPI.Contracts.GrpcContracts.GrpcCurrency">
             <summary>
             Сервис для работы с валютами
@@ -193,6 +214,22 @@
         <member name="M:InternalAPI.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyBase.GetApiInfo(Google.Protobuf.WellKnownTypes.Empty,Grpc.Core.ServerCallContext)">
             <summary>
             Получает информацию об API
+            </summary>
+            <param name="request">The request received from the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:InternalAPI.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyBase.GetCurrentFavouriteExchangeRate(InternalAPI.Contracts.GrpcContracts.FavouriteInfo,Grpc.Core.ServerCallContext)">
+            <summary>
+            Получает текущий курс для Избранного
+            </summary>
+            <param name="request">The request received from the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:InternalAPI.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyBase.GetFavouriteExchangeRateOnDate(InternalAPI.Contracts.GrpcContracts.FavouriteOnDateRequest,Grpc.Core.ServerCallContext)">
+            <summary>
+            Получает курс для Избранного на конкретную дату
             </summary>
             <param name="request">The request received from the client.</param>
             <param name="context">The context of the server-side call handler being invoked.</param>
