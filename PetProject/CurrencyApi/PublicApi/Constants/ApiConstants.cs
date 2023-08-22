@@ -19,6 +19,7 @@
         public static class ConnectionStringNames
         {
             public const string SummerSchool = "SummerSchool";
+            public const string DockerSummerSchool = "DockerSummerSchool";
         }
 
         public static class SchemaNames

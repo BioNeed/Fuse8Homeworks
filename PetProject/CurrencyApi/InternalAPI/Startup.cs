@@ -87,7 +87,7 @@ public class Startup
 
                 optionsBuilder.UseNpgsql(
                     connectionString: _configuration.GetConnectionString(
-                        ApiConstants.ConnectionStringNames.SummerSchool),
+                        ApiConstants.ConnectionStringNames.DockerSummerSchool),
                     npgsqlOptionsAction: sqlOptionsBuilder =>
                     {
                         sqlOptionsBuilder.EnableRetryOnFailure()

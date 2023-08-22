@@ -603,36 +603,6 @@
             Возвращает если не удалось получить доступ к API
             </response>
         </member>
-        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult">
-            <summary>
-            Результат проверки работоспособности API
-            </summary>
-        </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult.CheckedOn">
-            <summary>
-            Дата проверки
-            </summary>
-        </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult.Status">
-            <summary>
-            Статус работоспособности API
-            </summary>
-        </member>
-        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult.CheckStatus">
-            <summary>
-            Статус API
-            </summary>
-        </member>
-        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult.CheckStatus.Ok">
-            <summary>
-            API работает
-            </summary>
-        </member>
-        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult.CheckStatus.Failed">
-            <summary>
-            Ошибка в работе API
-            </summary>
-        </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.SettingsController">
             <summary>
             Методы для управления настройками приложения
@@ -1731,6 +1701,36 @@
         <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateWithBaseModel.Value">
             <summary>
             Курс валюты относительно базовой валюты
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.HealthCheckResult">
+            <summary>
+            Результат проверки работоспособности API
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.HealthCheckResult.CheckedOn">
+            <summary>
+            Дата проверки
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.HealthCheckResult.Status">
+            <summary>
+            Статус работоспособности API
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.HealthCheckResult.CheckStatus">
+            <summary>
+            Статус API
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.HealthCheckResult.CheckStatus.Ok">
+            <summary>
+            API работает
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.HealthCheckResult.CheckStatus.Failed">
+            <summary>
+            Ошибка в работе API
             </summary>
         </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.Settings">
