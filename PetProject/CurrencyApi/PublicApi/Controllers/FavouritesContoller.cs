@@ -98,7 +98,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
         /// Возвращает в случае других ошибок
         /// </response>
         [HttpPut("{newFavouriteName}")]
-        public async Task AddFavourite(
+        public async Task AddFavouriteAsync(
             string newFavouriteName,
             [Required] CurrencyType currency,
             [Required] CurrencyType baseCurrency,
@@ -138,7 +138,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
         /// Возвращает в случае других ошибок
         /// </response>
         [HttpPost("{favouriteName}")]
-        public async Task UpdateFavourite(
+        public async Task UpdateFavouriteAsync(
             string favouriteName,
             string? newFavouriteName,
             CurrencyType? currency,
@@ -159,6 +159,28 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
                 currency: currencyString,
                 baseCurrency: baseCurrencyString,
                 cancellationToken);
+        }
+
+        /// <summary>
+        /// Удалить существующее Избранное
+        /// </summary>
+        /// <param name="favouriteName">Название Избранного</param>
+        /// <param name="cancellationToken">Токен отмены</param>
+        /// <response code="200">
+        /// Возвращает, если удалось удалить Избранное
+        /// </response>
+        /// <response code="404">
+        /// Возвращает, если не существует Избранного с таким именем
+        /// </response>
+        /// <response code="500">
+        /// Возвращает в случае других ошибок
+        /// </response>
+        [HttpDelete("{favouriteName}")]
+        public async Task DeleteFavouriteAsync(
+            string favouriteName,
+            CancellationToken cancellationToken)
+        {
+            await _favouritesService.TryDeleteFavouriteAsync(favouriteName, cancellationToken);
         }
     }
 }

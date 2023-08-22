@@ -11,5 +11,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts
         Task AddFavouriteAsync(FavouriteExchangeRate favouriteToAdd, CancellationToken cancellationToken);
 
         Task UpdateFavouriteAsync(string name, FavouriteExchangeRate newFavouriteInfo, CancellationToken cancellationToken);
+
+        Task TryDeleteFavouriteAsync(string name, CancellationToken cancellationToken);
     }
 }

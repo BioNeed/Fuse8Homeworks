@@ -1,5 +1,7 @@
-﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts;
+﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.DataAccess;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -51,6 +53,26 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
             favouriteToUpdate.Name = newFavourite.Name;
             favouriteToUpdate.Currency = newFavourite.Currency;
             favouriteToUpdate.BaseCurrency = newFavourite.BaseCurrency;
+
+            await _userDbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task TryDeleteFavouriteAsync(
+            string name,
+            CancellationToken cancellationToken)
+        {
+            FavouriteExchangeRate? favouriteToDelete = await _userDbContext
+                .Favourites.FirstOrDefaultAsync(
+                    predicate: f => f.Name == name,
+                    cancellationToken: cancellationToken);
+
+            if (favouriteToDelete == null)
+            {
+                throw new DatabaseElementNotFoundException(
+                    ApiConstants.ErrorMessages.FavouriteNotFoundByNameExceptionMessage);
+            }
+
+            _userDbContext.Favourites.Remove(favouriteToDelete);
 
             await _userDbContext.SaveChangesAsync(cancellationToken);
         }

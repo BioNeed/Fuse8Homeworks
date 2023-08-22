@@ -1,4 +1,5 @@
-﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts;
+﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 
@@ -14,9 +15,6 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
 
         private const string ViolatingNotEqualCurrencyAndBaseCurrencyExceptionMessage =
             "У Избранного валюта не должна совпадать с базовой валютой";
-
-        private const string FavouriteWithSpecifiedNameNotFoundExceptionMessage =
-            "Избранное с указанным именем не найдено";
 
         private readonly IFavouritesRepository _favouritesRepository;
 
@@ -72,7 +70,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
             if (oldFavourite == null)
             {
                 throw new DatabaseElementNotFoundException(
-                    FavouriteWithSpecifiedNameNotFoundExceptionMessage);
+                    ApiConstants.ErrorMessages.FavouriteNotFoundByNameExceptionMessage);
             }
 
             bool changedName = newName != null &&
@@ -127,6 +125,11 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
                 name,
                 newFavourite,
                 cancellationToken);
+        }
+
+        public async Task TryDeleteFavouriteAsync(string name, CancellationToken cancellationToken)
+        {
+            await _favouritesRepository.TryDeleteFavouriteAsync(name, cancellationToken);
         }
 
         private void ThrowIfEqualCurrencyAndBaseCurrency(FavouriteExchangeRate favourite)

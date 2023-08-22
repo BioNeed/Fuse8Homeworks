@@ -9,6 +9,9 @@
 
             public const string InvalidDateFormatExceptionMessage =
                 "Неверно указана дата";
+
+            public const string FavouriteNotFoundByNameExceptionMessage =
+                "Избранное с указанным именем не найдено";
         }
 
         public static class Formats

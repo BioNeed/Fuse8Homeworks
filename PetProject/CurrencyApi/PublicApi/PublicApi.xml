@@ -286,7 +286,7 @@
             Возвращает в случае других ошибок
             </response>
         </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.FavouritesContoller.AddFavourite(System.String,Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType,Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType,System.Threading.CancellationToken)">
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.FavouritesContoller.AddFavouriteAsync(System.String,Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType,Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType,System.Threading.CancellationToken)">
             <summary>
             Добавить новое Избранное
             </summary>
@@ -307,7 +307,7 @@
             Возвращает в случае других ошибок
             </response>
         </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.FavouritesContoller.UpdateFavourite(System.String,System.String,System.Nullable{Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType},System.Nullable{Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType},System.Threading.CancellationToken)">
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.FavouritesContoller.UpdateFavouriteAsync(System.String,System.String,System.Nullable{Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType},System.Nullable{Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType},System.Threading.CancellationToken)">
             <summary>
             Изменить существующее Избранное
             </summary>
@@ -330,6 +330,22 @@
             1. Валюта совпадает с базовой валютой.
             2. Уже существует Избранное с таким именем
             3. Уже существует Избранное с таким набором (Валюта, Базовая валюта)
+            </response>
+            <response code="500">
+            Возвращает в случае других ошибок
+            </response>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.FavouritesContoller.DeleteFavouriteAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Удалить существующее Избранное
+            </summary>
+            <param name="favouriteName">Название Избранного</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="200">
+            Возвращает, если удалось удалить Избранное
+            </response>
+            <response code="404">
+            Возвращает, если не существует Избранного с таким именем
             </response>
             <response code="500">
             Возвращает в случае других ошибок
