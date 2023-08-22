@@ -6,6 +6,11 @@ namespace InternalAPI.Contracts;
 public interface ICachedCurrencyAPI
 {
     /// <summary>
+    /// Базовая валюта, относительно которой строится кэш
+    /// </summary>
+    public string BaseCurrency { get; }
+
+    /// <summary>
     /// Получает текущий курс
     /// </summary>
     /// <param name="currencyType">Валюта, для которой необходимо получить курс</param>

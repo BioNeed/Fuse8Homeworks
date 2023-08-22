@@ -4,6 +4,7 @@ using InternalAPI.Contracts;
 using InternalAPI.Contracts.GrpcContracts;
 using InternalAPI.Enums;
 using InternalAPI.Models;
+using System.Threading;
 
 namespace InternalAPI.Services
 {
@@ -19,7 +20,8 @@ namespace InternalAPI.Services
             _cachedCurrencyAPI = cachedCurrencyAPI;
         }
 
-        public override async Task<ExchangeRate> GetCurrentExchangeRate(CurrencyInfo currencyInfo, ServerCallContext context)
+        public override async Task<ExchangeRate> GetCurrentExchangeRate(
+            CurrencyInfo currencyInfo, ServerCallContext context)
         {
             CurrencyType currencyType = System.Enum.Parse<CurrencyType>(currencyInfo.CurrencyCode, true);
             ExchangeRateDTOModel exchangeRateDto = await _cachedCurrencyAPI
@@ -28,7 +30,8 @@ namespace InternalAPI.Services
             return MapDtoToExchangeRate(exchangeRateDto);
         }
 
-        public override async Task<ExchangeRate> GetExchangeRateOnDate(CurrencyOnDateRequest currencyOnDate, ServerCallContext context)
+        public override async Task<ExchangeRate> GetExchangeRateOnDate(
+            CurrencyOnDateRequest currencyOnDate, ServerCallContext context)
         {
             CurrencyType currencyType = System.Enum.Parse<CurrencyType>(currencyOnDate.CurrencyCode, true);
             DateOnly date = DateOnly.FromDateTime(currencyOnDate.Date.ToDateTime());
@@ -50,6 +53,39 @@ namespace InternalAPI.Services
             };
         }
 
+        public override async Task<ExchangeRateWithBase> GetCurrentFavouriteExchangeRate(
+            FavouriteInfo favouriteInfo, ServerCallContext context)
+        {
+            decimal favouriteExchangeRate = await
+                GetCurrentExchangeRateValueFromCacheAsync(favouriteInfo.Currency,
+                                                          context.CancellationToken);
+
+            if (_cachedCurrencyAPI.BaseCurrency.Equals(
+                    favouriteInfo.BaseCurrency, StringComparison.OrdinalIgnoreCase))
+            {
+                return new ExchangeRateWithBase
+                {
+                    BaseCurrency = favouriteInfo.BaseCurrency,
+                    Currency = favouriteInfo.Currency,
+                    Value = favouriteExchangeRate,
+                };
+            }
+
+            decimal favouriteBaseExchangeRate = await
+               GetCurrentExchangeRateValueFromCacheAsync(favouriteInfo.BaseCurrency,
+                                                         context.CancellationToken);
+
+            decimal resultExchangeRate = favouriteExchangeRate
+                                         / favouriteBaseExchangeRate;
+
+            return new ExchangeRateWithBase
+            {
+                BaseCurrency = favouriteInfo.BaseCurrency,
+                Currency = favouriteInfo.Currency,
+                Value = resultExchangeRate,
+            };
+        }
+
         private ExchangeRate MapDtoToExchangeRate(ExchangeRateDTOModel exchangeRateDTO)
         {
             return new ExchangeRate
@@ -57,6 +93,20 @@ namespace InternalAPI.Services
                 Code = exchangeRateDTO.CurrencyType.ToString(),
                 Value = exchangeRateDTO.Value,
             };
+        }
+
+        private async Task<decimal> GetCurrentExchangeRateValueFromCacheAsync(
+            string currency,
+            CancellationToken cancellationToken)
+        {
+            CurrencyType currencyType = System.Enum.Parse<CurrencyType>(
+                currency, ignoreCase: true);
+
+            ExchangeRateDTOModel exchangeRate = await _cachedCurrencyAPI
+                .GetCurrentExchangeRateAsync(currencyType,
+                                             cancellationToken);
+
+            return exchangeRate.Value;
         }
     }
 }

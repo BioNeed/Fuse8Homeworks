@@ -15,7 +15,7 @@ namespace InternalAPI.Services
             _currenciesDbContext = currenciesDbContext;
         }
 
-        public async Task<CachedExchangeRates?> GetLastCacheDataAsync(CancellationToken cancellationToken)
+        public async Task<CachedExchangeRates?> GetLastCachedExchangeRatesAsync(CancellationToken cancellationToken)
         {
             CachedExchangeRates cachedExchangeRates =
                 await _currenciesDbContext.CachedExchangeRates.AsNoTracking()

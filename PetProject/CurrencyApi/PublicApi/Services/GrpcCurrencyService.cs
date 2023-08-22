@@ -9,11 +9,13 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
     {
         private readonly GrpcCurrency.GrpcCurrencyClient _grpcCurrencyClient;
         private readonly ISettingsService _settingsService;
+        private readonly IFavouritesService _favouritesService;
 
-        public GrpcCurrencyService(GrpcCurrency.GrpcCurrencyClient grpcCurrencyClient, ISettingsService settingsService)
+        public GrpcCurrencyService(GrpcCurrency.GrpcCurrencyClient grpcCurrencyClient, ISettingsService settingsService, IFavouritesService favouritesService)
         {
             _grpcCurrencyClient = grpcCurrencyClient;
             _settingsService = settingsService;
+            _favouritesService = favouritesService;
         }
 
         public async Task<ExchangeRateModel> GetExchangeRateAsync(string currencyCode, CancellationToken cancellationToken)
@@ -48,7 +50,8 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
             };
 
             ExchangeRate exchangeRate = await _grpcCurrencyClient
-                .GetExchangeRateOnDateAsync(request, cancellationToken: cancellationToken);
+                .GetExchangeRateOnDateAsync(request,
+                                            cancellationToken: cancellationToken);
 
             Settings settings = await _settingsService.GetApplicationSettingsAsync(cancellationToken);
             decimal roundedValue = decimal.Round(exchangeRate.Value, settings.CurrencyRoundCount);
@@ -61,7 +64,10 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
 
         public async Task<CurrencyConfigurationModel> GetSettingsAsync(CancellationToken cancellationToken)
         {
-            ApiInfo apiInfo = await _grpcCurrencyClient.GetApiInfoAsync(new Empty(), cancellationToken: cancellationToken);
+            ApiInfo apiInfo = await _grpcCurrencyClient.GetApiInfoAsync(
+                new Empty(),
+                cancellationToken: cancellationToken);
+
             Settings settings = await _settingsService.GetApplicationSettingsAsync(cancellationToken);
 
             return new CurrencyConfigurationModel
@@ -70,6 +76,40 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
                 BaseCurrency = apiInfo.BaseCurrency,
                 NewRequestsAvailable = apiInfo.IsRequestAvailable,
                 CurrencyRoundCount = settings.CurrencyRoundCount,
+            };
+        }
+
+        public async Task<ExchangeRateWithBaseModel?> GetFavouriteExchangeRateAsync(
+            string favouriteName,
+            CancellationToken cancellationToken)
+        {
+            FavouriteExchangeRate? favourite = await _favouritesService
+                .GetFavouriteByNameAsync(favouriteName,
+                                         cancellationToken);
+
+            if (favourite == null)
+            {
+                return null;
+            }
+
+            FavouriteInfo favouriteInfo = new FavouriteInfo
+            {
+                BaseCurrency = favourite.BaseCurrency,
+                Currency = favourite.Currency,
+            };
+
+            ExchangeRateWithBase exchangeRateWithBase = await _grpcCurrencyClient
+                .GetCurrentFavouriteExchangeRateAsync(favouriteInfo,
+                                                      cancellationToken: cancellationToken);
+
+            Settings settings = await _settingsService.GetApplicationSettingsAsync(cancellationToken);
+            decimal roundedValue = decimal.Round(exchangeRateWithBase.Value, settings.CurrencyRoundCount);
+
+            return new ExchangeRateWithBaseModel
+            {
+                BaseCurrency = exchangeRateWithBase.BaseCurrency,
+                Currency = exchangeRateWithBase.Currency,
+                Value = roundedValue,
             };
         }
     }

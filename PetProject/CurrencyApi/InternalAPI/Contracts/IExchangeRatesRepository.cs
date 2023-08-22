@@ -4,7 +4,7 @@ namespace InternalAPI.Contracts
 {
     public interface IExchangeRatesRepository
     {
-        Task<CachedExchangeRates?> GetLastCacheDataAsync(CancellationToken cancellationToken);
+        Task<CachedExchangeRates?> GetLastCachedExchangeRatesAsync(CancellationToken cancellationToken);
 
         Task<CachedExchangeRates?> GetHistoricalCacheDataAsync(
             DateOnly date,

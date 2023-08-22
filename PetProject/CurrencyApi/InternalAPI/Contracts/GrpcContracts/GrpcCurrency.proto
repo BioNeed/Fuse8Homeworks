@@ -16,6 +16,8 @@ service GrpcCurrency {
 
   // Получает информацию об API
   rpc GetApiInfo (google.protobuf.Empty) returns (ApiInfo);
+
+  rpc GetCurrentFavouriteExchangeRate(FavouriteInfo) returns (ExchangeRateWithBase);
 }
 
 // Курс валюты
@@ -65,4 +67,27 @@ message ApiInfo {
 
     // Есть ли ещё доступные запросы
     bool is_request_available = 2;
+}
+
+// Информация об Избранном
+message FavouriteInfo {
+
+    // Валюта Избранного
+    string currency = 1;
+
+    // Базовая валюта Избранного
+    string base_currency = 2;
+}
+
+// Курс валюты с базовой валютой
+message ExchangeRateWithBase {
+
+	// Код валюты, в которой вычисляется курс
+    string currency = 1;
+
+    // Базовая валюта, относительно которой вычисляется курс
+    string base_currency = 2;
+
+    // Значение курса валют
+	DecimalValue value = 3;
 }

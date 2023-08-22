@@ -113,6 +113,56 @@
             Есть ли ещё доступные запросы
             </summary>
         </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteInfo">
+            <summary>
+            Информация об Избранном
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteInfo.CurrencyFieldNumber">
+            <summary>Field number for the "currency" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteInfo.Currency">
+            <summary>
+            Валюта Избранного
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteInfo.BaseCurrencyFieldNumber">
+            <summary>Field number for the "base_currency" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteInfo.BaseCurrency">
+            <summary>
+            Базовая валюта Избранного
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRateWithBase">
+            <summary>
+            Курс валюты с базовой валютой
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRateWithBase.CurrencyFieldNumber">
+            <summary>Field number for the "currency" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRateWithBase.Currency">
+            <summary>
+            Код валюты, в которой вычисляется курс
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRateWithBase.BaseCurrencyFieldNumber">
+            <summary>Field number for the "base_currency" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRateWithBase.BaseCurrency">
+            <summary>
+            Базовая валюта, относительно которой вычисляется курс
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRateWithBase.ValueFieldNumber">
+            <summary>Field number for the "value" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRateWithBase.Value">
+            <summary>
+            Значение курса валют
+            </summary>
+        </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency">
             <summary>
             Сервис для работы с валютами
@@ -399,6 +449,22 @@
             <param name="cancellationToken">Токен отмены</param>
             <response code="200">
             Возвращает, если удалось получить настройки приложения
+            </response>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController.GetFavouriteExchangeRateAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Получить курс Избранного
+            </summary>
+            <param name="favouriteName">Название Избранного, для которого узнать курс</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="200">
+            Возвращает, если удалось получить курс Избранного
+            </response>
+            <response code="404">
+            Возвращает, если нет Избранного с указанным именем
+            </response>
+            <response code="500">
+            Возвращает в случае других ошибок
             </response>
         </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.SettingsController">
@@ -1452,6 +1518,26 @@
             </summary>
         </member>
         <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateModel.Value">
+            <summary>
+            Курс валюты относительно базовой валюты
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateWithBaseModel">
+            <summary>
+            Курс валюты с базовой валютой
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateWithBaseModel.Currency">
+            <summary>
+            Код валюты, в которой вычисляется курс
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateWithBaseModel.BaseCurrency">
+            <summary>
+            Код базовой валюты, относительно которой вычисляется курс
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateWithBaseModel.Value">
             <summary>
             Курс валюты относительно базовой валюты
             </summary>

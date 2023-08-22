@@ -13,6 +13,10 @@
 		<NoWarn>$(NoWarn);1591</NoWarn>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <None Remove="Contracts\GrpcContracts\GrpcCurrency.proto" />
+	</ItemGroup>
+
     <ItemGroup>
         <PackageReference Include="Audit.HttpClient" Version="21.0.3" />
         <PackageReference Include="Audit.NET.Serilog" Version="21.0.3" />

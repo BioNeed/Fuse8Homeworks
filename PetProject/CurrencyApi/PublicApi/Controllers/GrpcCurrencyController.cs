@@ -1,6 +1,8 @@
 ﻿using System.Globalization;
+using System.Net;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Enums;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
@@ -105,6 +107,36 @@ public class GrpcCurrencyController : ControllerBase
     public async Task<CurrencyConfigurationModel> GetConfigSettingsAsync(CancellationToken cancellationToken)
     {
         return await _grpcCurrencyService.GetSettingsAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// Получить курс Избранного
+    /// </summary>
+    /// <param name="favouriteName">Название Избранного, для которого узнать курс</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    /// <response code="200">
+    /// Возвращает, если удалось получить курс Избранного
+    /// </response>
+    /// <response code="404">
+    /// Возвращает, если нет Избранного с указанным именем
+    /// </response>
+    /// <response code="500">
+    /// Возвращает в случае других ошибок
+    /// </response>
+    [HttpGet("favourite/{favouriteName}")]
+    public async Task<ExchangeRateWithBaseModel> GetFavouriteExchangeRateAsync(
+        string favouriteName,
+        CancellationToken cancellationToken)
+    {
+        ExchangeRateWithBaseModel? exchangeRateWithBase = await _grpcCurrencyService
+            .GetFavouriteExchangeRateAsync(favouriteName, cancellationToken);
+
+        if (exchangeRateWithBase == null)
+        {
+            Response.StatusCode = (int)HttpStatusCode.NotFound;
+        }
+
+        return exchangeRateWithBase;
     }
 
     private bool TryParseDateTime(string dateString, out DateTime dateTime)
