@@ -7,9 +7,6 @@
             public const string UnknownExceptionMessage =
                 "Произошла непредвиденная ошибка";
 
-            public const string InvalidDateFormatExceptionMessage =
-                "Неверно указана дата";
-
             public const string FavouriteNotFoundByNameExceptionMessage =
                 "Избранное с указанным именем не найдено";
         }
@@ -17,7 +14,6 @@
         public static class Formats
         {
             public const string DateFormat = "yyyy-MM-dd";
-            public const string FileNameDateTimeFormat = "yyyy-MM-dd HH-mm-ss";
         }
 
         public static class ConnectionStringNames

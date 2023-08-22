@@ -22,7 +22,7 @@ namespace InternalAPI.Services
                                IHttpContextAccessor httpContextAccessor,
                                IConfiguration configuration)
         {
-            _httpClient = httpClientFactory.CreateClient(ApiConstants.HttpClientNames.Default);
+            _httpClient = httpClientFactory.CreateClient(ApiConstants.HttpClientNames.CurrencyApi);
             _apiConfig = apiConfig;
             _usingByGrpc = httpContextAccessor.HttpContext.Connection.LocalPort ==
                 configuration.GetValue<int>(ApiConstants.PortNames.GrpcPort);

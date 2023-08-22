@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using static Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult;
+﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
+using Microsoft.AspNetCore.Mvc;
+using static Fuse8_ByteMinds.SummerSchool.PublicApi.Models.HealthCheckResult;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers;
 
@@ -21,36 +22,4 @@ public class HealthCheckController : ControllerBase
     /// </response>
     [HttpGet]
     public HealthCheckResult Check(bool? checkExternalApi) => new () { Status = CheckStatus.Ok, CheckedOn = DateTimeOffset.Now };
-}
-
-/// <summary>
-/// Результат проверки работоспособности API
-/// </summary>
-public record HealthCheckResult
-{
-    /// <summary>
-    /// Дата проверки
-    /// </summary>
-    public DateTimeOffset CheckedOn { get; init; }
-
-    /// <summary>
-    /// Статус работоспособности API
-    /// </summary>
-    public CheckStatus Status { get; init; }
-
-    /// <summary>
-    /// Статус API
-    /// </summary>
-    public enum CheckStatus
-    {
-        /// <summary>
-        /// API работает
-        /// </summary>
-        Ok = 1,
-
-        /// <summary>
-        /// Ошибка в работе API
-        /// </summary>
-        Failed = 2,
-    }
 }

@@ -29,17 +29,11 @@ namespace InternalAPI.Constants
         public static class Formats
         {
             public const string DateFormat = "yyyy-MM-dd";
-            public const string FileNameDateTimeFormat = "yyyy-MM-dd HH-mm-ss";
-        }
-
-        public static class RelativePaths
-        {
-            public const string CachedCurrenciesOnDates = @"/Cache/CachedCurrenciesOnDates";
         }
 
         public static class HttpClientNames
         {
-            public const string Default = "CurrencyApiClient";
+            public const string CurrencyApi = "CurrencyApiClient";
         }
 
         public static class PortNames

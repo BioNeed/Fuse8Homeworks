@@ -11,7 +11,7 @@ namespace InternalAPI.Services
 
         public HealthCheckService(IHttpClientFactory httpClientFactory)
         {
-            _httpClient = httpClientFactory.CreateClient(ApiConstants.HttpClientNames.Default);
+            _httpClient = httpClientFactory.CreateClient(ApiConstants.HttpClientNames.CurrencyApi);
         }
 
         public async Task<HealthCheckResult> CheckExternalApiAsync(CancellationToken cancellationToken)

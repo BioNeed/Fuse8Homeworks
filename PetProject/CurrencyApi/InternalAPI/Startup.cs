@@ -49,7 +49,7 @@ public class Startup
                     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 });
 
-        services.AddHttpClient(ApiConstants.HttpClientNames.Default, (provider, client) =>
+        services.AddHttpClient(ApiConstants.HttpClientNames.CurrencyApi, (provider, client) =>
             {
                 var apiSettings = provider.GetRequiredService<IOptionsMonitor<ApiSettingsModel>>();
                 client.BaseAddress = new Uri(apiSettings.CurrentValue.BaseAddress);
