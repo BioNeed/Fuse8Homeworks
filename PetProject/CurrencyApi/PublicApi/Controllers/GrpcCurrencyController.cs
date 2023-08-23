@@ -182,6 +182,7 @@ public class GrpcCurrencyController : ControllerBase
         if (exchangeRateWithBase == null)
         {
             Response.StatusCode = (int)HttpStatusCode.NotFound;
+            return null;
         }
 
         return new ExchangeRateWithBaseHistoricalModel
