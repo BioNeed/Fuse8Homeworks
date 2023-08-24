@@ -38,7 +38,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
         /// <summary>
         /// Изменить количество знаков после запятой для округления
         /// </summary>
-        /// <param name="newRoundCount">Новое значение - количество знаков после запятой у курса валют</param>
+        /// <param name="newRoundCount">Новое значение - количество знаков после запятой у курса валют. Допустимые значения = 1..8</param>
         /// <param name="cancellationToken">Токен отмены</param>
         /// <response code="200">
         /// Возвращает, если удалось изменить количество знаков после запятой

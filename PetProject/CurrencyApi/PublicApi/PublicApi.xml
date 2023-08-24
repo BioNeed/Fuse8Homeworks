@@ -471,7 +471,7 @@
             <response code="422">
             Возвращает, если
             1. Валюта совпадает с базовой валютой.
-            2. Уже существует Избранное с таким именем
+            2. Уже существует Избранное с указанным новым именем
             3. Уже существует Избранное с таким набором (Валюта, Базовая валюта)
             </response>
             <response code="500">
@@ -591,11 +591,10 @@
             Методы для проверки работоспособности PublicApi
             </summary>
         </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckController.Check(System.Nullable{System.Boolean})">
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckController.Check">
             <summary>
             Проверить что API работает
             </summary>
-            <param name="checkExternalApi">Необходимо проверить работоспособность внешнего API. Если FALSE или NULL - проверяется работоспособность только текущего API</param>
             <response code="200">
             Возвращает если удалось получить доступ к API
             </response>
@@ -622,7 +621,7 @@
             <summary>
             Изменить количество знаков после запятой для округления
             </summary>
-            <param name="newRoundCount">Новое значение - количество знаков после запятой у курса валют</param>
+            <param name="newRoundCount">Новое значение - количество знаков после запятой у курса валют. Допустимые значения = 1..8</param>
             <param name="cancellationToken">Токен отмены</param>
             <response code="200">
             Возвращает, если удалось изменить количество знаков после запятой

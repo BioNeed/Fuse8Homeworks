@@ -13,7 +13,6 @@ public class HealthCheckController : ControllerBase
     /// <summary>
     /// Проверить что API работает
     /// </summary>
-    /// <param name="checkExternalApi">Необходимо проверить работоспособность внешнего API. Если FALSE или NULL - проверяется работоспособность только текущего API</param>
     /// <response code="200">
     /// Возвращает если удалось получить доступ к API
     /// </response>
@@ -21,5 +20,5 @@ public class HealthCheckController : ControllerBase
     /// Возвращает если не удалось получить доступ к API
     /// </response>
     [HttpGet]
-    public HealthCheckResult Check(bool? checkExternalApi) => new () { Status = CheckStatus.Ok, CheckedOn = DateTimeOffset.Now };
+    public HealthCheckResult Check() => new () { Status = CheckStatus.Ok, CheckedOn = DateTimeOffset.Now };
 }
