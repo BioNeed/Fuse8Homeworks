@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace InternalAPI.Filters
 {
-    public class GlobalExceptionFilter : IExceptionFilter
+    internal class GlobalExceptionFilter : IExceptionFilter
     {
         private readonly ILogger<GlobalExceptionFilter> _logger;
 

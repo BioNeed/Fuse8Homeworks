@@ -4,7 +4,7 @@ using InternalAPI.Models;
 
 namespace InternalAPI.JsonConverters
 {
-    public class ApiStatusJsonConverter : JsonConverter<ApiStatusModel>
+    internal class ApiStatusJsonConverter : JsonConverter<ApiStatusModel>
     {
         public override ApiStatusModel Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

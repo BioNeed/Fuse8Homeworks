@@ -1,6 +1,6 @@
 ﻿namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Middlewares
 {
-    public class LoggingRequestsMiddleware
+    internal class LoggingRequestsMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<LoggingRequestsMiddleware> _logger;

@@ -4,7 +4,7 @@ using InternalAPI.Models;
 
 namespace InternalAPI.JsonConverters
 {
-    public class AllExchangeRatesHistoricalJsonConverter : JsonConverter<ExchangeRatesHistoricalModel>
+    internal class AllExchangeRatesHistoricalJsonConverter : JsonConverter<ExchangeRatesHistoricalModel>
     {
         public override ExchangeRatesHistoricalModel Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

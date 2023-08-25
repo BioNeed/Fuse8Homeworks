@@ -7,7 +7,7 @@ using UserDataAccessLibrary.Exceptions;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Filters
 {
-    public class GlobalExceptionFilter : IExceptionFilter
+    internal class GlobalExceptionFilter : IExceptionFilter
     {
         private readonly ILogger<GlobalExceptionFilter> _logger;
 

@@ -1,5 +1,4 @@
-﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
+﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts
 {
