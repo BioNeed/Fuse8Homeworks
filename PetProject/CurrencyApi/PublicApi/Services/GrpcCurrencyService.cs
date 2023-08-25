@@ -2,6 +2,7 @@
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 using Google.Protobuf.WellKnownTypes;
+using UserDataAccessLibrary.Models;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
 {

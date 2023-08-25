@@ -1,6 +1,7 @@
 ﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Enums;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
+using UserDataAccessLibrary.Contracts;
+using UserDataAccessLibrary.Models;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
 {
@@ -21,7 +22,8 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
         public async Task SetDefaultCurrencyAsync(CurrencyType currencyType,
                                                   CancellationToken cancellationToken)
         {
-            await _settingsRepository.SetDefaultCurrencyAsync(currencyType, cancellationToken);
+            await _settingsRepository.SetDefaultCurrencyAsync(currencyType.ToString(),
+                                                              cancellationToken);
         }
 
         public async Task SetCurrencyRoundCountAsync(int newRoundCount,

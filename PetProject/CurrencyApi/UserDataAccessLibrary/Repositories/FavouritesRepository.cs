@@ -1,14 +1,16 @@
-﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.DataAccess;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using UserDataAccessLibrary.Contracts;
+using UserDataAccessLibrary.Database;
+using UserDataAccessLibrary.Exceptions;
+using UserDataAccessLibrary.Models;
 
-namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
+namespace UserDataAccessLibrary.Repositories
 {
     public class FavouritesRepository : IFavouritesRepository
     {
+        private const string FavouriteNotFoundByNameExceptionMessage =
+                "Избранное с указанным именем не найдено";
+
         private readonly UserDbContext _userDbContext;
 
         public FavouritesRepository(UserDbContext userDbContext)
@@ -69,7 +71,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
             if (favouriteToDelete == null)
             {
                 throw new DatabaseElementNotFoundException(
-                    ApiConstants.ErrorMessages.FavouriteNotFoundByNameExceptionMessage);
+                    FavouriteNotFoundByNameExceptionMessage);
             }
 
             _userDbContext.Favourites.Remove(favouriteToDelete);

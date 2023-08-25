@@ -4,6 +4,7 @@ using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Enums;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using UserDataAccessLibrary.Models;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
 {

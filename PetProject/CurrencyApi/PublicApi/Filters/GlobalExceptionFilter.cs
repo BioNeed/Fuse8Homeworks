@@ -3,6 +3,7 @@ using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions;
 using Grpc.Core;
 using Microsoft.AspNetCore.Mvc.Filters;
+using UserDataAccessLibrary.Exceptions;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Filters
 {

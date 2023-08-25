@@ -1,8 +1,8 @@
-﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using UserDataAccessLibrary.Models;
 
-namespace Fuse8_ByteMinds.SummerSchool.PublicApi.DataAccess.Configurations
+namespace UserDataAccessLibrary.Database.Configurations
 {
     public class SettingsConfiguration
         : IEntityTypeConfiguration<Settings>

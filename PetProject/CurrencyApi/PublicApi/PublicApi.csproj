@@ -43,6 +43,10 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\UserDataAccessLibrary\UserDataAccessLibrary.csproj" />
+    </ItemGroup>
+
   <ItemGroup>
     <Protobuf Include="Contracts\GrpcContracts\GrpcCurrency.proto" GrpcServices="Client" />
   </ItemGroup>

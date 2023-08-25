@@ -1,5 +1,5 @@
 ﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Enums;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
+using UserDataAccessLibrary.Models;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts
 {

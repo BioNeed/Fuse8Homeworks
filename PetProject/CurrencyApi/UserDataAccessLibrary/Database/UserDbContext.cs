@@ -1,9 +1,9 @@
-﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.DataAccess.Configurations;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using UserDataAccessLibrary.Constants;
+using UserDataAccessLibrary.Database.Configurations;
+using UserDataAccessLibrary.Models;
 
-namespace Fuse8_ByteMinds.SummerSchool.PublicApi.DataAccess
+namespace UserDataAccessLibrary.Database
 {
     public class UserDbContext : DbContext
     {
@@ -18,7 +18,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema(ApiConstants.SchemaNames.User);
+            modelBuilder.HasDefaultSchema(LibraryConstants.SchemaNames.User);
             modelBuilder.ApplyConfigurationsFromAssembly(
                 assembly: GetType().Assembly,
                 predicate: p => p.Namespace == typeof(SettingsConfiguration).Namespace);

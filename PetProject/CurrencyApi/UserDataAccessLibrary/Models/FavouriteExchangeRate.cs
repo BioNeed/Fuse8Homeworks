@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Models
+namespace UserDataAccessLibrary.Models
 {
     public class FavouriteExchangeRate
     {

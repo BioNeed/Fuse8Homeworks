@@ -4,7 +4,6 @@ using Audit.NET.Serilog.Providers;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.DataAccess;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Filters;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Middlewares;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
@@ -15,6 +14,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using UserDataAccessLibrary.Contracts;
+using UserDataAccessLibrary.Database;
+using UserDataAccessLibrary.Repositories;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi;
 

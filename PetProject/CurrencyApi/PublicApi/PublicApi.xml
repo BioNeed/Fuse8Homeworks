@@ -1527,66 +1527,6 @@
             Cardano
             </summary>
         </member>
-        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.InitialCreate">
-            <inheritdoc />
-        </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.CreateSettingsTable">
-            <inheritdoc />
-        </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.CreateSettingsTable.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.CreateSettingsTable.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.CreateSettingsTable.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.CreateFavouriteExchangeRatesTable">
-            <inheritdoc />
-        </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.CreateFavouriteExchangeRatesTable.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.CreateFavouriteExchangeRatesTable.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.CreateFavouriteExchangeRatesTable.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.UpdateTableName">
-            <inheritdoc />
-        </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.UpdateTableName.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.UpdateTableName.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.UpdateTableName.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.AddCurrenciesToSettingsTable">
-            <inheritdoc />
-        </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.AddCurrenciesToSettingsTable.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.AddCurrenciesToSettingsTable.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations.AddCurrenciesToSettingsTable.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ApiSettingsModel">
             <summary>
             Настройки API
@@ -1730,22 +1670,6 @@
         <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.HealthCheckResult.CheckStatus.Failed">
             <summary>
             Ошибка в работе API
-            </summary>
-        </member>
-        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.Settings">
-            <summary>
-            Настройки приложения
-            </summary>
-        </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.Settings.DefaultCurrency">
-            <summary>
-            Валюта по умолчанию, в которой узнать курс
-            </summary>
-        </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.Settings.CurrencyRoundCount">
-            <summary>
-            Количество знаков после запятой, до которого следует
-            округлять значение курса валют
             </summary>
         </member>
     </members>

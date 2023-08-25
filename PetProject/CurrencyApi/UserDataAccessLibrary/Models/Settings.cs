@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Enums;
+using UserDataAccessLibrary.Enums;
 
-namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Models
+namespace UserDataAccessLibrary.Models
 {
     /// <summary>
     /// Настройки приложения

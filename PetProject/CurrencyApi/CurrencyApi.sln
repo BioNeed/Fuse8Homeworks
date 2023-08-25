@@ -14,6 +14,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InternalAPI", "InternalAPI\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrenciesDataAccessLibrary", "CurrenciesDataAccessLibrary\CurrenciesDataAccessLibrary.csproj", "{67A15112-2DEB-4EB7-B729-7951D0F3452B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserDataAccessLibrary", "UserDataAccessLibrary\UserDataAccessLibrary.csproj", "{1EFE4A94-30F1-4FD7-A572-57F462E25985}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{67A15112-2DEB-4EB7-B729-7951D0F3452B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67A15112-2DEB-4EB7-B729-7951D0F3452B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67A15112-2DEB-4EB7-B729-7951D0F3452B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EFE4A94-30F1-4FD7-A572-57F462E25985}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EFE4A94-30F1-4FD7-A572-57F462E25985}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EFE4A94-30F1-4FD7-A572-57F462E25985}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EFE4A94-30F1-4FD7-A572-57F462E25985}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

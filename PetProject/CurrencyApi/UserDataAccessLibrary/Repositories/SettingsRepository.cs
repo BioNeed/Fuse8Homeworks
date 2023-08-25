@@ -1,10 +1,10 @@
-﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.DataAccess;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Enums;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using UserDataAccessLibrary.Contracts;
+using UserDataAccessLibrary.Database;
+using UserDataAccessLibrary.Enums;
+using UserDataAccessLibrary.Models;
 
-namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
+namespace UserDataAccessLibrary.Repositories
 {
     public class SettingsRepository : ISettingsRepository
     {
@@ -20,11 +20,15 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
             return await _userDbContext.Settings.AsNoTracking().FirstAsync(cancellationToken);
         }
 
-        public async Task SetDefaultCurrencyAsync(CurrencyType newDefaultCurrency,
+        public async Task SetDefaultCurrencyAsync(string newDefaultCurrency,
                                                   CancellationToken cancellationToken)
         {
+            CurrencyType defaultCurrency = Enum.Parse<CurrencyType>(
+                newDefaultCurrency,
+                true);
+
             Settings settings = await _userDbContext.Settings.FirstAsync(cancellationToken);
-            settings.DefaultCurrency = newDefaultCurrency;
+            settings.DefaultCurrency = defaultCurrency;
 
             _userDbContext.SaveChanges();
         }

@@ -1,7 +1,10 @@
 ﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Extensions;
+using UserDataAccessLibrary.Contracts;
+using UserDataAccessLibrary.Exceptions;
+using UserDataAccessLibrary.Models;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
 {
@@ -73,24 +76,12 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
                     ApiConstants.ErrorMessages.FavouriteNotFoundByNameExceptionMessage);
             }
 
-            bool changedName = newName != null &&
-                newName.Equals(
-                    oldFavourite.Name,
-                    StringComparison.OrdinalIgnoreCase) == false;
+            (bool isNameChanged, bool isCurrencyChanged, bool isBaseCurrencyChanged) =
+                oldFavourite.CheckIfFavouriteChanged(newName, currency, baseCurrency);
 
-            bool changedCurrency = currency != null &&
-                currency.Equals(
-                    oldFavourite.Currency,
-                    StringComparison.OrdinalIgnoreCase) == false;
-
-            bool changedBaseCurrency = baseCurrency != null &&
-                baseCurrency.Equals(
-                    oldFavourite.BaseCurrency,
-                    StringComparison.OrdinalIgnoreCase) == false;
-
-            if (changedName == false &&
-                changedCurrency == false &&
-                changedBaseCurrency == false)
+            if (isNameChanged == false &&
+                isCurrencyChanged == false &&
+                isBaseCurrencyChanged == false)
             {
                 return;
             }
@@ -98,10 +89,10 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
             FavouriteExchangeRate newFavourite = new FavouriteExchangeRate
             {
                 Name = newName ?? oldFavourite.Name,
-                Currency = changedCurrency
+                Currency = isCurrencyChanged
                     ? currency!
                     : oldFavourite!.Currency,
-                BaseCurrency = changedBaseCurrency
+                BaseCurrency = isBaseCurrencyChanged
                     ? baseCurrency!
                     : oldFavourite!.BaseCurrency,
             };
@@ -109,13 +100,13 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
             FavouriteExchangeRate[]? favourites =
                 await GetAllFavouritesAsync(cancellationToken);
 
-            if (changedName == true)
+            if (isNameChanged == true)
             {
                 ThrowIfNotUniqueFavouriteName(newFavourite, favourites);
             }
 
-            if (changedCurrency == true ||
-                changedBaseCurrency == true)
+            if (isCurrencyChanged == true ||
+                isBaseCurrencyChanged == true)
             {
                 ThrowIfEqualCurrencyAndBaseCurrency(newFavourite);
                 ThrowIfNotUniqueCurrencyAndBaseCurrency(newFavourite, favourites);

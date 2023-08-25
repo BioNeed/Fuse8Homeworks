@@ -1,4 +1,4 @@
-﻿namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions
+﻿namespace UserDataAccessLibrary.Exceptions
 {
     public class DatabaseElementNotFoundException : Exception
     {

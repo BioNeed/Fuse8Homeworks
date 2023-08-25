@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Migrations
+namespace UserDataAccessLibrary.Migrations
 {
     /// <inheritdoc />
     public partial class AddCurrenciesToSettingsTable : Migration
