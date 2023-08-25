@@ -1,6 +1,6 @@
-﻿using InternalAPI.Models;
+﻿using CurrenciesDataAccessLibrary.Models;
 
-namespace InternalAPI.Contracts
+namespace CurrenciesDataAccessLibrary.Contracts
 {
     public interface IExchangeRatesRepository
     {

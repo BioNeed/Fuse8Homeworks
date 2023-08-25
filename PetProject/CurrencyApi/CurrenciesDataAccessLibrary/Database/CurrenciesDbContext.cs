@@ -1,9 +1,9 @@
-﻿using InternalAPI.Constants;
-using InternalAPI.DataAccess.Configurations;
-using InternalAPI.Models;
+﻿using CurrenciesDataAccessLibrary.Constants;
+using CurrenciesDataAccessLibrary.DataAccess.Configurations;
+using CurrenciesDataAccessLibrary.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace InternalAPI.DataAccess
+namespace CurrenciesDataAccessLibrary.DataAccess
 {
     public class CurrenciesDbContext : DbContext
     {
@@ -16,7 +16,7 @@ namespace InternalAPI.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema(ApiConstants.SchemaNames.Currencies);
+            modelBuilder.HasDefaultSchema(LibraryConstants.SchemaNames.Currencies);
             modelBuilder.ApplyConfigurationsFromAssembly(
                 assembly: GetType().Assembly,
                 predicate: p => p.Namespace == typeof(CachedExchangeRatesConfiguration).Namespace);

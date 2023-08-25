@@ -1,10 +1,9 @@
-﻿using System.Linq;
-using InternalAPI.Contracts;
-using InternalAPI.DataAccess;
-using InternalAPI.Models;
+﻿using CurrenciesDataAccessLibrary.Contracts;
+using CurrenciesDataAccessLibrary.DataAccess;
+using CurrenciesDataAccessLibrary.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace InternalAPI.Services
+namespace CurrenciesDataAccessLibrary.Repositories
 {
     public class ExchangeRatesRepository : IExchangeRatesRepository
     {

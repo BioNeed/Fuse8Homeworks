@@ -1,4 +1,5 @@
-﻿using Google.Protobuf.WellKnownTypes;
+﻿using CurrenciesDataAccessLibrary.Models;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using InternalAPI.Contracts;
 using InternalAPI.Contracts.GrpcContracts;

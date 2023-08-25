@@ -1,9 +1,11 @@
 ﻿using System.Text.Json.Serialization;
 using Audit.Http;
 using Audit.NET.Serilog.Providers;
+using CurrenciesDataAccessLibrary.Contracts;
+using CurrenciesDataAccessLibrary.DataAccess;
+using CurrenciesDataAccessLibrary.Repositories;
 using InternalAPI.Constants;
 using InternalAPI.Contracts;
-using InternalAPI.DataAccess;
 using InternalAPI.Filters;
 using InternalAPI.Middlewares;
 using InternalAPI.Models;

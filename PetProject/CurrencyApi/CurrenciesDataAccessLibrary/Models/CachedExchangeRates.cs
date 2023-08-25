@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 
-namespace InternalAPI.Models
+namespace CurrenciesDataAccessLibrary.Models
 {
     public class CachedExchangeRates
     {

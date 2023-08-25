@@ -1,5 +1,5 @@
-﻿using InternalAPI.Enums;
-using InternalAPI.Models;
+﻿using CurrenciesDataAccessLibrary.Models;
+using InternalAPI.Enums;
 
 namespace InternalAPI.Contracts;
 

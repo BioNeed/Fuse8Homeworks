@@ -1,8 +1,8 @@
-﻿using InternalAPI.Models;
+﻿using CurrenciesDataAccessLibrary.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace InternalAPI.DataAccess.Configurations
+namespace CurrenciesDataAccessLibrary.DataAccess.Configurations
 {
     public class CachedExchangeRatesConfiguration
         : IEntityTypeConfiguration<CachedExchangeRates>

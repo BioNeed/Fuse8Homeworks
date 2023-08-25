@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace InternalAPI.Migrations
+namespace CurrenciesDataAccessLibrary.Migrations
 {
     /// <inheritdoc />
     public partial class AddDateConstraint : Migration

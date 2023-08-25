@@ -1,4 +1,5 @@
-﻿using InternalAPI.Models;
+﻿using CurrenciesDataAccessLibrary.Models;
+using InternalAPI.Models;
 
 namespace InternalAPI.Extensions
 {

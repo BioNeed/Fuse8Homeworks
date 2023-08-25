@@ -1,4 +1,6 @@
-﻿using Grpc.Core;
+﻿using CurrenciesDataAccessLibrary.Contracts;
+using CurrenciesDataAccessLibrary.Models;
+using Grpc.Core;
 using InternalAPI.Constants;
 using InternalAPI.Contracts;
 using InternalAPI.Enums;

@@ -1,6 +1,4 @@
-﻿using InternalAPI.Enums;
-
-namespace InternalAPI.Models
+﻿namespace CurrenciesDataAccessLibrary.Models
 {
     /// <summary>
     /// Курс валюты

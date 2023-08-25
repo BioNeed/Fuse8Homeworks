@@ -1252,42 +1252,6 @@
             Cardano
             </summary>
         </member>
-        <member name="T:InternalAPI.Migrations.InitialCreate">
-            <inheritdoc />
-        </member>
-        <member name="M:InternalAPI.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:InternalAPI.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:InternalAPI.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:InternalAPI.Migrations.CreatedTableCachedExchangeRates">
-            <inheritdoc />
-        </member>
-        <member name="M:InternalAPI.Migrations.CreatedTableCachedExchangeRates.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:InternalAPI.Migrations.CreatedTableCachedExchangeRates.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:InternalAPI.Migrations.CreatedTableCachedExchangeRates.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:InternalAPI.Migrations.AddDateConstraint">
-            <inheritdoc />
-        </member>
-        <member name="M:InternalAPI.Migrations.AddDateConstraint.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:InternalAPI.Migrations.AddDateConstraint.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:InternalAPI.Migrations.AddDateConstraint.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
         <member name="T:InternalAPI.Models.ApiInfoModel">
             <summary>
             Настройки приложения и доступные запросы
@@ -1336,21 +1300,6 @@
         <member name="P:InternalAPI.Models.ApiStatusModel.UsedRequests">
             <summary>
             Количество использованных запросов
-            </summary>
-        </member>
-        <member name="T:InternalAPI.Models.ExchangeRateDTOModel">
-            <summary>
-            Курс валюты
-            </summary>
-        </member>
-        <member name="P:InternalAPI.Models.ExchangeRateDTOModel.Code">
-            <summary>
-            Валюта
-            </summary>
-        </member>
-        <member name="P:InternalAPI.Models.ExchangeRateDTOModel.Value">
-            <summary>
-            Значение курса
             </summary>
         </member>
         <member name="T:InternalAPI.Models.ExchangeRateHistoricalModel">
