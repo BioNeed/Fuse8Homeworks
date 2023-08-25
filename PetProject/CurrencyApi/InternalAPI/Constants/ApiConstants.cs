@@ -1,6 +1,4 @@
-﻿using Grpc.Net.Client.Balancer;
-
-namespace InternalAPI.Constants
+﻿namespace InternalAPI.Constants
 {
     public static class ApiConstants
     {
@@ -46,11 +44,6 @@ namespace InternalAPI.Constants
         {
             public const string SummerSchool = "SummerSchool";
             public const string DockerSummerSchool = "DockerSummerSchool";
-        }
-
-        public static class SchemaNames
-        {
-            public const string Currencies = "cur";
         }
     }
 }

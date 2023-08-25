@@ -9,7 +9,7 @@
 
         public static class ErrorMessages
         {
-            public const string User = "Валюты с указанным кодом не существует";
+            public const string FavouriteNotFoundByNameExceptionMessage = "Валюты с указанным кодом не существует";
         }
     }
 }

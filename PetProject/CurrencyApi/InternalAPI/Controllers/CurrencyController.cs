@@ -5,7 +5,6 @@ using CurrenciesDataAccessLibrary.Models;
 using InternalAPI.Constants;
 using InternalAPI.Contracts;
 using InternalAPI.Enums;
-using InternalAPI.Exceptions;
 using InternalAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 

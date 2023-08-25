@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using UserDataAccessLibrary.Constants;
 using UserDataAccessLibrary.Contracts;
 using UserDataAccessLibrary.Database;
 using UserDataAccessLibrary.Repositories;
@@ -88,7 +89,7 @@ public class Startup
                         sqlOptionsBuilder.EnableRetryOnFailure()
                             .MigrationsHistoryTable(
                                 HistoryRepository.DefaultTableName,
-                                ApiConstants.SchemaNames.User);
+                                LibraryConstants.SchemaNames.User);
                     })
                 .UseSnakeCaseNamingConvention()
                 .UseAllCheckConstraints()

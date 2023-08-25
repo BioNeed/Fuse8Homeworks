@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Audit.Http;
 using Audit.NET.Serilog.Providers;
+using CurrenciesDataAccessLibrary.Constants;
 using CurrenciesDataAccessLibrary.Contracts;
 using CurrenciesDataAccessLibrary.DataAccess;
 using CurrenciesDataAccessLibrary.Repositories;
@@ -95,7 +96,7 @@ public class Startup
                         sqlOptionsBuilder.EnableRetryOnFailure()
                             .MigrationsHistoryTable(
                                 HistoryRepository.DefaultTableName,
-                                ApiConstants.SchemaNames.Currencies);
+                                LibraryConstants.SchemaNames.Currencies);
                     })
                 .UseSnakeCaseNamingConvention()
                 .UseAllCheckConstraints()

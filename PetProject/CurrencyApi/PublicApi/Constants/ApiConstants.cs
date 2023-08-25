@@ -21,10 +21,5 @@
             public const string SummerSchool = "SummerSchool";
             public const string DockerSummerSchool = "DockerSummerSchool";
         }
-
-        public static class SchemaNames
-        {
-            public const string User = "user";
-        }
     }
 }

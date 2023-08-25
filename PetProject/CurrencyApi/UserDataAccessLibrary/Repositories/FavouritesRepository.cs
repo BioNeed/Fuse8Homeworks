@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UserDataAccessLibrary.Constants;
 using UserDataAccessLibrary.Contracts;
 using UserDataAccessLibrary.Database;
 using UserDataAccessLibrary.Exceptions;
@@ -8,9 +9,6 @@ namespace UserDataAccessLibrary.Repositories
 {
     public class FavouritesRepository : IFavouritesRepository
     {
-        private const string FavouriteNotFoundByNameExceptionMessage =
-                "Избранное с указанным именем не найдено";
-
         private readonly UserDbContext _userDbContext;
 
         public FavouritesRepository(UserDbContext userDbContext)
@@ -71,7 +69,7 @@ namespace UserDataAccessLibrary.Repositories
             if (favouriteToDelete == null)
             {
                 throw new DatabaseElementNotFoundException(
-                    FavouriteNotFoundByNameExceptionMessage);
+                    LibraryConstants.ErrorMessages.FavouriteNotFoundByNameExceptionMessage);
             }
 
             _userDbContext.Favourites.Remove(favouriteToDelete);

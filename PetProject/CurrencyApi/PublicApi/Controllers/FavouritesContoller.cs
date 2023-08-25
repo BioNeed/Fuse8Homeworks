@@ -146,13 +146,8 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
             CurrencyType? baseCurrency,
             CancellationToken cancellationToken)
         {
-            string? currencyString = currency != null
-                                    ? currency.ToString()
-                                    : null;
-
-            string baseCurrencyString = baseCurrency != null
-                                        ? baseCurrency.ToString()
-                                        : null;
+            string? currencyString = currency?.ToString();
+            string? baseCurrencyString = baseCurrency?.ToString();
 
             await _favouritesService.TryUpdateFavouriteAsync(
                 name: favouriteName,
