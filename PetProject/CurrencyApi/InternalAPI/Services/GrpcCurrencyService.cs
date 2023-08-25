@@ -57,7 +57,7 @@ namespace InternalAPI.Services
         {
             ExchangeRateDTOModel favouriteExchangeRate = await
                 GetCurrentExchangeRateDtoAsync(favouriteInfo.Currency,
-                                                          context.CancellationToken);
+                                               context.CancellationToken);
 
             if (_cachedCurrencyAPI.BaseCurrency.Equals(
                     favouriteInfo.BaseCurrency, StringComparison.OrdinalIgnoreCase))
@@ -72,7 +72,7 @@ namespace InternalAPI.Services
 
             ExchangeRateDTOModel favouriteBaseExchangeRate = await
                GetCurrentExchangeRateDtoAsync(favouriteInfo.BaseCurrency,
-                                                         context.CancellationToken);
+                                              context.CancellationToken);
 
             decimal resultExchangeRate = favouriteExchangeRate.Value
                                          / favouriteBaseExchangeRate.Value;
