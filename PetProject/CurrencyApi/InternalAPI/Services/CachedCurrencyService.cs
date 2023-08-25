@@ -3,6 +3,7 @@ using InternalAPI.Constants;
 using InternalAPI.Contracts;
 using InternalAPI.Enums;
 using InternalAPI.Exceptions;
+using InternalAPI.Extensions;
 using InternalAPI.Models;
 using Microsoft.Extensions.Options;
 
@@ -71,7 +72,7 @@ namespace InternalAPI.Services
 
             await _exchangeRatesRepository.SaveCacheDataAsync(
                 BaseCurrency,
-                currentExchangeRates,
+                currentExchangeRates.MapExchangeRatesToDTOs(),
                 currentDateTime,
                 cancellationToken);
 
@@ -95,7 +96,7 @@ namespace InternalAPI.Services
 
             await _exchangeRatesRepository.SaveCacheDataAsync(
                 BaseCurrency,
-                exchangeRatesHistorical.ExchangeRates,
+                exchangeRatesHistorical.ExchangeRates.MapExchangeRatesToDTOs(),
                 exchangeRatesHistorical.LastUpdatedAt,
                 cancellationToken);
 
@@ -104,14 +105,35 @@ namespace InternalAPI.Services
 
         private ExchangeRateDTOModel FindExchangeRateDTOByType(CurrencyType currencyType, ExchangeRateModel[] exchangeRates)
         {
+            string currencyCode = currencyType.ToString();
+
             foreach (ExchangeRateModel exchangeRate in exchangeRates)
             {
-                if (exchangeRate.Code.Equals(currencyType.ToString(), StringComparison.OrdinalIgnoreCase))
+                if (exchangeRate.Code.Equals(currencyCode, StringComparison.OrdinalIgnoreCase))
                 {
                     return new ExchangeRateDTOModel
                     {
-                        CurrencyType = currencyType,
+                        Code = currencyCode,
                         Value = exchangeRate.Value,
+                    };
+                }
+            }
+
+            throw new InvalidOperationException();
+        }
+
+        private ExchangeRateDTOModel FindExchangeRateDTOByType(CurrencyType currencyType, ExchangeRateDTOModel[] exchangeRates)
+        {
+            string currencyCode = currencyType.ToString();
+
+            foreach (ExchangeRateDTOModel exchangeRateDTO in exchangeRates)
+            {
+                if (exchangeRateDTO.Code.Equals(currencyCode, StringComparison.OrdinalIgnoreCase))
+                {
+                    return new ExchangeRateDTOModel
+                    {
+                        Code = currencyCode,
+                        Value = exchangeRateDTO.Value,
                     };
                 }
             }

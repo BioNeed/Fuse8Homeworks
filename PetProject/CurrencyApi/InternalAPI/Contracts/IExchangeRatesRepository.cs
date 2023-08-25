@@ -11,7 +11,7 @@ namespace InternalAPI.Contracts
             CancellationToken cancellationToken);
 
         Task SaveCacheDataAsync(string baseCurrency,
-                                ExchangeRateModel[] exchangeRates,
+                                ExchangeRateDTOModel[] exchangeRates,
                                 DateTime relevantOnDate,
                                 CancellationToken cancellationToken);
     }

@@ -1343,7 +1343,7 @@
             Курс валюты
             </summary>
         </member>
-        <member name="P:InternalAPI.Models.ExchangeRateDTOModel.CurrencyType">
+        <member name="P:InternalAPI.Models.ExchangeRateDTOModel.Code">
             <summary>
             Валюта
             </summary>

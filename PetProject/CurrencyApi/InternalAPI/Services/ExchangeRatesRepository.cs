@@ -42,7 +42,7 @@ namespace InternalAPI.Services
         }
 
         public async Task SaveCacheDataAsync(string baseCurrency,
-                                             ExchangeRateModel[] exchangeRates,
+                                             ExchangeRateDTOModel[] exchangeRates,
                                              DateTime relevantOnDate,
                                              CancellationToken cancellationToken)
         {

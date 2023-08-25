@@ -5,7 +5,7 @@ namespace InternalAPI.Models
 {
     public class CachedExchangeRates
     {
-        private ExchangeRateModel[]? _exchangeRates;
+        private ExchangeRateDTOModel[]? _exchangeRates;
 
         public DateTime RelevantOnDate { get; set; }
 
@@ -14,12 +14,12 @@ namespace InternalAPI.Models
 
         public string ExchangeRatesJson { get; set; }
 
-        public ExchangeRateModel[] ExchangeRates
+        public ExchangeRateDTOModel[] ExchangeRates
         {
             get
             {
                 _exchangeRates ??= JsonSerializer
-                            .Deserialize<ExchangeRateModel[]>(ExchangeRatesJson)!;
+                            .Deserialize<ExchangeRateDTOModel[]>(ExchangeRatesJson)!;
 
                 return _exchangeRates;
             }

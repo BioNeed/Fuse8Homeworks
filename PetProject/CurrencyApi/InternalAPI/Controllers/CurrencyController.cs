@@ -49,7 +49,7 @@ public class CurrencyController : ControllerBase
 
         return new ExchangeRateModel
         {
-            Code = exchangeRateDTO.CurrencyType.ToString(),
+            Code = exchangeRateDTO.Code.ToString(),
             Value = exchangeRateDTO.Value,
         };
     }
@@ -89,7 +89,7 @@ public class CurrencyController : ControllerBase
 
         return new ExchangeRateHistoricalModel
         {
-            Code = exchangeRateDTO.CurrencyType.ToString(),
+            Code = exchangeRateDTO.Code.ToString(),
             Date = dateString,
             Value = exchangeRateDTO.Value,
         };

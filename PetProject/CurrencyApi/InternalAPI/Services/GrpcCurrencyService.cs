@@ -124,7 +124,7 @@ namespace InternalAPI.Services
         {
             return new ExchangeRate
             {
-                Code = exchangeRateDTO.CurrencyType.ToString(),
+                Code = exchangeRateDTO.Code.ToString(),
                 Value = exchangeRateDTO.Value,
             };
         }

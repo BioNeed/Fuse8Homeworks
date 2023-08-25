@@ -10,7 +10,7 @@ namespace InternalAPI.Models
         /// <summary>
         /// Валюта
         /// </summary>
-        public CurrencyType CurrencyType { get; set; }
+        public string Code { get; set; }
 
         /// <summary>
         /// Значение курса
