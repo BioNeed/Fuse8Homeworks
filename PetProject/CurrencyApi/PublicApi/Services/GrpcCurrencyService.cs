@@ -1,5 +1,6 @@
 ﻿using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts;
+using Fuse8_ByteMinds.SummerSchool.PublicApi.Enums;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 using Google.Protobuf.WellKnownTypes;
 using UserDataAccessLibrary.Models;
@@ -19,18 +20,23 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
             _favouritesService = favouritesService;
         }
 
-        public async Task<ExchangeRateModel> GetExchangeRateAsync(string currencyCode, CancellationToken cancellationToken)
+        public async Task<ExchangeRateModel> GetExchangeRateAsync(CurrencyType? currencyType, CancellationToken cancellationToken)
         {
+            Settings settings = await _settingsService.GetApplicationSettingsAsync(cancellationToken);
+
+            string requestCurrencyCode = currencyType == null
+                ? settings.DefaultCurrency.ToString()
+                : currencyType.ToString();
+
             CurrencyInfo currencyInfo = new CurrencyInfo
             {
-                CurrencyCode = currencyCode,
+                CurrencyCode = requestCurrencyCode,
             };
 
             ExchangeRate exchangeRate = await _grpcCurrencyClient.GetCurrentExchangeRateAsync(
                 currencyInfo,
                 cancellationToken: cancellationToken);
 
-            Settings settings = await _settingsService.GetApplicationSettingsAsync(cancellationToken);
             decimal roundedValue = decimal.Round(exchangeRate.Value, settings.CurrencyRoundCount);
             return new ExchangeRateModel
             {

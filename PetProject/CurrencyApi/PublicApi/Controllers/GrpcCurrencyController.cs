@@ -45,21 +45,8 @@ public class GrpcCurrencyController : ControllerBase
         CurrencyType? currencyType,
         CancellationToken cancellationToken)
     {
-        string requestCurrencyCode;
-
-        if (currencyType == null)
-        {
-            requestCurrencyCode = (await _settingsService
-                .GetApplicationSettingsAsync(cancellationToken))
-                    .DefaultCurrency.ToString();
-        }
-        else
-        {
-            requestCurrencyCode = currencyType.ToString();
-        }
-
         return await _grpcCurrencyService.GetExchangeRateAsync(
-            requestCurrencyCode, cancellationToken);
+            currencyType, cancellationToken);
     }
 
     /// <summary>
