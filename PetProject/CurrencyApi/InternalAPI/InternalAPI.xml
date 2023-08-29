@@ -348,7 +348,7 @@
             <response code="200">
             Возвращает если удалось получить доступ к API
             </response>
-            <response code="400">
+            <response code="500">
             Возвращает если не удалось получить доступ к API
             </response>
         </member>

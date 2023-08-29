@@ -18,4 +18,5 @@ RUN dotnet publish PublicApi/PublicApi.csproj -c Release -o /app/publish --no-re
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/publish .
+RUN apt-get update && apt-get install -y curl
 ENTRYPOINT ["dotnet", "PublicApi.dll"]

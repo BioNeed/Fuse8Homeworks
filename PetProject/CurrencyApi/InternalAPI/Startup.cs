@@ -73,11 +73,17 @@ public class Startup
         services.AddScoped<ICurrencyAPI, CurrencyService>();
         services.AddScoped<IGettingApiConfigService, CurrencyService>();
         services.AddScoped<ICachedCurrencyAPI, CachedCurrencyService>();
-        services.AddScoped<IHealthCheck, HealthCheckService>();
+        services.AddScoped<IHealthCheckService, HealthCheckService>();
         services.AddScoped<IExchangeRatesRepository, ExchangeRatesRepository>();
 
         services.AddGrpc();
         services.AddHttpContextAccessor();
+
+        services.AddHealthChecks().AddCheck("LogInternalHealthy", () =>
+        {
+            Console.WriteLine("Healthy");
+            return Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult.Healthy();
+        });
 
         services.AddDbContext<CurrenciesDbContext>(
             optionsBuilder =>
@@ -141,7 +147,10 @@ public class Startup
             configuration: grpcBuilder =>
             {
                 grpcBuilder.UseRouting().UseEndpoints(endpoints =>
-                    endpoints.MapGrpcService<GrpcCurrencyService>());
+                {
+                    endpoints.MapGrpcService<GrpcCurrencyService>();
+                    endpoints.MapHealthChecks("/healthcheck");
+                });
             });
 
         app.UseWhen(
@@ -150,7 +159,10 @@ public class Startup
             configuration: restApiBuilder =>
             {
                 restApiBuilder.UseRouting().UseEndpoints(endpoints =>
-                    endpoints.MapControllers());
+                {
+                    endpoints.MapControllers();
+                    endpoints.MapHealthChecks("/healthcheck");
+                });
             });
     }
 }

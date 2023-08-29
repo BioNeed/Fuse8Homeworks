@@ -13,9 +13,21 @@ services:
       - ASPNETCORE_URLS=http://+:5236;http://+:7228;
       - ASPNETCORE_ENVIRONMENT=Development
 
+    healthcheck:
+      test: curl --fail http://localhost:7228/healthcheck || exit 1
+      interval: 60s
+      retries: 5
+      start_period: 10s
+      timeout: 10s
+      start_interval: 10s
+
     build:
       context: ..
       dockerfile: InternalAPI\Dockerfile
+
+    depends_on:
+      postgres:
+        condition: service_started
 
   public_api:
     container_name: school_public_api
@@ -28,9 +40,23 @@ services:
       - ASPNETCORE_URLS=http://+:5166;
       - ASPNETCORE_ENVIRONMENT=Development
 
+    healthcheck:
+      test: curl --fail http://localhost:5166/healthcheck || exit 1
+      interval: 60s
+      retries: 5
+      start_period: 10s
+      timeout: 10s
+      start_interval: 10s
+
     build:
       context: ..
       dockerfile: PublicApi\Dockerfile
+
+    depends_on:
+      internal_api:
+        condition: service_healthy
+      postgres:
+        condition: service_started
 
   postgres:
     container_name: school_postgres

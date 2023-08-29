@@ -2,7 +2,7 @@
 
 namespace InternalAPI.Contracts
 {
-    public interface IHealthCheck
+    public interface IHealthCheckService
     {
         Task<HealthCheckResult> CheckExternalApiAsync(CancellationToken cancellationToken);
     }

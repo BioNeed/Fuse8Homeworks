@@ -5,7 +5,7 @@ using static InternalAPI.Models.HealthCheckResult;
 
 namespace InternalAPI.Services
 {
-    public class HealthCheckService : IHealthCheck
+    public class HealthCheckService : IHealthCheckService
     {
         private readonly HttpClient _httpClient;
 

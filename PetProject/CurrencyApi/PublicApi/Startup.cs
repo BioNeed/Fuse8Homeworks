@@ -11,6 +11,7 @@ using Fuse8_ByteMinds.SummerSchool.PublicApi.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -72,6 +73,12 @@ public class Startup
                     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 });
 
+        services.AddHealthChecks().AddCheck("LogHealthy", () =>
+        {
+            Console.WriteLine("Healthy");
+            return Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult.Healthy();
+        });
+
         services.AddDbContext<UserDbContext>(
             optionsBuilder =>
             {
@@ -129,6 +136,10 @@ public class Startup
         app.UseMiddleware<LoggingRequestsMiddleware>();
 
         app.UseRouting()
-            .UseEndpoints(endpoints => endpoints.MapControllers());
+            .UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHealthChecks("/healthcheck");
+            });
     }
 }
