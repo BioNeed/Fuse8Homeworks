@@ -35,7 +35,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
         /// Возвращает в случае других ошибок
         /// </response>
         [HttpGet]
-        public async Task<FavouriteExchangeRate[]> GetFavouriteByNameAsync(
+        public async Task<FavouriteExchangeRate[]> GetAllFavouritesAsync(
             CancellationToken cancellationToken)
         {
             FavouriteExchangeRate[] allFavourites = await _favouritesService

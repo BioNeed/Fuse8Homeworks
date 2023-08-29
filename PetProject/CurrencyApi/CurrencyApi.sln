@@ -12,9 +12,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InternalAPI", "InternalAPI\InternalAPI.csproj", "{27F0129D-EC41-4969-B10E-DE70B3D143C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrenciesDataAccessLibrary", "CurrenciesDataAccessLibrary\CurrenciesDataAccessLibrary.csproj", "{67A15112-2DEB-4EB7-B729-7951D0F3452B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrenciesDataAccessLibrary", "CurrenciesDataAccessLibrary\CurrenciesDataAccessLibrary.csproj", "{67A15112-2DEB-4EB7-B729-7951D0F3452B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserDataAccessLibrary", "UserDataAccessLibrary\UserDataAccessLibrary.csproj", "{1EFE4A94-30F1-4FD7-A572-57F462E25985}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserDataAccessLibrary", "UserDataAccessLibrary\UserDataAccessLibrary.csproj", "{1EFE4A94-30F1-4FD7-A572-57F462E25985}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{9D45C155-5359-47B0-9EC5-14967ED29BD7}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose\docker-compose.yml = docker-compose\docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

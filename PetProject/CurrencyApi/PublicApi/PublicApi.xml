@@ -398,7 +398,7 @@
             Методы для управления Избранными курсами валют
             </summary>
         </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.FavouritesContoller.GetFavouriteByNameAsync(System.Threading.CancellationToken)">
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.FavouritesContoller.GetAllFavouritesAsync(System.Threading.CancellationToken)">
             <summary>
             Получить все Избранные
             </summary>
