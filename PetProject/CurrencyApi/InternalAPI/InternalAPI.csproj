@@ -18,6 +18,12 @@
     <EmbeddedResource Remove="Cache\**" />
     <None Remove="Cache\**" />
   </ItemGroup>
+	
+  <ItemGroup>
+    <None Include="..\.dockerignore" Link=".dockerignore">
+      <DependentUpon>$(DockerDefaultDockerfile)</DependentUpon>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Audit.HttpClient" Version="21.0.3" />

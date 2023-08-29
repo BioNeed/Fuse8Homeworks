@@ -1,6 +1,22 @@
 ﻿version: '3.8'
 
 services:
+  internal_api:
+    container_name: school_internal_api
+    image: school/school_internal_api:dev
+    restart: unless-stopped
+    ports:
+      - "5236:5236"
+      - "7228:7228"
+    
+    environment:
+      - ASPNETCORE_URLS=http://+:5236;http://+:7228;
+      - ASPNETCORE_ENVIRONMENT=Development
+
+    build:
+      context: ..
+      dockerfile: InternalAPI\Dockerfile
+
   public_api:
     container_name: school_public_api
     image: school/school_public_api:dev
