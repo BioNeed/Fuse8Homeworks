@@ -1,9 +1,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS prepare-restore
+LABEL description="Сервис для взаимодействия с CurrencyApi API"
 EXPOSE 5236
 EXPOSE 7228
 ENV PATH="${PATH}:/root/.dotnet/tools"
-#ENV ASPNETCORE_URLS=http://+:5236
-#ENV ASPNETCORE_URLS=http://+:7228
 RUN dotnet tool install --global --no-cache dotnet-subset --version 0.3.2
 WORKDIR /src
 COPY . .

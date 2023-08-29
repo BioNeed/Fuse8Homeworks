@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS prepare-restore
+LABEL description="Сервис для взаимодействия с InternalAPI"
 EXPOSE 5166
 ENV PATH="${PATH}:/root/.dotnet/tools"
-ENV ASPNETCORE_URLS=http://+:5166
 RUN dotnet tool install --global --no-cache dotnet-subset --version 0.3.2
 WORKDIR /src
 COPY . .
