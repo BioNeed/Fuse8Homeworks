@@ -1,5 +1,4 @@
-﻿using UserDataAccessLibrary.Enums;
-using UserDataAccessLibrary.Models;
+﻿using UserDataAccessLibrary.Models;
 
 namespace UserDataAccessLibrary.Contracts
 {

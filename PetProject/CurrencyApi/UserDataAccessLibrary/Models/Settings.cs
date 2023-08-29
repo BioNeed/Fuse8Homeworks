@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using UserDataAccessLibrary.Enums;
 
 namespace UserDataAccessLibrary.Models
 {
@@ -11,7 +10,8 @@ namespace UserDataAccessLibrary.Models
         /// <summary>
         /// Валюта по умолчанию, в которой узнать курс
         /// </summary>
-        public CurrencyType DefaultCurrency { get; set; }
+        [StringLength(3, MinimumLength = 3)]
+        public string DefaultCurrency { get; set; }
 
         /// <summary>
         /// Количество знаков после запятой, до которого следует

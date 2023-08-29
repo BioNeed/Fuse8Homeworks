@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UserDataAccessLibrary.Contracts;
 using UserDataAccessLibrary.Database;
-using UserDataAccessLibrary.Enums;
 using UserDataAccessLibrary.Models;
 
 namespace UserDataAccessLibrary.Repositories
@@ -23,12 +22,8 @@ namespace UserDataAccessLibrary.Repositories
         public async Task SetDefaultCurrencyAsync(string newDefaultCurrency,
                                                   CancellationToken cancellationToken)
         {
-            CurrencyType defaultCurrency = Enum.Parse<CurrencyType>(
-                newDefaultCurrency,
-                true);
-
             Settings settings = await _userDbContext.Settings.FirstAsync(cancellationToken);
-            settings.DefaultCurrency = defaultCurrency;
+            settings.DefaultCurrency = newDefaultCurrency;
 
             _userDbContext.SaveChanges();
         }
