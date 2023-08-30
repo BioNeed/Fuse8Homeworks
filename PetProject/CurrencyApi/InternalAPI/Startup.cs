@@ -5,6 +5,7 @@ using CurrenciesDataAccessLibrary.Constants;
 using CurrenciesDataAccessLibrary.Contracts;
 using CurrenciesDataAccessLibrary.DataAccess;
 using CurrenciesDataAccessLibrary.Repositories;
+using InternalAPI.Background;
 using InternalAPI.Constants;
 using InternalAPI.Contracts;
 using InternalAPI.Filters;
@@ -76,6 +77,7 @@ public class Startup
         services.AddScoped<IHealthCheckService, HealthCheckService>();
         services.AddScoped<IExchangeRatesRepository, ExchangeRatesRepository>();
         services.AddScoped<ICacheTasksRepository, CacheTasksRepository>();
+        services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
 
         services.AddGrpc();
         services.AddHttpContextAccessor();

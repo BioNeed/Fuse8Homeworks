@@ -20,14 +20,17 @@ public class CurrencyController : ControllerBase
     private readonly IGettingApiConfigService _gettingApiConfigService;
     private readonly ICachedCurrencyAPI _cachedCurrencyService;
     private readonly ICacheTasksRepository _cacheTasksRepository;
+    private readonly IBackgroundTaskQueue _taskQueue;
 
     public CurrencyController(IGettingApiConfigService gettingApiConfigService,
                               ICachedCurrencyAPI cachedCurrencyService,
-                              ICacheTasksRepository cacheTasksRepository)
+                              ICacheTasksRepository cacheTasksRepository,
+                              IBackgroundTaskQueue taskQueue)
     {
         _gettingApiConfigService = gettingApiConfigService;
         _cachedCurrencyService = cachedCurrencyService;
         _cacheTasksRepository = cacheTasksRepository;
+        _taskQueue = taskQueue;
     }
 
     /// <summary>
@@ -128,7 +131,7 @@ public class CurrencyController : ControllerBase
     /// </response>
     [Route("/cache/{newBaseCurrency}")]
     [HttpPost]
-    public async Task<Guid> RecalculateCacheWithNewBaseCurrencyAsync(
+    public async Task<ActionResult> RecalculateCacheWithNewBaseCurrencyAsync(
         CurrencyType newBaseCurrency,
         CancellationToken cancellationToken)
     {
@@ -137,10 +140,9 @@ public class CurrencyController : ControllerBase
                                                        newBaseCurrency.ToString(),
                                                        cancellationToken);
 
+        await _taskQueue.QueueAsync(new WorkItem(taskId), cancellationToken);
 
-
-        Response.StatusCode = (int)HttpStatusCode.Accepted;
-        return taskId;
+        return Accepted(taskId);
     }
 
     private bool TryParseDate(string dateString, out DateOnly date)
