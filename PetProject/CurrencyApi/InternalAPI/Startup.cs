@@ -75,6 +75,7 @@ public class Startup
         services.AddScoped<ICachedCurrencyAPI, CachedCurrencyService>();
         services.AddScoped<IHealthCheckService, HealthCheckService>();
         services.AddScoped<IExchangeRatesRepository, ExchangeRatesRepository>();
+        services.AddScoped<ICacheTasksRepository, CacheTasksRepository>();
 
         services.AddGrpc();
         services.AddHttpContextAccessor();

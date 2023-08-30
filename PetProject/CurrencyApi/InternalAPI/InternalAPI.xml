@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>InternalApi</name>
+        <name>InternalAPI</name>
     </assembly>
     <members>
         <member name="T:InternalAPI.Contracts.GrpcContracts.DecimalValue">
@@ -332,6 +332,19 @@
             <param name="cancellationToken">Токен отмены</param>
             <response code="200">
             Возвращает, если удалось получить настройки приложения
+            </response>
+        </member>
+        <member name="M:InternalAPI.Controllers.CurrencyController.RecalculateCacheWithNewBaseCurrencyAsync(InternalAPI.Enums.CurrencyType,System.Threading.CancellationToken)">
+            <summary>
+            Пересчитать кэш под новую базовую валюту
+            </summary>
+            <param name="newBaseCurrency">Новая базовая валюта</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="202">
+            Возвращает, если удалось принять запрос на пересчет кэша
+            </response>
+            <response code="500">
+            Возвращает в случае внутренних ошибок
             </response>
         </member>
         <member name="T:InternalAPI.Enums.CurrencyType">

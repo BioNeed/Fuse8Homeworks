@@ -27,7 +27,6 @@ namespace InternalAPI.Migrations
             modelBuilder.Entity("CurrenciesDataAccessLibrary.Models.CacheTask", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
@@ -39,15 +38,8 @@ namespace InternalAPI.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("status");
 
-                    b.Property<Guid?>("TaskInfoId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("task_info_id");
-
                     b.HasKey("Id")
                         .HasName("pk_cache_tasks");
-
-                    b.HasIndex("TaskInfoId")
-                        .HasDatabaseName("ix_cache_tasks_task_info_id");
 
                     b.ToTable("cache_tasks", "cur", t =>
                         {
@@ -108,11 +100,18 @@ namespace InternalAPI.Migrations
             modelBuilder.Entity("CurrenciesDataAccessLibrary.Models.CacheTask", b =>
                 {
                     b.HasOne("CurrenciesDataAccessLibrary.Models.CacheTaskInfo", "TaskInfo")
-                        .WithMany()
-                        .HasForeignKey("TaskInfoId")
-                        .HasConstraintName("fk_cache_tasks_cache_task_info_task_info_id");
+                        .WithOne("Task")
+                        .HasForeignKey("CurrenciesDataAccessLibrary.Models.CacheTask", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_cache_tasks_cache_task_info_id");
 
                     b.Navigation("TaskInfo");
+                });
+
+            modelBuilder.Entity("CurrenciesDataAccessLibrary.Models.CacheTaskInfo", b =>
+                {
+                    b.Navigation("Task");
                 });
 #pragma warning restore 612, 618
         }

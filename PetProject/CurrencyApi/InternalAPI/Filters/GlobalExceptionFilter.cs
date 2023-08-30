@@ -42,10 +42,18 @@ namespace InternalAPI.Filters
 
         private void HandleException(
             ExceptionContext context,
-            string message = ApiConstants.ErrorMessages.UnknownExceptionMessage,
+            string? message = null,
             int responseStatusCode = (int)HttpStatusCode.InternalServerError)
         {
-            _logger.LogError("Ошибка! {message}", message);
+            if (message != null)
+            {
+                _logger.LogError("Ошибка! {message}", message);
+            }
+            else
+            {
+                _logger.LogError("Ошибка! {message}", context.Exception.Message);
+            }
+
             context.HttpContext.Response.StatusCode = responseStatusCode;
             context.ExceptionHandled = true;
         }

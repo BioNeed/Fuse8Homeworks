@@ -13,9 +13,6 @@ namespace CurrenciesDataAccessLibrary.Database.Configurations
 
             builder.Property(c => c.CreatedAt).IsRequired();
             builder.Property(c => c.Status).IsRequired();
-            builder.HasOne(c => c.TaskInfo)
-                .WithOne()
-                .HasForeignKey<CacheTaskInfo>();
 
             builder.ToTable(tableBuilder => tableBuilder.HasCheckConstraint(
                 name: "date_time_before_or_equal_now",

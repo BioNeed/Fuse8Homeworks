@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Net;
 using CurrenciesDataAccessLibrary.Models;
+using CurrenciesDataAccessLibrary.Repositories;
 using InternalAPI.Constants;
 using InternalAPI.Contracts;
 using InternalAPI.Enums;
@@ -18,11 +19,15 @@ public class CurrencyController : ControllerBase
 {
     private readonly IGettingApiConfigService _gettingApiConfigService;
     private readonly ICachedCurrencyAPI _cachedCurrencyService;
+    private readonly ICacheTasksRepository _cacheTasksRepository;
 
-    public CurrencyController(IGettingApiConfigService gettingApiConfigService, ICachedCurrencyAPI cachedCurrencyService)
+    public CurrencyController(IGettingApiConfigService gettingApiConfigService,
+                              ICachedCurrencyAPI cachedCurrencyService,
+                              ICacheTasksRepository cacheTasksRepository)
     {
         _gettingApiConfigService = gettingApiConfigService;
         _cachedCurrencyService = cachedCurrencyService;
+        _cacheTasksRepository = cacheTasksRepository;
     }
 
     /// <summary>
@@ -108,6 +113,34 @@ public class CurrencyController : ControllerBase
         CancellationToken cancellationToken)
     {
         return await _gettingApiConfigService.GetApiConfigAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// Пересчитать кэш под новую базовую валюту
+    /// </summary>
+    /// <param name="newBaseCurrency">Новая базовая валюта</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    /// <response code="202">
+    /// Возвращает, если удалось принять запрос на пересчет кэша
+    /// </response>
+    /// <response code="500">
+    /// Возвращает в случае внутренних ошибок
+    /// </response>
+    [Route("/cache/{newBaseCurrency}")]
+    [HttpPost]
+    public async Task<Guid> RecalculateCacheWithNewBaseCurrencyAsync(
+        CurrencyType newBaseCurrency,
+        CancellationToken cancellationToken)
+    {
+        Guid taskId = Guid.NewGuid();
+        await _cacheTasksRepository.AddCacheTaskAsync(taskId,
+                                                       newBaseCurrency.ToString(),
+                                                       cancellationToken);
+
+
+
+        Response.StatusCode = (int)HttpStatusCode.Accepted;
+        return taskId;
     }
 
     private bool TryParseDate(string dateString, out DateOnly date)

@@ -13,6 +13,7 @@ namespace InternalAPI.Services
 {
     public class CurrencyService : IGettingApiConfigService, ICurrencyAPI
     {
+        // TODO изменить чтоб базовая валюта бралась из БД
         private readonly IOptionsSnapshot<ApiInfoModel> _apiConfig;
         private readonly HttpClient _httpClient;
         private readonly bool _usingByGrpc;

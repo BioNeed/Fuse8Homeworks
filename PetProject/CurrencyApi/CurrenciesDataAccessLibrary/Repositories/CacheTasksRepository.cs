@@ -1,0 +1,54 @@
+﻿using CurrenciesDataAccessLibrary.DataAccess;
+using CurrenciesDataAccessLibrary.Enums;
+using CurrenciesDataAccessLibrary.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Threading;
+using System.Xml.Linq;
+
+namespace CurrenciesDataAccessLibrary.Repositories
+{
+    public class CacheTasksRepository : ICacheTasksRepository
+    {
+        private readonly CurrenciesDbContext _currenciesDbContext;
+
+        public CacheTasksRepository(CurrenciesDbContext currenciesDbContext)
+        {
+            _currenciesDbContext = currenciesDbContext;
+        }
+
+        public async Task SetCacheTaskStatusAsync(Guid taskId,
+                                                  CacheTaskStatus status,
+                                                  CancellationToken cancellationToken)
+        {
+            CacheTask cacheTaskToUpdate =
+                await _currenciesDbContext.CacheTasks.FirstAsync(
+                                    predicate: c => c.Id == taskId,
+                                    cancellationToken: cancellationToken);
+
+            cacheTaskToUpdate.Status = status;
+
+            _currenciesDbContext.SaveChanges();
+        }
+
+        public async Task AddCacheTaskAsync(Guid taskId,
+                                             string newBaseCurrency,
+                                             CancellationToken cancellationToken)
+        {
+            CacheTask cacheTask = new CacheTask
+            {
+                Id = taskId,
+                CreatedAt = DateTime.UtcNow,
+                Status = CacheTaskStatus.Created,
+                TaskInfo = new CacheTaskInfo
+                {
+                    Id = taskId,
+                    NewBaseCurrency = newBaseCurrency,
+                },
+            };
+
+            await _currenciesDbContext.CacheTasks.AddAsync(cacheTask, cancellationToken);
+
+            await _currenciesDbContext.SaveChangesAsync(cancellationToken);
+        }
+    }
+}

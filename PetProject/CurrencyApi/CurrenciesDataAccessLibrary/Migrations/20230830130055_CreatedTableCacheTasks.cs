@@ -34,7 +34,8 @@ namespace CurrenciesDataAccessLibrary.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    status = table.Column<int>(type: "integer", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    status = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,7 +46,8 @@ namespace CurrenciesDataAccessLibrary.Migrations
                         column: x => x.id,
                         principalSchema: "cur",
                         principalTable: "cache_task_info",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
         }
 
