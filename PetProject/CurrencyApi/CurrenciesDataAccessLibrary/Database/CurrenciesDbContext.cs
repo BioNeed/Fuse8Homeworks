@@ -14,12 +14,16 @@ namespace CurrenciesDataAccessLibrary.DataAccess
 
         public DbSet<CachedExchangeRates> CachedExchangeRates { get; set; }
 
+        public DbSet<CacheTask> CacheTasks { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema(LibraryConstants.SchemaNames.Currencies);
             modelBuilder.ApplyConfigurationsFromAssembly(
                 assembly: GetType().Assembly,
                 predicate: p => p.Namespace == typeof(CachedExchangeRatesConfiguration).Namespace);
+
+            modelBuilder.HasPostgresExtension("uuid-ossp");
         }
     }
 }

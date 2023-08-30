@@ -586,22 +586,6 @@
             Возвращает в случае других ошибок
             </response>
         </member>
-        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckController">
-            <summary>
-            Методы для проверки работоспособности PublicApi
-            </summary>
-        </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckController.Check">
-            <summary>
-            Проверить что API работает
-            </summary>
-            <response code="200">
-            Возвращает если удалось получить доступ к API
-            </response>
-            <response code="400">
-            Возвращает если не удалось получить доступ к API
-            </response>
-        </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.SettingsController">
             <summary>
             Методы для управления настройками приложения

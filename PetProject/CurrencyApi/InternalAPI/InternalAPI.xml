@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>InternalAPI</name>
+        <name>InternalApi</name>
     </assembly>
     <members>
         <member name="T:InternalAPI.Contracts.GrpcContracts.DecimalValue">
@@ -332,24 +332,6 @@
             <param name="cancellationToken">Токен отмены</param>
             <response code="200">
             Возвращает, если удалось получить настройки приложения
-            </response>
-        </member>
-        <member name="T:InternalAPI.Controllers.HealthCheckController">
-            <summary>
-            Методы для проверки работоспособности InternalAPI
-            </summary>
-        </member>
-        <member name="M:InternalAPI.Controllers.HealthCheckController.CheckAsync(System.Nullable{System.Boolean},System.Threading.CancellationToken)">
-            <summary>
-            Проверить что API работает
-            </summary>
-            <param name="checkExternalApi">Необходимо проверить работоспособность внешнего API. Если FALSE или NULL - проверяется работоспособность только текущего API</param>
-            <param name="cancellationToken">Токен отмены</param>
-            <response code="200">
-            Возвращает если удалось получить доступ к API
-            </response>
-            <response code="500">
-            Возвращает если не удалось получить доступ к API
             </response>
         </member>
         <member name="T:InternalAPI.Enums.CurrencyType">
