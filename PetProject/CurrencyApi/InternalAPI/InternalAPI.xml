@@ -1279,7 +1279,12 @@
         </member>
         <member name="P:InternalAPI.Models.ApiSettingsModel.CacheExpirationTimeInHours">
             <summary>
-            Время устаревания кэша
+            Время устаревания кэша (в часах)
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.ApiSettingsModel.WaitingTimeForTaskProcessingInSeconds">
+            <summary>
+            Время ожидания обработки задачи (в секундах)
             </summary>
         </member>
         <member name="T:InternalAPI.Models.ApiStatusModel">

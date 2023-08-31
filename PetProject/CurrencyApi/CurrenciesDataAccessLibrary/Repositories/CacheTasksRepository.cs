@@ -23,6 +23,14 @@ namespace CurrenciesDataAccessLibrary.Repositories
                                               cancellationToken: cancellationToken);
         }
 
+        public Task<bool> HasAnyUncompletedTaskAsync(CancellationToken cancellationToken)
+        {
+            return _currenciesDbContext.CacheTasks.AsNoTracking().AnyAsync(
+                predicate: c => c.Status == CacheTaskStatus.Created ||
+                                c.Status == CacheTaskStatus.Processing,
+                cancellationToken: cancellationToken);
+        }
+
         public Task<CacheTask[]> GetAllUncompletedTasksAsync(CancellationToken cancellationToken)
         {
             return _currenciesDbContext.CacheTasks.AsNoTracking()

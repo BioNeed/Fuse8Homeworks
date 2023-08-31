@@ -9,7 +9,6 @@ using InternalAPI.Contracts;
 using InternalAPI.Exceptions;
 using InternalAPI.JsonConverters;
 using InternalAPI.Models;
-using Microsoft.Extensions.Options;
 
 namespace InternalAPI.Services
 {
@@ -37,6 +36,13 @@ namespace InternalAPI.Services
 
             if (response.IsSuccessStatusCode == false)
             {
+                if (_usingByGrpc == true)
+                {
+                    throw new RpcException(
+                        status: new Status(StatusCode.Unknown,
+                            ApiConstants.ErrorMessages.UnknownExceptionMessage));
+                }
+
                 throw new Exception(ApiConstants.ErrorMessages.UnknownExceptionMessage);
             }
 

@@ -73,7 +73,8 @@ public class GrpcCurrencyController : ControllerBase
         [FromRoute(Name = "date")] string dateString,
         CancellationToken cancellationToken)
     {
-        if (TryParseDateTime(dateString, out DateTime dateTime) == false)
+        if (TryParseDateTime(dateString, out DateTime dateTime) == false
+            || dateTime > DateTime.UtcNow)
         {
             Response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
             return null;
@@ -166,7 +167,8 @@ public class GrpcCurrencyController : ControllerBase
         [FromRoute(Name = "date")] string dateString,
         CancellationToken cancellationToken)
     {
-        if (TryParseDateTime(dateString, out DateTime dateTime) == false)
+        if (TryParseDateTime(dateString, out DateTime dateTime) == false
+            || dateTime > DateTime.UtcNow)
         {
             Response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
             return null;
@@ -192,15 +194,10 @@ public class GrpcCurrencyController : ControllerBase
 
     private bool TryParseDateTime(string dateString, out DateTime dateTime)
     {
-        if (DateTime.TryParseExact(dateString,
+        return DateTime.TryParseExact(dateString,
             ApiConstants.Formats.DateFormat,
             CultureInfo.InvariantCulture,
             DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal,
-            out dateTime) == false)
-        {
-            return false;
-        }
-
-        return true;
+            out dateTime);
     }
 }

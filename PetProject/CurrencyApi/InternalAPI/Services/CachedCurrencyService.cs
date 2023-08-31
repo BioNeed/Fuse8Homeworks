@@ -15,18 +15,27 @@ namespace InternalAPI.Services
     {
         private readonly ICurrencyAPI _currencyAPI;
         private readonly IExchangeRatesRepository _exchangeRatesRepository;
+        private readonly ICacheTasksRepository _cacheTasksRepository;
         private readonly TimeSpan _cacheExpirationTime;
+        private readonly TimeSpan _waitingForTaskProcessingTime;
+        private readonly bool _usingByGrpc;
 
         public CachedCurrencyService(ICurrencyAPI currencyAPI,
                                      IExchangeRatesRepository exchangeRatesRepository,
                                      IOptionsSnapshot<ApiSettingsModel> apiSettings,
                                      ICacheSettingsRepository cacheSettingsRepository,
                                      IHttpContextAccessor httpContextAccessor,
-                                     IConfiguration configuration)
+                                     IConfiguration configuration,
+                                     ICacheTasksRepository cacheTasksRepository)
         {
             _currencyAPI = currencyAPI;
             _exchangeRatesRepository = exchangeRatesRepository;
-            _cacheExpirationTime = TimeSpan.FromHours(apiSettings.Value.CacheExpirationTimeInHours);
+            _cacheTasksRepository = cacheTasksRepository;
+
+            _cacheExpirationTime = TimeSpan
+                .FromHours(apiSettings.Value.CacheExpirationTimeInHours);
+            _waitingForTaskProcessingTime = TimeSpan
+                .FromSeconds(apiSettings.Value.WaitingTimeForTaskProcessingInSeconds);
 
             CacheSettings cacheSettings = cacheSettingsRepository.GetCacheSettings();
 
@@ -35,10 +44,10 @@ namespace InternalAPI.Services
                 true,
                 out _) == false)
             {
-                bool usingByGrpc = httpContextAccessor.HttpContext.Connection.LocalPort ==
+                _usingByGrpc = httpContextAccessor.HttpContext!.Connection.LocalPort ==
                     configuration.GetValue<int>(ApiConstants.PortNames.GrpcPort);
 
-                if (usingByGrpc == true)
+                if (_usingByGrpc == true)
                 {
                     throw new RpcException(
                         new Status(StatusCode.Internal,
@@ -62,25 +71,20 @@ namespace InternalAPI.Services
 
             DateTime currentDateTime = DateTime.UtcNow;
 
-            if (lastExchangeRates != null)
+            if (lastExchangeRates == null)
             {
-                if (currentDateTime - lastExchangeRates.RelevantOnDate < _cacheExpirationTime)
-                {
-                    return FindExchangeRateDTOByType(
-                        currencyType, lastExchangeRates.ExchangeRates);
-                }
+                return await GetExchangeRateFromExternalApi(currencyType, currentDateTime, cancellationToken);
             }
 
-            ExchangeRateModel[] currentExchangeRates = await _currencyAPI.
-                GetAllCurrentCurrenciesAsync(BaseCurrency, cancellationToken);
+            if (IsLatestCacheActual(lastExchangeRates, currentDateTime) == true)
+            {
+                return FindExchangeRateDTOByType(
+                    currencyType, lastExchangeRates.ExchangeRates);
+            }
 
-            await _exchangeRatesRepository.SaveCacheDataAsync(
-                BaseCurrency,
-                currentExchangeRates.MapExchangeRatesToDTOs(),
-                currentDateTime,
-                cancellationToken);
+            await WaitIfCacheTasksUncompleted(cancellationToken);
 
-            return FindExchangeRateDTOByType(currencyType, currentExchangeRates);
+            return await GetExchangeRateFromExternalApi(currencyType, currentDateTime, cancellationToken);
         }
 
         public async Task<ExchangeRateDTOModel> GetExchangeRateOnDateAsync(CurrencyType currencyType, DateOnly date, CancellationToken cancellationToken)
@@ -143,6 +147,46 @@ namespace InternalAPI.Services
             }
 
             throw new InvalidOperationException();
+        }
+
+        private bool IsLatestCacheActual(CachedExchangeRates latestData, DateTime currentDt)
+            => currentDt - latestData.RelevantOnDate < _cacheExpirationTime;
+
+        private async Task WaitIfCacheTasksUncompleted(CancellationToken cancellationToken)
+        {
+            if (await _cacheTasksRepository
+                .HasAnyUncompletedTaskAsync(cancellationToken) == true)
+            {
+                await Task.Delay(_waitingForTaskProcessingTime, cancellationToken);
+
+                if (await _cacheTasksRepository
+                    .HasAnyUncompletedTaskAsync(cancellationToken) == true)
+                {
+                    if (_usingByGrpc == true)
+                    {
+                        throw new RpcException(
+                        new Status(StatusCode.Internal,
+                            ApiConstants.ErrorMessages.CacheTaskProcessingTimedOut));
+                    }
+
+                    throw new CacheTaskProcessingTimedOutException(ApiConstants
+                        .ErrorMessages.CacheTaskProcessingTimedOut);
+                }
+            }
+        }
+
+        private async Task<ExchangeRateDTOModel> GetExchangeRateFromExternalApi(CurrencyType currencyType, DateTime currentDateTime, CancellationToken cancellationToken)
+        {
+            ExchangeRateModel[] currentExchangeRates = await _currencyAPI.
+                            GetAllCurrentCurrenciesAsync(BaseCurrency, cancellationToken);
+
+            await _exchangeRatesRepository.SaveCacheDataAsync(
+                BaseCurrency,
+                currentExchangeRates.MapExchangeRatesToDTOs(),
+                currentDateTime,
+                cancellationToken);
+
+            return FindExchangeRateDTOByType(currencyType, currentExchangeRates);
         }
     }
 }

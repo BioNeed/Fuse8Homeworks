@@ -16,8 +16,13 @@
         public string ApiKey { get; init; }
 
         /// <summary>
-        /// Время устаревания кэша
+        /// Время устаревания кэша (в часах)
         /// </summary>
         public int CacheExpirationTimeInHours { get; init; }
+
+        /// <summary>
+        /// Время ожидания обработки задачи (в секундах)
+        /// </summary>
+        public int WaitingTimeForTaskProcessingInSeconds { get; init; }
     }
 }

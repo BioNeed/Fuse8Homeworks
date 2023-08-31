@@ -75,16 +75,22 @@ namespace InternalAPI.Services
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Ошибка во время обработки {TaskId}", workItem.TaskId);
-                    using IServiceScope scope = _services.CreateScope();
-                    ICacheTasksRepository cacheTasksRepository = scope.ServiceProvider
-                                        .GetRequiredService<ICacheTasksRepository>();
 
-                    await cacheTasksRepository.SetCacheTaskStatusAsync(
-                        workItem.TaskId,
-                        CacheTaskStatus.CompletedWithError,
-                        stoppingToken);
+                    await SetTaskAsError(workItem, stoppingToken);
                 }
             }
+        }
+
+        private async Task SetTaskAsError(WorkItem workItem, CancellationToken cancellationToken)
+        {
+            using IServiceScope scope = _services.CreateScope();
+            ICacheTasksRepository cacheTasksRepository = scope.ServiceProvider
+                                .GetRequiredService<ICacheTasksRepository>();
+
+            await cacheTasksRepository.SetCacheTaskStatusAsync(
+                workItem.TaskId,
+                CacheTaskStatus.CompletedWithError,
+                cancellationToken);
         }
     }
 }

@@ -22,6 +22,9 @@
 
             public const string CacheBaseCurrencyNotFoundExceptionMessage =
                 "Не найдена указанная базовая валюта. Проверьте BaseCurrency в appsettings.json";
+
+            public const string CacheTaskProcessingTimedOut =
+                "Фоновая задача кэша выполнялась слишком долго";
         }
 
         public static class Formats

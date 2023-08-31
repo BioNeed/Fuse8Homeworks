@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using InternalAPI.Constants;
 using InternalAPI.Exceptions;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -21,14 +20,7 @@ namespace InternalAPI.Filters
                 case ApiRequestLimitException:
                     {
                         HandleException(context,
-                                        context.Exception.Message,
                                         (int)HttpStatusCode.TooManyRequests);
-                        break;
-                    }
-
-                case CacheBaseCurrencyNotFoundException:
-                    {
-                        HandleException(context, context.Exception.Message);
                         break;
                     }
 
@@ -42,17 +34,9 @@ namespace InternalAPI.Filters
 
         private void HandleException(
             ExceptionContext context,
-            string? message = null,
             int responseStatusCode = (int)HttpStatusCode.InternalServerError)
         {
-            if (message != null)
-            {
-                _logger.LogError("Ошибка! {message}", message);
-            }
-            else
-            {
-                _logger.LogError("Ошибка! {message}", context.Exception.Message);
-            }
+            _logger.LogError("Ошибка! {message}", context.Exception.Message);
 
             context.HttpContext.Response.StatusCode = responseStatusCode;
             context.ExceptionHandled = true;

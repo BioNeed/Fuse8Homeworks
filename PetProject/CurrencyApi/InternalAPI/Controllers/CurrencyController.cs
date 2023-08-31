@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Net;
 using CurrenciesDataAccessLibrary.Contracts;
@@ -86,7 +87,8 @@ public class CurrencyController : ControllerBase
         [FromRoute(Name = "date")] string dateString,
         CancellationToken cancellationToken)
     {
-        if (TryParseDate(dateString, out DateOnly date) == false)
+        if (TryParseDate(dateString, out DateOnly date) == false
+            || date > DateOnly.FromDateTime(DateTime.UtcNow))
         {
             Response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
             return null;
