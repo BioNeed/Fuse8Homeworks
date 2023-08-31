@@ -404,10 +404,8 @@
             </summary>
             <param name="cancellationToken">Токен отмены</param>
             <response code="200">
-            Возвращает, если удалось получить курс валюты
-            </response>
-            <response code="404">
-            Возвращает, если нет ни одного Избранного
+            Возвращает курс, если удалось его получить.
+            Ничего не возвращает, если не существует Избранного с указанным именем.
             </response>
             <response code="500">
             Возвращает в случае других ошибок
@@ -420,10 +418,10 @@
             <param name="favouriteName">Название Избранного</param>
             <param name="cancellationToken">Токен отмены</param>
             <response code="200">
-            Возвращает, если удалось получить курс валюты
+            Возвращает курс, если удалось его получить.
             </response>
             <response code="404">
-            Возвращает, если не найдено Избранное (Избранного с таким именем не существует)
+            Возвращает, если не найдено Избранное с указанным именем
             </response>
             <response code="500">
             Возвращает в случае других ошибок
@@ -466,7 +464,7 @@
             3. Пользователь ввел данные для изменения, которые совпадают с уже существующими данными
             </response>
             <response code="404">
-            Возвращает, если не существует Избранного с таким именем
+            Возвращает, если не найдено Избранного с таким именем
             </response>
             <response code="422">
             Возвращает, если
@@ -503,7 +501,7 @@
             <summary>
             Получить курс валют
             </summary>
-            <param name="currencyType">Код валюты, в которой узнать курс базовой валюты</param>
+            <param name="currencyType">(Необязательно) Код валюты, в которой узнать курс базовой валюты. Если не указан, используется валюта по умолчанию</param>
             <param name="cancellationToken">Токен отмены</param>
             <response code="200">
             Возвращает, если удалось получить курс валюты
@@ -1624,36 +1622,6 @@
         <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateWithBaseModel.Value">
             <summary>
             Курс валюты относительно базовой валюты
-            </summary>
-        </member>
-        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.HealthCheckResult">
-            <summary>
-            Результат проверки работоспособности API
-            </summary>
-        </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.HealthCheckResult.CheckedOn">
-            <summary>
-            Дата проверки
-            </summary>
-        </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.HealthCheckResult.Status">
-            <summary>
-            Статус работоспособности API
-            </summary>
-        </member>
-        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.HealthCheckResult.CheckStatus">
-            <summary>
-            Статус API
-            </summary>
-        </member>
-        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.HealthCheckResult.CheckStatus.Ok">
-            <summary>
-            API работает
-            </summary>
-        </member>
-        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.HealthCheckResult.CheckStatus.Failed">
-            <summary>
-            Ошибка в работе API
             </summary>
         </member>
     </members>

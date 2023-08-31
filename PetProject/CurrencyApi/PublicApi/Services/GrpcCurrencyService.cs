@@ -20,7 +20,8 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
             _favouritesService = favouritesService;
         }
 
-        public async Task<ExchangeRateModel> GetExchangeRateAsync(CurrencyType? currencyType, CancellationToken cancellationToken)
+        public async Task<ExchangeRateModel> GetExchangeRateAsync(CurrencyType? currencyType,
+                                                                  CancellationToken cancellationToken)
         {
             Settings settings = await _settingsService.GetApplicationSettingsAsync(cancellationToken);
 

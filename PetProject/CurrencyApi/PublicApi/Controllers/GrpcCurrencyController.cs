@@ -15,13 +15,11 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers;
 public class GrpcCurrencyController : ControllerBase
 {
     private readonly IGrpcCurrencyService _grpcCurrencyService;
-    private readonly ISettingsService _settingsService;
 
     public GrpcCurrencyController(IGrpcCurrencyService currencyService,
                                   ISettingsService settingsService)
     {
         _grpcCurrencyService = currencyService;
-        _settingsService = settingsService;
     }
 
     /// <summary>
@@ -39,14 +37,11 @@ public class GrpcCurrencyController : ControllerBase
     /// Возвращает в случае других ошибок
     /// </response>
     [HttpGet]
-    public async Task<ExchangeRateModel> GetCurrentExchangeRateAsync(
+    public Task<ExchangeRateModel> GetCurrentExchangeRateAsync(
         CurrencyType? currencyType,
         CancellationToken cancellationToken)
     {
-        CurrencyType requestCurrencyType = currencyType ??
-                    await GetDefaultCurrencyType(cancellationToken);
-
-        return await _grpcCurrencyService.GetExchangeRateAsync(requestCurrencyType, cancellationToken);
+        return _grpcCurrencyService.GetExchangeRateAsync(currencyType, cancellationToken);
     }
 
     /// <summary>
@@ -199,11 +194,5 @@ public class GrpcCurrencyController : ControllerBase
             CultureInfo.InvariantCulture,
             DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal,
             out dateTime);
-    }
-
-    private async Task<CurrencyType> GetDefaultCurrencyType(CancellationToken cancellationToken)
-    {
-        return Enum.Parse<CurrencyType>((await _settingsService
-                .GetApplicationSettingsAsync(cancellationToken)).DefaultCurrency);
     }
 }

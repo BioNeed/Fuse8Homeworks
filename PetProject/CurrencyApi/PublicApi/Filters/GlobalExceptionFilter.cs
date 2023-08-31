@@ -38,7 +38,9 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Filters
 
                 case RpcException ex when ex.Status.StatusCode == StatusCode.ResourceExhausted:
                     {
-                        HandleException(context, ex.Status.Detail, (int)HttpStatusCode.TooManyRequests);
+                        HandleException(context,
+                                        ex.Status.Detail,
+                                        (int)HttpStatusCode.TooManyRequests);
                         break;
                     }
 

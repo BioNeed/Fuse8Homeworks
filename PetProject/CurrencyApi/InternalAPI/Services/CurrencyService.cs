@@ -98,7 +98,7 @@ namespace InternalAPI.Services
         {
             ApiStatusModel apiStatus = await GetApiStatusAsync(cancellationToken);
 
-            if (apiStatus.UsedRequests < apiStatus.TotalRequests)
+            if (apiStatus.UsedRequests > apiStatus.TotalRequests)
             {
                 if (_usingByGrpc == true)
                 {

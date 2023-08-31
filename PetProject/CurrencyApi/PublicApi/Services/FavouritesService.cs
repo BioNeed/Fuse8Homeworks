@@ -52,7 +52,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
 
             ThrowIfEqualCurrencyAndBaseCurrency(favouriteToAdd);
 
-            FavouriteExchangeRate[]? favourites =
+            FavouriteExchangeRate[] favourites =
                 await GetAllFavouritesAsync(cancellationToken);
 
             ThrowIfNotUniqueCurrencyAndBaseCurrency(favouriteToAdd, favourites);
@@ -86,7 +86,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
                 return;
             }
 
-            FavouriteExchangeRate newFavourite = new FavouriteExchangeRate
+            FavouriteExchangeRate updatedFavourite = new FavouriteExchangeRate
             {
                 Name = newName ?? oldFavourite.Name,
                 Currency = isCurrencyChanged
@@ -97,25 +97,15 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
                     : oldFavourite!.BaseCurrency,
             };
 
-            FavouriteExchangeRate[]? favourites =
-                await GetAllFavouritesAsync(cancellationToken);
+            await ValidateUpdatedFavourite(isNameChanged,
+                                           isCurrencyChanged,
+                                           isBaseCurrencyChanged,
+                                           updatedFavourite,
+                                           cancellationToken);
 
-            if (isNameChanged == true)
-            {
-                ThrowIfNotUniqueFavouriteName(newFavourite, favourites);
-            }
-
-            if (isCurrencyChanged == true ||
-                isBaseCurrencyChanged == true)
-            {
-                ThrowIfEqualCurrencyAndBaseCurrency(newFavourite);
-                ThrowIfNotUniqueCurrencyAndBaseCurrency(newFavourite, favourites);
-            }
-
-            await _favouritesRepository.UpdateFavouriteAsync(
-                name,
-                newFavourite,
-                cancellationToken);
+            await _favouritesRepository.UpdateFavouriteAsync(name,
+                                                             updatedFavourite,
+                                                             cancellationToken);
         }
 
         public async Task TryDeleteFavouriteAsync(string name, CancellationToken cancellationToken)
@@ -158,6 +148,24 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
                     throw new ViolatingDatabaseConstraintsException(
                         ViolatingUniqueNameExceptionMessage);
                 }
+            }
+        }
+
+        private async Task ValidateUpdatedFavourite(bool isNameChanged, bool isCurrencyChanged, bool isBaseCurrencyChanged, FavouriteExchangeRate newFavourite, CancellationToken cancellationToken)
+        {
+            FavouriteExchangeRate[]? favourites =
+                await GetAllFavouritesAsync(cancellationToken);
+
+            if (isNameChanged == true)
+            {
+                ThrowIfNotUniqueFavouriteName(newFavourite, favourites);
+            }
+
+            if (isCurrencyChanged == true ||
+                isBaseCurrencyChanged == true)
+            {
+                ThrowIfEqualCurrencyAndBaseCurrency(newFavourite);
+                ThrowIfNotUniqueCurrencyAndBaseCurrency(newFavourite, favourites);
             }
         }
     }
