@@ -7,7 +7,7 @@ namespace CurrenciesDataAccessLibrary.Contracts
     {
         Task AddCacheTaskAsync(Guid taskId, string newBaseCurrency, CancellationToken cancellationToken);
         Task<CacheTask[]> GetAllUncompletedTasksAsync(CancellationToken cancellationToken);
-        Task<CacheTask> GetCacheTaskAsync(Guid taskId, CancellationToken cancellationToken);
+        Task<CacheTask> GetCacheTaskWithInfoAsync(Guid taskId, CancellationToken cancellationToken);
 
         Task SetCacheTaskStatusAsync(Guid taskId, CacheTaskStatus status, CancellationToken cancellationToken);
     }

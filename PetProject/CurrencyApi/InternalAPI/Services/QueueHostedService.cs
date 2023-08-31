@@ -56,6 +56,8 @@ namespace InternalAPI.Services
             }
 
             await _taskQueue.QueueAsync(new WorkItem(cacheTaskToProcess.Id), cancellationToken);
+
+            await base.StartAsync(cancellationToken);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

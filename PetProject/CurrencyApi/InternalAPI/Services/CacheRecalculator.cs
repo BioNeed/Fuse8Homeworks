@@ -26,9 +26,11 @@ namespace InternalAPI.Services
             CacheSettings cacheSettings = _cacheSettingsRepository.GetCacheSettings();
             string cacheBaseCurrency = cacheSettings.BaseCurrency;
 
-            CacheTask cacheTask = await _cacheTasksRepository.GetCacheTaskAsync(item.TaskId, cancellationToken);
+            CacheTask cacheTask = await _cacheTasksRepository
+                .GetCacheTaskWithInfoAsync(item.TaskId, cancellationToken);
 
-            await _cacheTasksRepository.SetCacheTaskStatusAsync(item.TaskId, CacheTaskStatus.Processing, cancellationToken);
+            await _cacheTasksRepository
+                .SetCacheTaskStatusAsync(item.TaskId, CacheTaskStatus.Processing, cancellationToken);
 
             if (cacheBaseCurrency == cacheTask.TaskInfo.NewBaseCurrency)
             {
@@ -51,10 +53,10 @@ namespace InternalAPI.Services
 
                 foreach (ExchangeRateDTOModel exchangeRateDTO in cachedExchangeRates.ExchangeRates)
                 {
-                    if (exchangeRateDTO.Code.Equals(cacheTask.TaskInfo.NewBaseCurrency,
+                    if (exchangeRateDTO.Code.Equals(cacheBaseCurrency,
                                                     StringComparison.OrdinalIgnoreCase))
                     {
-                        exchangeRateDTO.Value = 1 / exchangeRateDTO.Value;
+                        exchangeRateDTO.Value = 1 / newBaseExchangeRate;
                     }
                     else
                     {
