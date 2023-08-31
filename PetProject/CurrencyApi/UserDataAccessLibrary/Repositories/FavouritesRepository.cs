@@ -16,17 +16,17 @@ namespace UserDataAccessLibrary.Repositories
             _userDbContext = userDbContext;
         }
 
-        public async Task<FavouriteExchangeRate[]> GetAllFavouritesAsync(
+        public Task<FavouriteExchangeRate[]> GetAllFavouritesAsync(
             CancellationToken cancellationToken)
         {
-            return await _userDbContext.Favourites.AsNoTracking()
+            return _userDbContext.Favourites.AsNoTracking()
                 .ToArrayAsync(cancellationToken);
         }
 
-        public async Task<FavouriteExchangeRate?> GetFavouriteByNameAsync(
+        public Task<FavouriteExchangeRate?> GetFavouriteByNameAsync(
             string name, CancellationToken cancellationToken)
         {
-            return await _userDbContext.Favourites.AsNoTracking()
+            return _userDbContext.Favourites.AsNoTracking()
                 .FirstOrDefaultAsync(
                     predicate: f => f.Name == name,
                     cancellationToken: cancellationToken);

@@ -14,9 +14,9 @@ namespace UserDataAccessLibrary.Repositories
             _userDbContext = userDbContext;
         }
 
-        public async Task<Settings> GetApplicationSettingsAsync(CancellationToken cancellationToken)
+        public Task<Settings> GetApplicationSettingsAsync(CancellationToken cancellationToken)
         {
-            return await _userDbContext.Settings.AsNoTracking().FirstAsync(cancellationToken);
+            return _userDbContext.Settings.AsNoTracking().FirstAsync(cancellationToken);
         }
 
         public async Task SetDefaultCurrencyAsync(string newDefaultCurrency,

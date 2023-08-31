@@ -23,7 +23,7 @@ namespace InternalAPI.Services
 
         public async Task ProcessWorkItemAsync(WorkItem item, CancellationToken cancellationToken)
         {
-            CacheSettings cacheSettings = _cacheSettingsRepository.GetCacheSettings();
+            CacheSettings cacheSettings = await _cacheSettingsRepository.GetCacheSettingsAsync(cancellationToken);
             string cacheBaseCurrency = cacheSettings.BaseCurrency;
 
             CacheTask cacheTask = await _cacheTasksRepository
