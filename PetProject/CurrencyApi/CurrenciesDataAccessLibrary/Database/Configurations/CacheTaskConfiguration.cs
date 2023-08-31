@@ -17,6 +17,8 @@ namespace CurrenciesDataAccessLibrary.Database.Configurations
             builder.ToTable(tableBuilder => tableBuilder.HasCheckConstraint(
                 name: "date_time_before_or_equal_now",
                 sql: "created_at at time zone 'UTC' <= timezone('UTC', now())"));
+
+            builder.HasIndex(c => c.Status);
         }
     }
 }

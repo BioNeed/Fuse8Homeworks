@@ -15,15 +15,20 @@ namespace CurrenciesDataAccessLibrary.Repositories
             _currenciesDbContext = currenciesDbContext;
         }
 
-        public async Task<CacheTask> GetCacheTaskAsync(Guid taskId,
+        public Task<CacheTask> GetCacheTaskAsync(Guid taskId,
                                             CancellationToken cancellationToken)
         {
-            CacheTask cacheTask =
-                await _currenciesDbContext.CacheTasks.AsNoTracking().FirstAsync(
+            return _currenciesDbContext.CacheTasks.AsNoTracking().FirstAsync(
                                     predicate: c => c.Id == taskId,
                                     cancellationToken: cancellationToken);
+        }
 
-            return cacheTask;
+        public Task<CacheTask[]> GetAllUncompletedTasksAsync(CancellationToken cancellationToken)
+        {
+            return _currenciesDbContext.CacheTasks.AsNoTracking()
+                .Where(c => c.Status == CacheTaskStatus.Created ||
+                            c.Status == CacheTaskStatus.Processing)
+                .ToArrayAsync(cancellationToken);
         }
 
         public async Task SetCacheTaskStatusAsync(Guid taskId,

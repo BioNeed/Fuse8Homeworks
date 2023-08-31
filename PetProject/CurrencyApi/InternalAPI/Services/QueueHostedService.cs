@@ -1,5 +1,6 @@
 ﻿using CurrenciesDataAccessLibrary.Contracts;
 using CurrenciesDataAccessLibrary.Enums;
+using CurrenciesDataAccessLibrary.Models;
 using InternalAPI.Contracts;
 using InternalAPI.Models;
 
@@ -20,12 +21,41 @@ namespace InternalAPI.Services
             _services = services;
         }
 
-        public override Task StartAsync(CancellationToken cancellationToken)
+        public override async Task StartAsync(CancellationToken cancellationToken)
         {
             using IServiceScope scope = _services.CreateScope();
-            ICacheTasksRepository worker = scope.ServiceProvider.GetRequiredService<ICacheTasksRepository>();
+            ICacheTasksRepository cacheTasksRepository = scope.ServiceProvider
+                .GetRequiredService<ICacheTasksRepository>();
+            CacheTask[] cacheTasks =
+                await cacheTasksRepository.GetAllUncompletedTasksAsync(cancellationToken);
 
+            int tasksCount = cacheTasks.Length;
 
+            if (tasksCount == 0)
+            {
+                return;
+            }
+
+            CacheTask cacheTaskToProcess;
+            if (tasksCount > 1)
+            {
+                CacheTask[] sortedCacheTasks = cacheTasks.OrderByDescending(c => c.CreatedAt).ToArray();
+                cacheTaskToProcess = sortedCacheTasks[0];
+
+                for (int i = 1; i < tasksCount; i++)
+                {
+                    await cacheTasksRepository.SetCacheTaskStatusAsync(
+                        sortedCacheTasks[i].Id,
+                        CacheTaskStatus.Cancelled,
+                        cancellationToken);
+                }
+            }
+            else
+            {
+                cacheTaskToProcess = cacheTasks[0];
+            }
+
+            await _taskQueue.QueueAsync(new WorkItem(cacheTaskToProcess.Id), cancellationToken);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
