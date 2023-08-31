@@ -1,5 +1,5 @@
 ﻿using CurrenciesDataAccessLibrary.Contracts;
-using CurrenciesDataAccessLibrary.DataAccess;
+using CurrenciesDataAccessLibrary.Database;
 using CurrenciesDataAccessLibrary.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -56,6 +56,11 @@ namespace CurrenciesDataAccessLibrary.Repositories
                 .AddAsync(cachedExchangeRates, cancellationToken);
 
             await _currenciesDbContext.SaveChangesAsync(cancellationToken);
+        }
+    
+        public async Task<CachedExchangeRates[]> GetAllExchangeRatesWhere()
+        {
+            throw new NotImplementedException();
         }
     }
 }

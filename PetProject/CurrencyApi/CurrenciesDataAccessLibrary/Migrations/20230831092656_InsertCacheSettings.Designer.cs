@@ -3,17 +3,20 @@ using System;
 using CurrenciesDataAccessLibrary.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace InternalAPI.Migrations
+namespace CurrenciesDataAccessLibrary.Migrations
 {
     [DbContext(typeof(CurrenciesDbContext))]
-    partial class CurrenciesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230831092656_InsertCacheSettings")]
+    partial class InsertCacheSettings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

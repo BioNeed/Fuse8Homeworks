@@ -6,7 +6,7 @@ namespace CurrenciesDataAccessLibrary.Models
 {
     public class CacheTask
     {
-        [Key]
+        //[Key]
         [ForeignKey("TaskInfo")]
         public Guid Id { get; set; }
 

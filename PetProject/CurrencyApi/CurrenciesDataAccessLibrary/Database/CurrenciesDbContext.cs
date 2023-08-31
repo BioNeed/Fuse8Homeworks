@@ -1,9 +1,9 @@
 ﻿using CurrenciesDataAccessLibrary.Constants;
-using CurrenciesDataAccessLibrary.DataAccess.Configurations;
+using CurrenciesDataAccessLibrary.Database.Configurations;
 using CurrenciesDataAccessLibrary.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace CurrenciesDataAccessLibrary.DataAccess
+namespace CurrenciesDataAccessLibrary.Database
 {
     public class CurrenciesDbContext : DbContext
     {
@@ -13,6 +13,8 @@ namespace CurrenciesDataAccessLibrary.DataAccess
         }
 
         public DbSet<CachedExchangeRates> CachedExchangeRates { get; set; }
+
+        public DbSet<CacheSettings> CacheSettings { get; set; }
 
         public DbSet<CacheTask> CacheTasks { get; set; }
 

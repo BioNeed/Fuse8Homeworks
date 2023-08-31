@@ -1,10 +1,13 @@
 ﻿using CurrenciesDataAccessLibrary.Enums;
+using CurrenciesDataAccessLibrary.Models;
 
-namespace CurrenciesDataAccessLibrary.Repositories
+namespace CurrenciesDataAccessLibrary.Contracts
 {
     public interface ICacheTasksRepository
     {
         Task AddCacheTaskAsync(Guid taskId, string newBaseCurrency, CancellationToken cancellationToken);
+
+        Task<CacheTask> GetCacheTaskAsync(Guid taskId, CancellationToken cancellationToken);
 
         Task SetCacheTaskStatusAsync(Guid taskId, CacheTaskStatus status, CancellationToken cancellationToken);
     }

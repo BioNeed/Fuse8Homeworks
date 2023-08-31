@@ -4,7 +4,7 @@ namespace CurrenciesDataAccessLibrary.Models
 {
     public class CacheTaskInfo
     {
-        [Key]
+        //[Key]
         public Guid Id { get; set; }
 
         [StringLength(maximumLength: 3, MinimumLength = 3)]

@@ -1,9 +1,8 @@
-﻿using CurrenciesDataAccessLibrary.DataAccess;
+﻿using CurrenciesDataAccessLibrary.Contracts;
+using CurrenciesDataAccessLibrary.Database;
 using CurrenciesDataAccessLibrary.Enums;
 using CurrenciesDataAccessLibrary.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
-using System.Xml.Linq;
 
 namespace CurrenciesDataAccessLibrary.Repositories
 {
@@ -14,6 +13,17 @@ namespace CurrenciesDataAccessLibrary.Repositories
         public CacheTasksRepository(CurrenciesDbContext currenciesDbContext)
         {
             _currenciesDbContext = currenciesDbContext;
+        }
+
+        public async Task<CacheTask> GetCacheTaskAsync(Guid taskId,
+                                            CancellationToken cancellationToken)
+        {
+            CacheTask cacheTask =
+                await _currenciesDbContext.CacheTasks.AsNoTracking().FirstAsync(
+                                    predicate: c => c.Id == taskId,
+                                    cancellationToken: cancellationToken);
+
+            return cacheTask;
         }
 
         public async Task SetCacheTaskStatusAsync(Guid taskId,

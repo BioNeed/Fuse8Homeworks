@@ -13,6 +13,7 @@ namespace InternalAPI.Services
 {
     public class CachedCurrencyService : ICachedCurrencyAPI
     {
+        // TODO изменить чтоб базовая валюта бралась из БД
         private readonly ICurrencyAPI _currencyAPI;
         private readonly IExchangeRatesRepository _exchangeRatesRepository;
         private readonly TimeSpan _cacheExpirationTime;

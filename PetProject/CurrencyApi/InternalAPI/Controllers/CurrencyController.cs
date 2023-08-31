@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Net;
+using CurrenciesDataAccessLibrary.Contracts;
 using CurrenciesDataAccessLibrary.Models;
-using CurrenciesDataAccessLibrary.Repositories;
 using InternalAPI.Constants;
 using InternalAPI.Contracts;
 using InternalAPI.Enums;

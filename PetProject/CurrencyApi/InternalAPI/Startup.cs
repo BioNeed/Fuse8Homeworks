@@ -3,7 +3,7 @@ using Audit.Http;
 using Audit.NET.Serilog.Providers;
 using CurrenciesDataAccessLibrary.Constants;
 using CurrenciesDataAccessLibrary.Contracts;
-using CurrenciesDataAccessLibrary.DataAccess;
+using CurrenciesDataAccessLibrary.Database;
 using CurrenciesDataAccessLibrary.Repositories;
 using InternalAPI.Background;
 using InternalAPI.Constants;
@@ -78,6 +78,7 @@ public class Startup
         services.AddScoped<IExchangeRatesRepository, ExchangeRatesRepository>();
         services.AddScoped<ICacheTasksRepository, CacheTasksRepository>();
         services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
+        services.AddHostedService<QueueHostedService>();
 
         services.AddGrpc();
         services.AddHttpContextAccessor();

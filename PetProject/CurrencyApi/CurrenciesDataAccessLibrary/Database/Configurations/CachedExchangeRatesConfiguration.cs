@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CurrenciesDataAccessLibrary.DataAccess.Configurations
+namespace CurrenciesDataAccessLibrary.Database.Configurations
 {
     public class CachedExchangeRatesConfiguration
         : IEntityTypeConfiguration<CachedExchangeRates>

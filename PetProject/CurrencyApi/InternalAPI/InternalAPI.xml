@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>InternalAPI</name>
+        <name>InternalApi</name>
     </assembly>
     <members>
         <member name="T:InternalAPI.Contracts.GrpcContracts.DecimalValue">
