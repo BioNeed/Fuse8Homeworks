@@ -45,7 +45,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
             };
         }
 
-        public async Task<ExchangeRateModel> GetExchangeRateOnDateTimeAsync(
+        public async Task<ExchangeRateModel> GetExchangeRateOnDateAsync(
             string currencyCode,
             DateTime dateTime,
             CancellationToken cancellationToken)

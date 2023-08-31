@@ -25,9 +25,9 @@ namespace InternalAPI.Services
         {
             using IServiceScope scope = _services.CreateScope();
             ICacheTasksRepository cacheTasksRepository = scope.ServiceProvider
-                .GetRequiredService<ICacheTasksRepository>();
-            CacheTask[] cacheTasks =
-                await cacheTasksRepository.GetAllUncompletedTasksAsync(cancellationToken);
+                                        .GetRequiredService<ICacheTasksRepository>();
+            CacheTask[] cacheTasks = await cacheTasksRepository
+                                        .GetAllUncompletedTasksAsync(cancellationToken);
 
             int tasksCount = cacheTasks.Length;
 
@@ -36,24 +36,11 @@ namespace InternalAPI.Services
                 return;
             }
 
-            CacheTask cacheTaskToProcess;
-            if (tasksCount > 1)
-            {
-                CacheTask[] sortedCacheTasks = cacheTasks.OrderByDescending(c => c.CreatedAt).ToArray();
-                cacheTaskToProcess = sortedCacheTasks[0];
-
-                for (int i = 1; i < tasksCount; i++)
-                {
-                    await cacheTasksRepository.SetCacheTaskStatusAsync(
-                        sortedCacheTasks[i].Id,
-                        CacheTaskStatus.Cancelled,
-                        cancellationToken);
-                }
-            }
-            else
-            {
-                cacheTaskToProcess = cacheTasks[0];
-            }
+            CacheTask cacheTaskToProcess = await FindCacheTaskToProcessAsync(
+                                                                cacheTasksRepository,
+                                                                cacheTasks,
+                                                                tasksCount,
+                                                                cancellationToken);
 
             await _taskQueue.QueueAsync(new WorkItem(cacheTaskToProcess.Id), cancellationToken);
 
@@ -91,6 +78,33 @@ namespace InternalAPI.Services
                 workItem.TaskId,
                 CacheTaskStatus.CompletedWithError,
                 cancellationToken);
+        }
+
+        private async Task<CacheTask> FindCacheTaskToProcessAsync(ICacheTasksRepository cacheTasksRepository,
+                                                             CacheTask[] cacheTasks,
+                                                             int tasksCount,
+                                                             CancellationToken cancellationToken)
+        {
+            CacheTask cacheTaskToProcess;
+            if (tasksCount > 1)
+            {
+                CacheTask[] sortedCacheTasks = cacheTasks.OrderByDescending(c => c.CreatedAt).ToArray();
+                cacheTaskToProcess = sortedCacheTasks[0];
+
+                for (int i = 1; i < tasksCount; i++)
+                {
+                    await cacheTasksRepository.SetCacheTaskStatusAsync(
+                        sortedCacheTasks[i].Id,
+                        CacheTaskStatus.Cancelled,
+                        cancellationToken);
+                }
+            }
+            else
+            {
+                cacheTaskToProcess = cacheTasks[0];
+            }
+
+            return cacheTaskToProcess;
         }
     }
 }

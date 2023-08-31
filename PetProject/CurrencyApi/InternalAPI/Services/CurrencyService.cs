@@ -29,32 +29,9 @@ namespace InternalAPI.Services
             _cacheSettingsRepository = cacheSettingsRepository;
         }
 
-        public async Task<ApiInfoModel> GetApiConfigAsync(CancellationToken cancellationToken)
+        public async Task<ApiInfoModel> GetApiInfoAsync(CancellationToken cancellationToken)
         {
-            HttpResponseMessage response = await _httpClient.GetAsync(
-                ApiConstants.Uris.GetStatus, cancellationToken);
-
-            if (response.IsSuccessStatusCode == false)
-            {
-                if (_usingByGrpc == true)
-                {
-                    throw new RpcException(
-                        status: new Status(StatusCode.Unknown,
-                            ApiConstants.ErrorMessages.UnknownExceptionMessage));
-                }
-
-                throw new Exception(ApiConstants.ErrorMessages.UnknownExceptionMessage);
-            }
-
-            string responseString = await response.Content.ReadAsStringAsync(cancellationToken);
-
-            JsonSerializerOptions options = new JsonSerializerOptions()
-            {
-                Converters = { new ApiStatusJsonConverter() },
-            };
-
-            ApiStatusModel apiStatusFromJson =
-                JsonSerializer.Deserialize<ApiStatusModel>(responseString, options);
+            ApiStatusModel apiStatusFromJson = await GetApiStatusAsync(cancellationToken);
 
             CacheSettings cacheSettings = await _cacheSettingsRepository.GetCacheSettingsAsync(cancellationToken);
 
@@ -70,40 +47,14 @@ namespace InternalAPI.Services
             string baseCurrency,
             CancellationToken cancellationToken)
         {
-            ApiInfoModel apiInfo = await GetApiConfigAsync(cancellationToken);
-
-            if (apiInfo.NewRequestsAvailable == false)
-            {
-                if (_usingByGrpc == true)
-                {
-                    throw new RpcException(
-                        status: new Status(StatusCode.ResourceExhausted,
-                            ApiConstants.ErrorMessages.RequestLimitExceptionMessage));
-                }
-
-                throw new ApiRequestLimitException(ApiConstants.ErrorMessages.RequestLimitExceptionMessage);
-            }
+            await ThrowIfNoRequestsAvailableAsync(cancellationToken);
 
             NameValueCollection requestQuery = HttpUtility.ParseQueryString(string.Empty);
             requestQuery["base_currency"] = baseCurrency;
 
-            string requestPath = ApiConstants.Uris.GetCurrency + requestQuery.ToString();
-
-            HttpResponseMessage response = await _httpClient.GetAsync(requestPath, cancellationToken);
-
-            if (response.IsSuccessStatusCode == false)
-            {
-                if (_usingByGrpc == true)
-                {
-                    throw new RpcException(
-                        status: new Status(StatusCode.Unknown,
-                            ApiConstants.ErrorMessages.UnknownExceptionMessage));
-                }
-
-                throw new Exception(ApiConstants.ErrorMessages.UnknownExceptionMessage);
-            }
-
-            string responseString = await response.Content.ReadAsStringAsync(cancellationToken);
+            string responseString = await GetAsStringFromClientAsync(
+                ApiConstants.Uris.GetCurrency + requestQuery.ToString(),
+                cancellationToken);
 
             JsonSerializerOptions options = new JsonSerializerOptions()
             {
@@ -121,9 +72,33 @@ namespace InternalAPI.Services
             DateOnly date,
             CancellationToken cancellationToken)
         {
-            ApiInfoModel apiInfo = await GetApiConfigAsync(cancellationToken);
+            await ThrowIfNoRequestsAvailableAsync(cancellationToken);
 
-            if (apiInfo.NewRequestsAvailable == false)
+            NameValueCollection requestQuery = HttpUtility.ParseQueryString(string.Empty);
+            requestQuery["base_currency"] = baseCurrency;
+            requestQuery["date"] = date.ToString(ApiConstants.Formats.DateFormat);
+
+            string responseString = await GetAsStringFromClientAsync(
+                    ApiConstants.Uris.GetCurrencyHistorical + requestQuery.ToString(),
+                    cancellationToken);
+
+            JsonSerializerOptions options = new JsonSerializerOptions()
+            {
+                Converters = { new AllExchangeRatesHistoricalJsonConverter() },
+            };
+
+            ExchangeRatesHistoricalModel exchangeRatesOnDate =
+                JsonSerializer.Deserialize<ExchangeRatesHistoricalModel>(
+                responseString, options);
+
+            return exchangeRatesOnDate;
+        }
+
+        private async Task ThrowIfNoRequestsAvailableAsync(CancellationToken cancellationToken)
+        {
+            ApiStatusModel apiStatus = await GetApiStatusAsync(cancellationToken);
+
+            if (apiStatus.UsedRequests < apiStatus.TotalRequests)
             {
                 if (_usingByGrpc == true)
                 {
@@ -134,13 +109,10 @@ namespace InternalAPI.Services
 
                 throw new ApiRequestLimitException(ApiConstants.ErrorMessages.RequestLimitExceptionMessage);
             }
+        }
 
-            NameValueCollection requestQuery = HttpUtility.ParseQueryString(string.Empty);
-            requestQuery["base_currency"] = baseCurrency;
-            requestQuery["date"] = date.ToString(ApiConstants.Formats.DateFormat);
-
-            string requestPath = ApiConstants.Uris.GetCurrencyHistorical + requestQuery.ToString();
-
+        private async Task<string> GetAsStringFromClientAsync(string requestPath, CancellationToken cancellationToken)
+        {
             HttpResponseMessage response = await _httpClient.GetAsync(requestPath, cancellationToken);
 
             if (response.IsSuccessStatusCode == false)
@@ -155,18 +127,19 @@ namespace InternalAPI.Services
                 throw new Exception(ApiConstants.ErrorMessages.UnknownExceptionMessage);
             }
 
-            string responseString = await response.Content.ReadAsStringAsync(cancellationToken);
+            return await response.Content.ReadAsStringAsync(cancellationToken);
+        }
+
+        private async Task<ApiStatusModel> GetApiStatusAsync(CancellationToken cancellationToken)
+        {
+            string responseString = await GetAsStringFromClientAsync(ApiConstants.Uris.GetStatus, cancellationToken);
 
             JsonSerializerOptions options = new JsonSerializerOptions()
             {
-                Converters = { new AllExchangeRatesHistoricalJsonConverter() },
+                Converters = { new ApiStatusJsonConverter() },
             };
 
-            ExchangeRatesHistoricalModel exchangeRatesOnDate =
-                JsonSerializer.Deserialize<ExchangeRatesHistoricalModel>(
-                responseString, options);
-
-            return exchangeRatesOnDate;
+            return JsonSerializer.Deserialize<ApiStatusModel>(responseString, options);
         }
     }
 }

@@ -2,9 +2,7 @@
 using System.Net;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Enums;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,7 +27,7 @@ public class GrpcCurrencyController : ControllerBase
     /// <summary>
     /// Получить курс валют
     /// </summary>
-    /// <param name="currencyType">Код валюты, в которой узнать курс базовой валюты</param>
+    /// <param name="currencyType">(Необязательно) Код валюты, в которой узнать курс базовой валюты. Если не указан, используется валюта по умолчанию</param>
     /// <param name="cancellationToken">Токен отмены</param>
     /// <response code="200">
     /// Возвращает, если удалось получить курс валюты
@@ -45,8 +43,10 @@ public class GrpcCurrencyController : ControllerBase
         CurrencyType? currencyType,
         CancellationToken cancellationToken)
     {
-        return await _grpcCurrencyService.GetExchangeRateAsync(
-            currencyType, cancellationToken);
+        CurrencyType requestCurrencyType = currencyType ??
+                    await GetDefaultCurrencyType(cancellationToken);
+
+        return await _grpcCurrencyService.GetExchangeRateAsync(requestCurrencyType, cancellationToken);
     }
 
     /// <summary>
@@ -80,7 +80,7 @@ public class GrpcCurrencyController : ControllerBase
             return null;
         }
 
-        ExchangeRateModel exchangeRate = await _grpcCurrencyService.GetExchangeRateOnDateTimeAsync(
+        ExchangeRateModel exchangeRate = await _grpcCurrencyService.GetExchangeRateOnDateAsync(
             currencyType.ToString(),
             dateTime,
             cancellationToken);
@@ -102,9 +102,9 @@ public class GrpcCurrencyController : ControllerBase
     /// </response>
     [Route("/settings")]
     [HttpGet]
-    public async Task<CurrencyConfigurationModel> GetConfigSettingsAsync(CancellationToken cancellationToken)
+    public Task<CurrencyConfigurationModel> GetConfigSettingsAsync(CancellationToken cancellationToken)
     {
-        return await _grpcCurrencyService.GetSettingsAsync(cancellationToken);
+        return _grpcCurrencyService.GetSettingsAsync(cancellationToken);
     }
 
     /// <summary>
@@ -199,5 +199,11 @@ public class GrpcCurrencyController : ControllerBase
             CultureInfo.InvariantCulture,
             DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal,
             out dateTime);
+    }
+
+    private async Task<CurrencyType> GetDefaultCurrencyType(CancellationToken cancellationToken)
+    {
+        return Enum.Parse<CurrencyType>((await _settingsService
+                .GetApplicationSettingsAsync(cancellationToken)).DefaultCurrency);
     }
 }

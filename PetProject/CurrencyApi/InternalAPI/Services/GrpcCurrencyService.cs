@@ -44,7 +44,7 @@ namespace InternalAPI.Services
         public override async Task<ApiInfo> GetApiInfo(Empty emptyRequest, ServerCallContext context)
         {
             ApiInfoModel config = await _gettingApiConfigService
-                .GetApiConfigAsync(context.CancellationToken);
+                .GetApiInfoAsync(context.CancellationToken);
             return new ApiInfo
             {
                 BaseCurrency = config.BaseCurrency,

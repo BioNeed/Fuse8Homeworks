@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Net;
 using CurrenciesDataAccessLibrary.Contracts;
@@ -117,7 +116,7 @@ public class CurrencyController : ControllerBase
     public async Task<ApiInfoModel> GetConfigSettingsAsync(
         CancellationToken cancellationToken)
     {
-        return await _gettingApiConfigService.GetApiConfigAsync(cancellationToken);
+        return await _gettingApiConfigService.GetApiInfoAsync(cancellationToken);
     }
 
     /// <summary>

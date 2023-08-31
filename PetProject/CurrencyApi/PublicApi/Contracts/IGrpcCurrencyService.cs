@@ -7,7 +7,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts
     {
         Task<ExchangeRateModel> GetExchangeRateAsync(CurrencyType? currencyCode, CancellationToken cancellationToken);
 
-        Task<ExchangeRateModel> GetExchangeRateOnDateTimeAsync(string currencyCode, DateTime dateTime, CancellationToken cancellationToken);
+        Task<ExchangeRateModel> GetExchangeRateOnDateAsync(string currencyCode, DateTime dateTime, CancellationToken cancellationToken);
 
         Task<ExchangeRateWithBaseModel?> GetFavouriteExchangeRateAsync(string favouriteName, CancellationToken cancellationToken);
 

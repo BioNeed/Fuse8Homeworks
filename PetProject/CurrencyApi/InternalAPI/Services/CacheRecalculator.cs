@@ -47,22 +47,9 @@ namespace InternalAPI.Services
 
             foreach (CachedExchangeRates cachedExchangeRates in allCachedExchangeRates)
             {
-                decimal newBaseExchangeRate = FindExchangeRateValue(
-                    cacheTask.TaskInfo.NewBaseCurrency,
-                    cachedExchangeRates.ExchangeRates);
-
-                foreach (ExchangeRateDTOModel exchangeRateDTO in cachedExchangeRates.ExchangeRates)
-                {
-                    if (exchangeRateDTO.Code.Equals(cacheBaseCurrency,
-                                                    StringComparison.OrdinalIgnoreCase))
-                    {
-                        exchangeRateDTO.Value = 1 / newBaseExchangeRate;
-                    }
-                    else
-                    {
-                        exchangeRateDTO.Value /= newBaseExchangeRate;
-                    }
-                }
+                RecalculateExchangeRatesWithNewBase(cacheBaseCurrency,
+                                               cacheTask.TaskInfo.NewBaseCurrency,
+                                               cachedExchangeRates.ExchangeRates);
 
                 await _exchangeRatesRepository.UpdateCachedExchangeRatesAsync(
                     cachedExchangeRates.RelevantOnDate,
@@ -78,6 +65,28 @@ namespace InternalAPI.Services
                 cacheTask.Id,
                 CacheTaskStatus.CompletedSuccessfully,
                 cancellationToken);
+        }
+
+        private void RecalculateExchangeRatesWithNewBase(string cacheBaseCurrency,
+                                                    string newBaseCurrency,
+                                                    ExchangeRateDTOModel[] exchangeRates)
+        {
+            decimal newBaseExchangeRate = FindExchangeRateValue(
+                                            newBaseCurrency,
+                                            exchangeRates);
+
+            foreach (ExchangeRateDTOModel exchangeRateDTO in exchangeRates)
+            {
+                if (exchangeRateDTO.Code.Equals(cacheBaseCurrency,
+                                                StringComparison.OrdinalIgnoreCase))
+                {
+                    exchangeRateDTO.Value = 1 / newBaseExchangeRate;
+                }
+                else
+                {
+                    exchangeRateDTO.Value /= newBaseExchangeRate;
+                }
+            }
         }
 
         private decimal FindExchangeRateValue(string currencyCode, ExchangeRateDTOModel[] exchangeRates)

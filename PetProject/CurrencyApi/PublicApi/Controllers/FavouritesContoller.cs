@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Net;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Enums;
-using Fuse8_ByteMinds.SummerSchool.PublicApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using UserDataAccessLibrary.Models;
 
@@ -26,27 +24,18 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
         /// </summary>
         /// <param name="cancellationToken">Токен отмены</param>
         /// <response code="200">
-        /// Возвращает, если удалось получить курс валюты
-        /// </response>
-        /// <response code="404">
-        /// Возвращает, если нет ни одного Избранного
+        /// Возвращает курс, если удалось его получить.
+        /// Ничего не возвращает, если не существует Избранного с указанным именем.
         /// </response>
         /// <response code="500">
         /// Возвращает в случае других ошибок
         /// </response>
         [HttpGet]
-        public async Task<FavouriteExchangeRate[]> GetAllFavouritesAsync(
+        public Task<FavouriteExchangeRate[]> GetAllFavouritesAsync(
             CancellationToken cancellationToken)
         {
-            FavouriteExchangeRate[] allFavourites = await _favouritesService
-                .GetAllFavouritesAsync(cancellationToken);
-
-            if (allFavourites.Any() == false)
-            {
-                Response.StatusCode = (int)HttpStatusCode.NotFound;
-            }
-
-            return allFavourites;
+            return _favouritesService
+                    .GetAllFavouritesAsync(cancellationToken);
         }
 
         /// <summary>
@@ -55,28 +44,21 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
         /// <param name="favouriteName">Название Избранного</param>
         /// <param name="cancellationToken">Токен отмены</param>
         /// <response code="200">
-        /// Возвращает, если удалось получить курс валюты
+        /// Возвращает курс, если удалось его получить.
         /// </response>
         /// <response code="404">
-        /// Возвращает, если не найдено Избранное (Избранного с таким именем не существует)
+        /// Возвращает, если не найдено Избранное с указанным именем
         /// </response>
         /// <response code="500">
         /// Возвращает в случае других ошибок
         /// </response>
         [HttpGet("{favouriteName}")]
-        public async Task<FavouriteExchangeRate> GetFavouriteByNameAsync(
+        public Task<FavouriteExchangeRate?> GetFavouriteByNameAsync(
             string favouriteName,
             CancellationToken cancellationToken)
         {
-            FavouriteExchangeRate? favourite = await _favouritesService
-                .GetFavouriteByNameAsync(favouriteName, cancellationToken);
-
-            if (favourite == null)
-            {
-                Response.StatusCode = (int)HttpStatusCode.NotFound;
-            }
-
-            return favourite;
+            return _favouritesService
+                    .GetFavouriteByNameAsync(favouriteName, cancellationToken);
         }
 
         /// <summary>
@@ -99,13 +81,13 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
         /// Возвращает в случае других ошибок
         /// </response>
         [HttpPut("{newFavouriteName}")]
-        public async Task AddFavouriteAsync(
+        public Task AddFavouriteAsync(
             string newFavouriteName,
             [Required] CurrencyType currency,
             [Required] CurrencyType baseCurrency,
             CancellationToken cancellationToken)
         {
-            await _favouritesService.TryAddFavouriteAsync(
+            return _favouritesService.TryAddFavouriteAsync(
                 name: newFavouriteName,
                 currency: currency.ToString(),
                 baseCurrency: baseCurrency.ToString(),
@@ -127,7 +109,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
         /// 3. Пользователь ввел данные для изменения, которые совпадают с уже существующими данными
         /// </response>
         /// <response code="404">
-        /// Возвращает, если не существует Избранного с таким именем
+        /// Возвращает, если не найдено Избранного с таким именем
         /// </response>
         /// <response code="422">
         /// Возвращает, если
@@ -139,7 +121,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
         /// Возвращает в случае других ошибок
         /// </response>
         [HttpPost("{favouriteName}")]
-        public async Task UpdateFavouriteAsync(
+        public Task UpdateFavouriteAsync(
             string favouriteName,
             string? newFavouriteName,
             CurrencyType? currency,
@@ -149,12 +131,12 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
             string? currencyString = currency?.ToString();
             string? baseCurrencyString = baseCurrency?.ToString();
 
-            await _favouritesService.TryUpdateFavouriteAsync(
-                name: favouriteName,
-                newName: newFavouriteName,
-                currency: currencyString,
-                baseCurrency: baseCurrencyString,
-                cancellationToken);
+            return _favouritesService.TryUpdateFavouriteAsync(
+                                        name: favouriteName,
+                                        newName: newFavouriteName,
+                                        currency: currencyString,
+                                        baseCurrency: baseCurrencyString,
+                                        cancellationToken);
         }
 
         /// <summary>
@@ -172,11 +154,11 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
         /// Возвращает в случае других ошибок
         /// </response>
         [HttpDelete("{favouriteName}")]
-        public async Task DeleteFavouriteAsync(
+        public Task DeleteFavouriteAsync(
             string favouriteName,
             CancellationToken cancellationToken)
         {
-            await _favouritesService.TryDeleteFavouriteAsync(favouriteName, cancellationToken);
+            return _favouritesService.TryDeleteFavouriteAsync(favouriteName, cancellationToken);
         }
     }
 }

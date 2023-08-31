@@ -17,9 +17,6 @@
             public const string UnknownExceptionMessage =
                 "Произошла непредвиденная ошибка";
 
-            public const string InvalidDateFormatExceptionMessage =
-                "Неверно указана дата";
-
             public const string CacheBaseCurrencyNotFoundExceptionMessage =
                 "Не найдена указанная базовая валюта. Проверьте BaseCurrency в appsettings.json";
 

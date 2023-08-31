@@ -4,5 +4,5 @@ namespace InternalAPI.Contracts;
 
 public interface IGettingApiConfigService
 {
-    Task<ApiInfoModel> GetApiConfigAsync(CancellationToken cancellationToken);
+    Task<ApiInfoModel> GetApiInfoAsync(CancellationToken cancellationToken);
 }
