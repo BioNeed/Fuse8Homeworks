@@ -13,7 +13,6 @@ namespace InternalAPI.Services
 {
     public class CachedCurrencyService : ICachedCurrencyAPI
     {
-        // TODO изменить чтоб базовая валюта бралась из БД
         private readonly ICurrencyAPI _currencyAPI;
         private readonly IExchangeRatesRepository _exchangeRatesRepository;
         private readonly TimeSpan _cacheExpirationTime;
@@ -21,7 +20,7 @@ namespace InternalAPI.Services
         public CachedCurrencyService(ICurrencyAPI currencyAPI,
                                      IExchangeRatesRepository exchangeRatesRepository,
                                      IOptionsSnapshot<ApiSettingsModel> apiSettings,
-                                     IOptionsSnapshot<ApiInfoModel> apiConfig,
+                                     ICacheSettingsRepository cacheSettingsRepository,
                                      IHttpContextAccessor httpContextAccessor,
                                      IConfiguration configuration)
         {
@@ -29,8 +28,10 @@ namespace InternalAPI.Services
             _exchangeRatesRepository = exchangeRatesRepository;
             _cacheExpirationTime = TimeSpan.FromHours(apiSettings.Value.CacheExpirationTimeInHours);
 
+            CacheSettings cacheSettings = cacheSettingsRepository.GetCacheSettings();
+
             if (Enum.TryParse<CurrencyType>(
-                apiConfig.Value.BaseCurrency,
+                cacheSettings.BaseCurrency,
                 true,
                 out _) == false)
             {
@@ -48,7 +49,7 @@ namespace InternalAPI.Services
                     .ErrorMessages.CacheBaseCurrencyNotFoundExceptionMessage);
             }
 
-            BaseCurrency = apiConfig.Value.BaseCurrency;
+            BaseCurrency = cacheSettings.BaseCurrency;
         }
 
         public string BaseCurrency { get; }
@@ -85,7 +86,7 @@ namespace InternalAPI.Services
         public async Task<ExchangeRateDTOModel> GetExchangeRateOnDateAsync(CurrencyType currencyType, DateOnly date, CancellationToken cancellationToken)
         {
             CachedExchangeRates? cachedHistoricalExchangeRates =
-                await _exchangeRatesRepository.GetHistoricalCacheDataAsync(date, cancellationToken);
+                await _exchangeRatesRepository.GetHistoricalCachedExchangeRatesAsync(date, cancellationToken);
 
             if (cachedHistoricalExchangeRates != null)
             {

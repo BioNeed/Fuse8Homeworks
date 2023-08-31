@@ -15,8 +15,7 @@ services:
       - GrpcPort=${INTERNAL_API_GRPC_CONTAINER_PORT}
       - RestApiPort=${INTERNAL_API_CONTAINER_PORT}
       - ApiSettings__BaseAddress=https://api.currencyapi.com/ 
-      - ApiSettings__CacheExpirationTimeInHours=2 
-      - Settings__BaseCurrency=USD 
+      - ApiSettings__CacheExpirationTimeInHours=2
 
     healthcheck:
       test: curl --fail http://localhost:7228/healthcheck || exit 1

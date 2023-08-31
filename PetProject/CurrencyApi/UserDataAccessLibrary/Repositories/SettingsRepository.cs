@@ -25,7 +25,7 @@ namespace UserDataAccessLibrary.Repositories
             Settings settings = await _userDbContext.Settings.FirstAsync(cancellationToken);
             settings.DefaultCurrency = newDefaultCurrency;
 
-            _userDbContext.SaveChanges();
+            await _userDbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task SetCurrencyRoundCountAsync(int newRoundCount,
@@ -34,7 +34,7 @@ namespace UserDataAccessLibrary.Repositories
             Settings settings = await _userDbContext.Settings.FirstAsync(cancellationToken);
             settings.CurrencyRoundCount = newRoundCount;
 
-            _userDbContext.SaveChanges();
+            await _userDbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }

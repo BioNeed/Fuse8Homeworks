@@ -37,7 +37,7 @@ namespace CurrenciesDataAccessLibrary.Repositories
 
             cacheTaskToUpdate.Status = status;
 
-            _currenciesDbContext.SaveChanges();
+            await _currenciesDbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task AddCacheTaskAsync(Guid taskId,

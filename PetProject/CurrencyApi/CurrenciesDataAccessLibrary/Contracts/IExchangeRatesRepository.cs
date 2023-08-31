@@ -6,7 +6,7 @@ namespace CurrenciesDataAccessLibrary.Contracts
     {
         Task<CachedExchangeRates?> GetLastCachedExchangeRatesAsync(CancellationToken cancellationToken);
 
-        Task<CachedExchangeRates?> GetHistoricalCacheDataAsync(
+        Task<CachedExchangeRates?> GetHistoricalCachedExchangeRatesAsync(
             DateOnly date,
             CancellationToken cancellationToken);
 
@@ -14,5 +14,9 @@ namespace CurrenciesDataAccessLibrary.Contracts
                                 ExchangeRateDTOModel[] exchangeRates,
                                 DateTime relevantOnDate,
                                 CancellationToken cancellationToken);
+
+        Task<CachedExchangeRates[]> GetAllCachedExchangeRatesAsync(CancellationToken cancellationToken);
+
+        Task UpdateCachedExchangeRatesAsync(DateTime relevantOnDate, string newBaseCurrency, ExchangeRateDTOModel[] newExchangeRates, CancellationToken cancellationToken);
     }
 }

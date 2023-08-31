@@ -1,6 +1,8 @@
 ﻿using System.Collections.Specialized;
 using System.Text.Json;
 using System.Web;
+using CurrenciesDataAccessLibrary.Contracts;
+using CurrenciesDataAccessLibrary.Models;
 using Grpc.Core;
 using InternalAPI.Constants;
 using InternalAPI.Contracts;
@@ -13,19 +15,19 @@ namespace InternalAPI.Services
 {
     public class CurrencyService : IGettingApiConfigService, ICurrencyAPI
     {
-        private readonly IOptionsSnapshot<ApiInfoModel> _apiConfig;
+        private readonly ICacheSettingsRepository _cacheSettingsRepository;
         private readonly HttpClient _httpClient;
         private readonly bool _usingByGrpc;
 
         public CurrencyService(IHttpClientFactory httpClientFactory,
-                               IOptionsSnapshot<ApiInfoModel> apiConfig,
                                IHttpContextAccessor httpContextAccessor,
-                               IConfiguration configuration)
+                               IConfiguration configuration,
+                               ICacheSettingsRepository cacheSettingsRepository)
         {
             _httpClient = httpClientFactory.CreateClient(ApiConstants.HttpClientNames.CurrencyApi);
-            _apiConfig = apiConfig;
             _usingByGrpc = httpContextAccessor.HttpContext.Connection.LocalPort ==
                 configuration.GetValue<int>(ApiConstants.PortNames.GrpcPort);
+            _cacheSettingsRepository = cacheSettingsRepository;
         }
 
         public async Task<ApiInfoModel> GetApiConfigAsync(CancellationToken cancellationToken)
@@ -48,10 +50,13 @@ namespace InternalAPI.Services
             ApiStatusModel apiStatusFromJson =
                 JsonSerializer.Deserialize<ApiStatusModel>(responseString, options);
 
-            return _apiConfig.Value with
+            CacheSettings cacheSettings = await _cacheSettingsRepository.GetCacheSettingsAsync(cancellationToken);
+
+            return new ApiInfoModel
             {
-                NewRequestsAvailable = apiStatusFromJson.UsedRequests <
-                    apiStatusFromJson.TotalRequests,
+                BaseCurrency = cacheSettings.BaseCurrency,
+                NewRequestsAvailable = apiStatusFromJson.UsedRequests
+                                        < apiStatusFromJson.TotalRequests,
             };
         }
 

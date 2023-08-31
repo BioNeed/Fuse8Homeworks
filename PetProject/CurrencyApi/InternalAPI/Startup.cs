@@ -34,9 +34,6 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        IConfigurationSection settingsSection = _configuration.GetRequiredSection("Settings");
-        services.Configure<ApiInfoModel>(settingsSection);
-
         IConfigurationSection apiSettingsSection = _configuration.GetRequiredSection("ApiSettings");
         services.Configure<ApiSettingsModel>(apiSettingsSection);
 
@@ -77,6 +74,8 @@ public class Startup
         services.AddScoped<IHealthCheckService, HealthCheckService>();
         services.AddScoped<IExchangeRatesRepository, ExchangeRatesRepository>();
         services.AddScoped<ICacheTasksRepository, CacheTasksRepository>();
+        services.AddScoped<ICacheSettingsRepository, CacheSettingsRepository>();
+        services.AddScoped<IWorker, CacheRecalculator>();
         services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
         services.AddHostedService<QueueHostedService>();
 

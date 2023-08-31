@@ -14,30 +14,24 @@ namespace CurrenciesDataAccessLibrary.Repositories
             _currenciesDbContext = currenciesDbContext;
         }
 
-        public async Task<CachedExchangeRates?> GetLastCachedExchangeRatesAsync(CancellationToken cancellationToken)
+        public Task<CachedExchangeRates?> GetLastCachedExchangeRatesAsync(CancellationToken cancellationToken)
         {
-            CachedExchangeRates cachedExchangeRates =
-                await _currenciesDbContext.CachedExchangeRates.AsNoTracking()
+            return _currenciesDbContext.CachedExchangeRates.AsNoTracking()
                     .OrderByDescending(c => c.RelevantOnDate)
                     .FirstOrDefaultAsync(cancellationToken);
-
-            return cachedExchangeRates;
         }
 
-        public async Task<CachedExchangeRates?> GetHistoricalCacheDataAsync(
+        public Task<CachedExchangeRates?> GetHistoricalCachedExchangeRatesAsync(
             DateOnly date,
             CancellationToken cancellationToken)
         {
             DateTime dateTime = date.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
 
-            CachedExchangeRates cachedExchangeRates =
-                await _currenciesDbContext.CachedExchangeRates.AsNoTracking()
+            return _currenciesDbContext.CachedExchangeRates.AsNoTracking()
                     .OrderByDescending(c => c.RelevantOnDate)
                     .FirstOrDefaultAsync(
                         c => c.RelevantOnDate.Date == dateTime.Date,
                         cancellationToken);
-
-            return cachedExchangeRates;
         }
 
         public async Task SaveCacheDataAsync(string baseCurrency,
@@ -57,10 +51,28 @@ namespace CurrenciesDataAccessLibrary.Repositories
 
             await _currenciesDbContext.SaveChangesAsync(cancellationToken);
         }
-    
-        public async Task<CachedExchangeRates[]> GetAllExchangeRatesWhere()
+
+        public Task<CachedExchangeRates[]> GetAllCachedExchangeRatesAsync(
+            CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return _currenciesDbContext.CachedExchangeRates.AsNoTracking()
+                .ToArrayAsync(cancellationToken);
+        }
+
+        public async Task UpdateCachedExchangeRatesAsync(DateTime relevantOnDate,
+                                                         string newBaseCurrency,
+                                                         ExchangeRateDTOModel[] newExchangeRates,
+                                                         CancellationToken cancellationToken)
+        {
+            CachedExchangeRates cachedExchangeRates =
+                await _currenciesDbContext.CachedExchangeRates
+                                .FirstAsync(c => c.RelevantOnDate == relevantOnDate,
+                                            cancellationToken);
+
+            cachedExchangeRates.BaseCurrency = newBaseCurrency;
+            cachedExchangeRates.ExchangeRates = newExchangeRates;
+
+            await _currenciesDbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }
