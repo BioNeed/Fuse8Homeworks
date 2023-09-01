@@ -1,6 +1,20 @@
 ﻿version: '3.8'
 
 services:
+  postgres:
+    container_name: ${DATABASE_CONTAINER_NAME}
+    image: postgres:15.3
+    restart: unless-stopped
+    environment:
+        DATABASE_HOST: ${DATABASE_HOST}
+        POSTGRES_USER: ${DATABASE_USER}
+        POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+        POSTGRES_DB: ${DATABASE_MAINTENANCE_DB}
+    ports:
+        - "5434:${DATABASE_CONTAINER_PORT}"
+    volumes:
+        - ${DATABASE_HOST_DATA}:${DATABASE_CONTAINER_DATA}
+
   internal_api:
     container_name: ${INTERNAL_API_CONTAINER_NAME}
     image: school/${INTERNAL_API_CONTAINER_NAME}:dev
@@ -16,6 +30,7 @@ services:
       - RestApiPort=${INTERNAL_API_CONTAINER_PORT}
       - ApiSettings__BaseAddress=https://api.currencyapi.com/ 
       - ApiSettings__CacheExpirationTimeInHours=2
+      - ApiSettings__WaitingTimeForTaskProcessingInSeconds=10
 
     healthcheck:
       test: curl --fail http://localhost:7228/healthcheck || exit 1
@@ -62,17 +77,3 @@ services:
         condition: service_healthy
       postgres:
         condition: service_started
-
-  postgres:
-    container_name: ${DATABASE_CONTAINER_NAME}
-    image: postgres:15.3
-    restart: unless-stopped
-    environment:
-        DATABASE_HOST: ${DATABASE_HOST}
-        POSTGRES_USER: ${DATABASE_USER}
-        POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-        POSTGRES_DB: ${DATABASE_MAINTENANCE_DB}
-    ports:
-        - "5434:${DATABASE_CONTAINER_PORT}"
-    volumes:
-        - ${DATABASE_HOST_DATA}:${DATABASE_CONTAINER_DATA}

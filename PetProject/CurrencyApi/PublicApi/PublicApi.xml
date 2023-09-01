@@ -4,6 +4,11 @@
         <name>PublicApi</name>
     </assembly>
     <members>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Constants.ApiConstants">
+            <summary>
+            Класс строковых констант PublicApi
+            </summary>
+        </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.DecimalValue">
             <summary>
             Класс-оболочка для decimal типа с операторами преобразования
@@ -393,6 +398,124 @@
         <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.NewInstance(Grpc.Core.ClientBase.ClientBaseConfiguration)">
             <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
         </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IFavouritesService">
+            <summary>
+            Сервис для работы с Избранными курсами валют
+            </summary>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IFavouritesService.GetAllFavouritesAsync(System.Threading.CancellationToken)">
+            <summary>
+            Получить все Избранные курсы валют
+            </summary>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Все Избранные курсы валют</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IFavouritesService.GetFavouriteByNameAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Получить Избранный курс валют по имени
+            </summary>
+            <param name="name">Имя, по которому осуществлять поиск</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Найденный Избранный курс валют</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IFavouritesService.TryAddFavouriteAsync(System.String,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Попробовать добавить Избранное
+            </summary>
+            <param name="name">Имя Избранного</param>
+            <param name="currency">Валюта Избранного</param>
+            <param name="baseCurrency">Базовая валюта Избранного</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IFavouritesService.TryDeleteFavouriteAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Попробовать удалить Избранное
+            </summary>
+            <param name="name">Название Избранного</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IFavouritesService.TryUpdateFavouriteAsync(System.String,System.String,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Попробовать обновить Избранное
+            </summary>
+            <param name="name">Название Избранного</param>
+            <param name="newName">Новое имя Избранного</param>
+            <param name="currency">Новая валюта Избранного</param>
+            <param name="baseCurrency">Новая базовая валюта Избранного</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IGrpcCurrencyService">
+            <summary>
+            Сервис, посылащий запросы Grpc-серверу через Grpc-клиента
+            </summary>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IGrpcCurrencyService.GetExchangeRateAsync(System.Nullable{Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType},System.Threading.CancellationToken)">
+            <summary>
+            Получить курс определенной валюты
+            </summary>
+            <param name="currencyCode">Валюта, в которой узнать курс</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Курс выбранной валюты</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IGrpcCurrencyService.GetExchangeRateOnDateAsync(System.String,System.DateTime,System.Threading.CancellationToken)">
+            <summary>
+            Получить курс определенной валюты на определенную дату
+            </summary>
+            <param name="currencyCode">Валюта, в которой узнать курс</param>
+            <param name="dateTime">Дата актуальности курса</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Курс заданной валюты на заданную дату</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IGrpcCurrencyService.GetFavouriteExchangeRateAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Получить курс валют Избранного
+            </summary>
+            <param name="favouriteName">Название Избранного курса валют</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Курс валют Избранного с заданным названием</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IGrpcCurrencyService.GetFavouriteExchangeRateOnDateAsync(System.String,System.DateTime,System.Threading.CancellationToken)">
+            <summary>
+            Получить курс валют Избранного на определенную дату
+            </summary>
+            <param name="favouriteName">Название Избранного курса валют</param>
+            <param name="dateTime">Дата актуальности курса Избранного</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Курс валют Избранного на определенную дату</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IGrpcCurrencyService.GetSettingsAsync(System.Threading.CancellationToken)">
+            <summary>
+            Получить настройки приложения
+            </summary>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Настройки приложения</returns>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.ISettingsService">
+            <summary>
+            Сервис для работы с репозиторием настроек PublicApi
+            </summary>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.ISettingsService.GetApplicationSettingsAsync(System.Threading.CancellationToken)">
+            <summary>
+            Получить настройки PublicApi
+            </summary>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Настройки PublicApi</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.ISettingsService.SetDefaultCurrencyAsync(Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType,System.Threading.CancellationToken)">
+            <summary>
+            Задать новую валюту по умолчанию
+            </summary>
+            <param name="currencyType">Новая валюта по умолчанию</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.ISettingsService.SetCurrencyRoundCountAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Задать новое значение - кол-во знаков после запятой при округлении курсов валют
+            </summary>
+            <param name="newRoundCount">Новое кол-во знаков после запятой</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.FavouritesContoller">
             <summary>
             Методы для управления Избранными курсами валют
@@ -586,7 +709,7 @@
         </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.SettingsController">
             <summary>
-            Методы для управления настройками приложения
+            Методы для управления настройками PublicApi
             </summary>
         </member>
         <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.SettingsController.SetDefaultCurrencyAsync(Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType,System.Threading.CancellationToken)">
@@ -1509,9 +1632,17 @@
             Cardano
             </summary>
         </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions.ViolatingDatabaseConstraintsException">
+            <summary>
+            Исключение, возникающее при нарушении ограничений БД
+            </summary>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions.ViolatingDatabaseConstraintsException.#ctor(System.String)">
+            <inheritdoc cref="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions.ViolatingDatabaseConstraintsException"/>
+        </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ApiSettingsModel">
             <summary>
-            Настройки API
+            Настройки для взаимодействия с InternalAPI
             </summary>
         </member>
         <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ApiSettingsModel.BaseAddress">
@@ -1623,6 +1754,15 @@
             <summary>
             Курс валюты относительно базовой валюты
             </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Services.FavouritesService">
+            <inheritdoc cref="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IFavouritesService"/>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Services.GrpcCurrencyService">
+            <inheritdoc cref="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IGrpcCurrencyService"/>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Services.SettingsService">
+            <inheritdoc cref="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.ISettingsService"/>
         </member>
     </members>
 </doc>

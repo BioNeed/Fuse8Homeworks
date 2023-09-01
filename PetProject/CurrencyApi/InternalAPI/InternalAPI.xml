@@ -4,6 +4,14 @@
         <name>InternalAPI</name>
     </assembly>
     <members>
+        <member name="T:InternalAPI.Background.BackgroundTaskQueue">
+            <inheritdoc cref="T:InternalAPI.Contracts.IBackgroundTaskQueue"/>
+        </member>
+        <member name="T:InternalAPI.Constants.ApiConstants">
+            <summary>
+            Класс строковых констант InternalApi
+            </summary>
+        </member>
         <member name="T:InternalAPI.Contracts.GrpcContracts.DecimalValue">
             <summary>
             Класс-оболочка для decimal типа с операторами преобразования
@@ -245,6 +253,16 @@
             <param name="serviceBinder">Service methods will be bound by calling <c>AddMethod</c> on this object.</param>
             <param name="serviceImpl">An object implementing the server-side handling logic.</param>
         </member>
+        <member name="T:InternalAPI.Contracts.IBackgroundTaskQueue">
+            <summary>
+            Фоновая очередь задач
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Contracts.ICachedCurrencyAPI">
+            <summary>
+            Сервис для работы с кэшем
+            </summary>
+        </member>
         <member name="P:InternalAPI.Contracts.ICachedCurrencyAPI.BaseCurrency">
             <summary>
             Базовая валюта, относительно которой строится кэш
@@ -267,6 +285,11 @@
             <param name="cancellationToken">Токен отмены</param>
             <returns>Курс на дату</returns>
         </member>
+        <member name="T:InternalAPI.Contracts.ICurrencyAPI">
+            <summary>
+            Сервис для работы с внешним API (CurrencyApi)
+            </summary>
+        </member>
         <member name="M:InternalAPI.Contracts.ICurrencyAPI.GetAllCurrentCurrenciesAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Получает текущий курс для всех валют
@@ -283,6 +306,30 @@
             <param name="date">Дата, на которую нужно получить курс валют</param>
             <param name="cancellationToken">Токен отмены</param>
             <returns>Список курсов валют на дату</returns>
+        </member>
+        <member name="T:InternalAPI.Contracts.IGettingApiInfoService">
+            <summary>
+            Сервис, получающий информацию об InternalApi
+            </summary>
+        </member>
+        <member name="M:InternalAPI.Contracts.IGettingApiInfoService.GetApiInfoAsync(System.Threading.CancellationToken)">
+            <summary>
+            Получить информацию об InternalApi
+            </summary>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Инфо об InternalApi</returns>
+        </member>
+        <member name="T:InternalAPI.Contracts.IWorker">
+            <summary>
+            Сервис, обрабатывающий задачу
+            </summary>
+        </member>
+        <member name="M:InternalAPI.Contracts.IWorker.ProcessWorkItemAsync(InternalAPI.Models.WorkItem,System.Threading.CancellationToken)">
+            <summary>
+            Выполнить задачу
+            </summary>
+            <param name="item">Item с Id задачи, которую нужно выполнить</param>
+            <param name="cancellationToken">Токен отмены</param>
         </member>
         <member name="T:InternalAPI.Controllers.CurrencyController">
             <summary>
@@ -1247,6 +1294,42 @@
             Cardano
             </summary>
         </member>
+        <member name="T:InternalAPI.Exceptions.ApiRequestLimitException">
+            <summary>
+            Исключение, возникающие при превышении допустимого количества запросов
+            </summary>
+        </member>
+        <member name="M:InternalAPI.Exceptions.ApiRequestLimitException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:InternalAPI.Exceptions.ApiRequestLimitException"/> class.
+            <inheritdoc cref="T:InternalAPI.Exceptions.ApiRequestLimitException"/>
+            </summary>
+            <param name="message">Сообщение с деталями об ошибке</param>
+        </member>
+        <member name="T:InternalAPI.Exceptions.CacheBaseCurrencyNotFoundException">
+            <summary>
+            Исключение, возникающее, когда не найдена базовая валюта кэша из таблицы
+            </summary>
+        </member>
+        <member name="M:InternalAPI.Exceptions.CacheBaseCurrencyNotFoundException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:InternalAPI.Exceptions.CacheBaseCurrencyNotFoundException"/> class.
+            <inheritdoc cref="T:InternalAPI.Exceptions.CacheBaseCurrencyNotFoundException"/>
+            </summary>
+            <param name="message">Сообщение с деталями об ошибке</param>
+        </member>
+        <member name="T:InternalAPI.Exceptions.CacheTaskProcessingTimedOutException">
+            <summary>
+            Исключение, возникающее при слишком долгой обработке задачи кэша
+            </summary>
+        </member>
+        <member name="M:InternalAPI.Exceptions.CacheTaskProcessingTimedOutException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:InternalAPI.Exceptions.CacheBaseCurrencyNotFoundException"/> class.
+            <inheritdoc cref="T:InternalAPI.Exceptions.CacheBaseCurrencyNotFoundException"/>
+            </summary>
+            <param name="message">Сообщение с деталями об ошибке</param>
+        </member>
         <member name="T:InternalAPI.Models.ApiInfoModel">
             <summary>
             Настройки приложения и доступные запросы
@@ -1350,6 +1433,48 @@
         <member name="P:InternalAPI.Models.ExchangeRatesHistoricalModel.ExchangeRates">
             <summary>
             Список курсов валют
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Models.WorkItem">
+            <summary>
+            Item с уникальным идентификатором задачи
+            </summary>
+            <param name="TaskId">Уникальный идентификатор задачи</param>
+        </member>
+        <member name="M:InternalAPI.Models.WorkItem.#ctor(System.Guid)">
+            <summary>
+            Item с уникальным идентификатором задачи
+            </summary>
+            <param name="TaskId">Уникальный идентификатор задачи</param>
+        </member>
+        <member name="P:InternalAPI.Models.WorkItem.TaskId">
+            <summary>Уникальный идентификатор задачи</summary>
+        </member>
+        <member name="T:InternalAPI.Services.CachedCurrencyService">
+            <summary>
+            <inheritdoc cref="T:InternalAPI.Contracts.ICachedCurrencyAPI"/>
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Services.CacheRecalculator">
+            <summary>
+            Сервис, пересчитывающий кэш
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Services.CurrencyService">
+            <summary>
+            <inheritdoc cref="T:InternalAPI.Contracts.ICurrencyAPI"/>
+            <inheritdoc cref="T:InternalAPI.Contracts.IGettingApiInfoService"/>
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Services.GrpcCurrencyService">
+            <summary>
+            Grpc-сервер, отвечающий на запросы Grpc-клиента.
+            <inheritdoc cref="T:InternalAPI.Contracts.GrpcContracts.GrpcCurrency"/>
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Services.QueueHostedService">
+            <summary>
+            Сервис, управляющий очередью с задачами
             </summary>
         </member>
     </members>

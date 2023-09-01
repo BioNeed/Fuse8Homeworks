@@ -16,8 +16,7 @@ public class GrpcCurrencyController : ControllerBase
 {
     private readonly IGrpcCurrencyService _grpcCurrencyService;
 
-    public GrpcCurrencyController(IGrpcCurrencyService currencyService,
-                                  ISettingsService settingsService)
+    public GrpcCurrencyController(IGrpcCurrencyService currencyService)
     {
         _grpcCurrencyService = currencyService;
     }

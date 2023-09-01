@@ -6,8 +6,8 @@
     public class CacheTaskProcessingTimedOutException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CacheBaseCurrencyNotFoundException"/> class.
-        /// <inheritdoc cref="CacheBaseCurrencyNotFoundException"/>
+        /// Initializes a new instance of the <see cref="CacheTaskProcessingTimedOutException"/> class.
+        /// <inheritdoc cref="CacheTaskProcessingTimedOutException"/>
         /// </summary>
         /// <param name="message">Сообщение с деталями об ошибке</param>
         public CacheTaskProcessingTimedOutException(string message = "")
