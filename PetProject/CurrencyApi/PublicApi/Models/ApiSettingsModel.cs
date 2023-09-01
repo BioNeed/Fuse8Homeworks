@@ -1,7 +1,7 @@
 ﻿namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Models
 {
     /// <summary>
-    /// Настройки API
+    /// Настройки для взаимодействия с InternalAPI
     /// </summary>
     public record ApiSettingsModel
     {

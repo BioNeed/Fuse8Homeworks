@@ -5,10 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CurrenciesDataAccessLibrary.Repositories
 {
+    /// <inheritdoc cref="IExchangeRatesRepository"/>
     public class ExchangeRatesRepository : IExchangeRatesRepository
     {
         private readonly CurrenciesDbContext _currenciesDbContext;
 
+        /// <inheritdoc cref="IExchangeRatesRepository"/>
         public ExchangeRatesRepository(CurrenciesDbContext currenciesDbContext)
         {
             _currenciesDbContext = currenciesDbContext;

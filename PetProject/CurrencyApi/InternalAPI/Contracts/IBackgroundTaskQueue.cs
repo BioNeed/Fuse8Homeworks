@@ -2,6 +2,9 @@
 
 namespace InternalAPI.Contracts
 {
+    /// <summary>
+    /// Фоновая очередь задач
+    /// </summary>
     public interface IBackgroundTaskQueue
     {
         ValueTask<WorkItem> DequeueAsync(CancellationToken cancellationToken);

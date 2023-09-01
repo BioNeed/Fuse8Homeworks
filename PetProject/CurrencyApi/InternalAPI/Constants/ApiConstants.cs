@@ -1,5 +1,8 @@
 ﻿namespace InternalAPI.Constants
 {
+    /// <summary>
+    /// Класс строковых констант InternalApi
+    /// </summary>
     public static class ApiConstants
     {
         public static class Uris

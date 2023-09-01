@@ -7,6 +7,7 @@ using UserDataAccessLibrary.Models;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
 {
+    /// <inheritdoc cref="IGrpcCurrencyService"/>
     public class GrpcCurrencyService : IGrpcCurrencyService
     {
         private readonly GrpcCurrency.GrpcCurrencyClient _grpcCurrencyClient;

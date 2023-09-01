@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
 {
     /// <summary>
-    /// Методы для управления настройками приложения
+    /// Методы для управления настройками PublicApi
     /// </summary>
     [Route("settings")]
     public class SettingsController : ControllerBase

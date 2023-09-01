@@ -5,6 +5,7 @@ using UserDataAccessLibrary.Models;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
 {
+    /// <inheritdoc cref="ISettingsService"/>
     public class SettingsService : ISettingsService
     {
         private readonly ISettingsRepository _settingsRepository;

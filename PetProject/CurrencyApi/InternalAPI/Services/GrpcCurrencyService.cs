@@ -8,15 +8,19 @@ using InternalAPI.Models;
 
 namespace InternalAPI.Services
 {
+    /// <summary>
+    /// Grpc-сервер, отвечающий на запросы Grpc-клиента.
+    /// <inheritdoc cref="GrpcCurrency"/>
+    /// </summary>
     public class GrpcCurrencyService : GrpcCurrency.GrpcCurrencyBase
     {
-        private readonly IGettingApiConfigService _gettingApiConfigService;
+        private readonly IGettingApiInfoService _gettingApiInfoice;
         private readonly ICachedCurrencyAPI _cachedCurrencyAPI;
 
-        public GrpcCurrencyService(IGettingApiConfigService gettingApiConfigService,
+        public GrpcCurrencyService(IGettingApiInfoService gettingApiInfoService,
                                    ICachedCurrencyAPI cachedCurrencyAPI)
         {
-            _gettingApiConfigService = gettingApiConfigService;
+            _gettingApiInfoice = gettingApiInfoService;
             _cachedCurrencyAPI = cachedCurrencyAPI;
         }
 
@@ -43,7 +47,7 @@ namespace InternalAPI.Services
 
         public override async Task<ApiInfo> GetApiInfo(Empty emptyRequest, ServerCallContext context)
         {
-            ApiInfoModel config = await _gettingApiConfigService
+            ApiInfoModel config = await _gettingApiInfoice
                 .GetApiInfoAsync(context.CancellationToken);
             return new ApiInfo
             {

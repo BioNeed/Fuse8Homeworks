@@ -8,6 +8,7 @@ using UserDataAccessLibrary.Models;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
 {
+    /// <inheritdoc cref="IFavouritesService"/>
     public class FavouritesService : IFavouritesService
     {
         private const string ViolatingUniqueNameExceptionMessage =

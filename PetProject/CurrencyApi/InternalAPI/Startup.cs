@@ -69,7 +69,7 @@ public class Startup
                 .IncludeContentHeaders());
 
         services.AddScoped<ICurrencyAPI, CurrencyService>();
-        services.AddScoped<IGettingApiConfigService, CurrencyService>();
+        services.AddScoped<IGettingApiInfoService, CurrencyService>();
         services.AddScoped<ICachedCurrencyAPI, CachedCurrencyService>();
         services.AddScoped<IExchangeRatesRepository, ExchangeRatesRepository>();
         services.AddScoped<ICacheTasksRepository, CacheTasksRepository>();

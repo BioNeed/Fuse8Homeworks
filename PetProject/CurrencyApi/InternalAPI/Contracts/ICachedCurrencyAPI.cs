@@ -3,6 +3,9 @@ using InternalAPI.Enums;
 
 namespace InternalAPI.Contracts;
 
+/// <summary>
+/// Сервис для работы с кэшем
+/// </summary>
 public interface ICachedCurrencyAPI
 {
     /// <summary>

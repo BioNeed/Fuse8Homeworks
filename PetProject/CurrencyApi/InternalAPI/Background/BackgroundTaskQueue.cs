@@ -4,6 +4,7 @@ using InternalAPI.Models;
 
 namespace InternalAPI.Background
 {
+    /// <inheritdoc cref="IBackgroundTaskQueue"/>
     public class BackgroundTaskQueue : IBackgroundTaskQueue
     {
         private readonly Channel<WorkItem> _queue;

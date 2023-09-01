@@ -7,6 +7,7 @@ using UserDataAccessLibrary.Models;
 
 namespace UserDataAccessLibrary.Repositories
 {
+    /// <inheritdoc cref="IFavouritesRepository"/>
     public class FavouritesRepository : IFavouritesRepository
     {
         private readonly UserDbContext _userDbContext;

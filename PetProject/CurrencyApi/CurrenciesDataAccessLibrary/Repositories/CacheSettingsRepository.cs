@@ -5,10 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CurrenciesDataAccessLibrary.Repositories
 {
+    /// <inheritdoc cref="ICacheSettingsRepository"/>
     public class CacheSettingsRepository : ICacheSettingsRepository
     {
         private readonly CurrenciesDbContext _currenciesDbContext;
 
+        /// <inheritdoc cref="ICacheSettingsRepository"/>
         public CacheSettingsRepository(CurrenciesDbContext currenciesDbContext)
         {
             _currenciesDbContext = currenciesDbContext;

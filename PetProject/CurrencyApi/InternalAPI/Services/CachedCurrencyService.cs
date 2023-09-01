@@ -11,6 +11,9 @@ using Microsoft.Extensions.Options;
 
 namespace InternalAPI.Services
 {
+    /// <summary>
+    /// <inheritdoc cref="ICachedCurrencyAPI"/>
+    /// </summary>
     public class CachedCurrencyService : ICachedCurrencyAPI
     {
         private readonly ICurrencyAPI _currencyAPI;

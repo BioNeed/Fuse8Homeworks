@@ -5,6 +5,7 @@ using UserDataAccessLibrary.Models;
 
 namespace UserDataAccessLibrary.Repositories
 {
+    /// <inheritdoc cref="ISettingsRepository"/>
     public class SettingsRepository : ISettingsRepository
     {
         private readonly UserDbContext _userDbContext;

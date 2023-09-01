@@ -17,17 +17,17 @@ namespace InternalAPI.Controllers;
 [Route("currency")]
 public class CurrencyController : ControllerBase
 {
-    private readonly IGettingApiConfigService _gettingApiConfigService;
+    private readonly IGettingApiInfoService _gettingApiInfoService;
     private readonly ICachedCurrencyAPI _cachedCurrencyService;
     private readonly ICacheTasksRepository _cacheTasksRepository;
     private readonly IBackgroundTaskQueue _taskQueue;
 
-    public CurrencyController(IGettingApiConfigService gettingApiConfigService,
+    public CurrencyController(IGettingApiInfoService gettingApiInfoService,
                               ICachedCurrencyAPI cachedCurrencyService,
                               ICacheTasksRepository cacheTasksRepository,
                               IBackgroundTaskQueue taskQueue)
     {
-        _gettingApiConfigService = gettingApiConfigService;
+        _gettingApiInfoService = gettingApiInfoService;
         _cachedCurrencyService = cachedCurrencyService;
         _cacheTasksRepository = cacheTasksRepository;
         _taskQueue = taskQueue;
@@ -116,7 +116,7 @@ public class CurrencyController : ControllerBase
     public async Task<ApiInfoModel> GetConfigSettingsAsync(
         CancellationToken cancellationToken)
     {
-        return await _gettingApiConfigService.GetApiInfoAsync(cancellationToken);
+        return await _gettingApiInfoService.GetApiInfoAsync(cancellationToken);
     }
 
     /// <summary>

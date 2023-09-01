@@ -12,7 +12,11 @@ using InternalAPI.Models;
 
 namespace InternalAPI.Services
 {
-    public class CurrencyService : IGettingApiConfigService, ICurrencyAPI
+    /// <summary>
+    /// <inheritdoc cref="ICurrencyAPI"/>
+    /// <inheritdoc cref="IGettingApiInfoService"/>
+    /// </summary>
+    public class CurrencyService : IGettingApiInfoService, ICurrencyAPI
     {
         private readonly ICacheSettingsRepository _cacheSettingsRepository;
         private readonly HttpClient _httpClient;

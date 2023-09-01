@@ -6,6 +6,9 @@ using InternalAPI.Models;
 
 namespace InternalAPI.Services
 {
+    /// <summary>
+    /// Сервис, управляющий очередью с задачами
+    /// </summary>
     public class QueueHostedService : BackgroundService
     {
         private readonly IBackgroundTaskQueue _taskQueue;

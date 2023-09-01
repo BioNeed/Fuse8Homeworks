@@ -2,6 +2,9 @@
 
 namespace InternalAPI.Contracts;
 
+/// <summary>
+/// Сервис для работы с внешним API (CurrencyApi)
+/// </summary>
 public interface ICurrencyAPI
 {
     /// <summary>

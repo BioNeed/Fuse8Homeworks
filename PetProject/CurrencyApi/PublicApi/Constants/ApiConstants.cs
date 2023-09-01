@@ -1,5 +1,8 @@
 ﻿namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Constants
 {
+    /// <summary>
+    /// Класс строковых констант PublicApi
+    /// </summary>
     public static class ApiConstants
     {
         public static class ErrorMessages

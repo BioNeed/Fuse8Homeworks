@@ -6,6 +6,9 @@ using InternalAPI.Models;
 
 namespace InternalAPI.Services
 {
+    /// <summary>
+    /// Сервис, пересчитывающий кэш
+    /// </summary>
     public class CacheRecalculator : IWorker
     {
         private readonly ICacheTasksRepository _cacheTasksRepository;
