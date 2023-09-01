@@ -26,16 +26,16 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
             _favouritesRepository = favouritesRepository;
         }
 
-        public async Task<FavouriteExchangeRate[]> GetAllFavouritesAsync(
+        public Task<FavouriteExchangeRate[]> GetAllFavouritesAsync(
             CancellationToken cancellationToken)
         {
-            return await _favouritesRepository.GetAllFavouritesAsync(cancellationToken);
+            return _favouritesRepository.GetAllFavouritesAsync(cancellationToken);
         }
 
-        public async Task<FavouriteExchangeRate?> GetFavouriteByNameAsync(
+        public Task<FavouriteExchangeRate?> GetFavouriteByNameAsync(
             string name, CancellationToken cancellationToken)
         {
-            return await _favouritesRepository.GetFavouriteByNameAsync(name, cancellationToken);
+            return _favouritesRepository.GetFavouriteByNameAsync(name, cancellationToken);
         }
 
         public async Task TryAddFavouriteAsync(string name,

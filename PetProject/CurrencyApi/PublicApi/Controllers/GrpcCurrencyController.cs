@@ -139,7 +139,7 @@ public class GrpcCurrencyController : ControllerBase
     /// Получить курс Избранного на выбранную дату
     /// </summary>
     /// <param name="favouriteName">Название Избранного, для которого узнать курс</param>
-    /// <param name="dateString">Дата, на которую узнать курс избранного</param>
+    /// <param name="dateString">Дата, на которую узнать курс избранного (в формате yyyy-MM-dd)</param>
     /// <param name="cancellationToken">Токен отмены</param>
     /// <response code="200">
     /// Возвращает, если удалось получить курс Избранного

@@ -31,39 +31,37 @@ namespace InternalAPI.Services
 
             int tasksCount = cacheTasks.Length;
 
-            if (tasksCount == 0)
+            if (tasksCount != 0)
             {
-                return;
-            }
-
-            CacheTask cacheTaskToProcess = await FindCacheTaskToProcessAsync(
+                CacheTask cacheTaskToProcess = await FindCacheTaskToProcessAsync(
                                                                 cacheTasksRepository,
                                                                 cacheTasks,
                                                                 tasksCount,
                                                                 cancellationToken);
 
-            await _taskQueue.QueueAsync(new WorkItem(cacheTaskToProcess.Id), cancellationToken);
+                await _taskQueue.QueueAsync(new WorkItem(cacheTaskToProcess.Id), cancellationToken);
+            }
 
             await base.StartAsync(cancellationToken);
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            while (stoppingToken.IsCancellationRequested == false)
+            while (cancellationToken.IsCancellationRequested == false)
             {
-                WorkItem workItem = await _taskQueue.DequeueAsync(stoppingToken);
+                WorkItem workItem = await _taskQueue.DequeueAsync(cancellationToken);
 
                 try
                 {
                     using IServiceScope scope = _services.CreateScope();
                     IWorker worker = scope.ServiceProvider.GetRequiredService<IWorker>();
-                    await worker.ProcessWorkItemAsync(workItem, stoppingToken);
+                    await worker.ProcessWorkItemAsync(workItem, cancellationToken);
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Ошибка во время обработки {TaskId}", workItem.TaskId);
 
-                    await SetTaskAsError(workItem, stoppingToken);
+                    await SetTaskAsError(workItem, cancellationToken);
                 }
             }
         }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Net;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Enums;
 using Microsoft.AspNetCore.Mvc;
@@ -53,12 +54,19 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
         /// Возвращает в случае других ошибок
         /// </response>
         [HttpGet("{favouriteName}")]
-        public Task<FavouriteExchangeRate?> GetFavouriteByNameAsync(
+        public async Task<FavouriteExchangeRate> GetFavouriteByNameAsync(
             string favouriteName,
             CancellationToken cancellationToken)
         {
-            return _favouritesService
+            FavouriteExchangeRate? favourite = await _favouritesService
                     .GetFavouriteByNameAsync(favouriteName, cancellationToken);
+
+            if (favourite == null)
+            {
+                Response.StatusCode = (int)HttpStatusCode.NotFound;
+            }
+
+            return favourite;
         }
 
         /// <summary>

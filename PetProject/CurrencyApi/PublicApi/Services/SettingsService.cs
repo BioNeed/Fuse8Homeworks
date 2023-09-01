@@ -14,9 +14,9 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
             _settingsRepository = settingsRepository;
         }
 
-        public async Task<Settings> GetApplicationSettingsAsync(CancellationToken cancellationToken)
+        public Task<Settings> GetApplicationSettingsAsync(CancellationToken cancellationToken)
         {
-            return await _settingsRepository.GetApplicationSettingsAsync(cancellationToken);
+            return _settingsRepository.GetApplicationSettingsAsync(cancellationToken);
         }
 
         public async Task SetDefaultCurrencyAsync(CurrencyType currencyType,
