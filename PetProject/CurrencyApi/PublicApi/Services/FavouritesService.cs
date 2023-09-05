@@ -109,9 +109,9 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
                                                              cancellationToken);
         }
 
-        public async Task TryDeleteFavouriteAsync(string name, CancellationToken cancellationToken)
+        public Task TryDeleteFavouriteAsync(string name, CancellationToken cancellationToken)
         {
-            await _favouritesRepository.TryDeleteFavouriteAsync(name, cancellationToken);
+            return _favouritesRepository.TryDeleteFavouriteAsync(name, cancellationToken);
         }
 
         private void ThrowIfEqualCurrencyAndBaseCurrency(FavouriteExchangeRate favourite)
