@@ -39,7 +39,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
             return _favouritesRepository.GetFavouriteByNameAsync(name, cancellationToken);
         }
 
-        public async Task TryAddFavouriteAsync(string name,
+        public async Task AddFavouriteAsync(string name,
                                             string currency,
                                             string baseCurrency,
                                             CancellationToken cancellationToken)
@@ -63,11 +63,11 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
                 favouriteToAdd, cancellationToken);
         }
 
-        public async Task TryUpdateFavouriteAsync(string name,
-                                                  string? newName,
-                                                  string? currency,
-                                                  string? baseCurrency,
-                                                  CancellationToken cancellationToken)
+        public async Task UpdateFavouriteAsync(string name,
+                                               string? newName,
+                                               string? currency,
+                                               string? baseCurrency,
+                                               CancellationToken cancellationToken)
         {
             FavouriteExchangeRate? oldFavourite = await GetFavouriteByNameAsync(name, cancellationToken);
 
@@ -77,12 +77,11 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
                     ApiConstants.ErrorMessages.FavouriteNotFoundByNameExceptionMessage);
             }
 
-            (bool isNameChanged, bool isCurrencyChanged, bool isBaseCurrencyChanged) =
+            (bool isNameChanged, bool isCurrencySetChanged) =
                 oldFavourite.CheckIfFavouriteChanged(newName, currency, baseCurrency);
 
             if (isNameChanged == false &&
-                isCurrencyChanged == false &&
-                isBaseCurrencyChanged == false)
+                isCurrencySetChanged == false)
             {
                 return;
             }
@@ -90,28 +89,23 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
             FavouriteExchangeRate updatedFavourite = new FavouriteExchangeRate
             {
                 Name = newName ?? oldFavourite.Name,
-                Currency = isCurrencyChanged
-                    ? currency!
-                    : oldFavourite!.Currency,
-                BaseCurrency = isBaseCurrencyChanged
-                    ? baseCurrency!
-                    : oldFavourite!.BaseCurrency,
+                Currency = currency ?? oldFavourite.Currency,
+                BaseCurrency = baseCurrency ?? oldFavourite.BaseCurrency,
             };
 
-            await ValidateUpdatedFavourite(isNameChanged,
-                                           isCurrencyChanged,
-                                           isBaseCurrencyChanged,
-                                           updatedFavourite,
-                                           cancellationToken);
+            await ThrowIfViolatesDbConstraints(isNameChanged,
+                                               isCurrencySetChanged,
+                                               updatedFavourite,
+                                               cancellationToken);
 
             await _favouritesRepository.UpdateFavouriteAsync(name,
                                                              updatedFavourite,
                                                              cancellationToken);
         }
 
-        public Task TryDeleteFavouriteAsync(string name, CancellationToken cancellationToken)
+        public Task DeleteFavouriteAsync(string name, CancellationToken cancellationToken)
         {
-            return _favouritesRepository.TryDeleteFavouriteAsync(name, cancellationToken);
+            return _favouritesRepository.DeleteFavouriteAsync(name, cancellationToken);
         }
 
         private void ThrowIfEqualCurrencyAndBaseCurrency(FavouriteExchangeRate favourite)
@@ -152,7 +146,10 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
             }
         }
 
-        private async Task ValidateUpdatedFavourite(bool isNameChanged, bool isCurrencyChanged, bool isBaseCurrencyChanged, FavouriteExchangeRate newFavourite, CancellationToken cancellationToken)
+        private async Task ThrowIfViolatesDbConstraints(bool isNameChanged,
+                                                        bool isCurrencySetChanged,
+                                                        FavouriteExchangeRate newFavourite,
+                                                        CancellationToken cancellationToken)
         {
             FavouriteExchangeRate[]? favourites =
                 await GetAllFavouritesAsync(cancellationToken);
@@ -162,8 +159,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
                 ThrowIfNotUniqueFavouriteName(newFavourite, favourites);
             }
 
-            if (isCurrencyChanged == true ||
-                isBaseCurrencyChanged == true)
+            if (isCurrencySetChanged == true)
             {
                 ThrowIfEqualCurrencyAndBaseCurrency(newFavourite);
                 ThrowIfNotUniqueCurrencyAndBaseCurrency(newFavourite, favourites);

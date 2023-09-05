@@ -58,7 +58,7 @@ namespace UserDataAccessLibrary.Repositories
             await _userDbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task TryDeleteFavouriteAsync(
+        public async Task DeleteFavouriteAsync(
             string name,
             CancellationToken cancellationToken)
         {

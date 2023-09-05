@@ -418,7 +418,7 @@
             <param name="cancellationToken">Токен отмены</param>
             <returns>Найденный Избранный курс валют</returns>
         </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IFavouritesService.TryAddFavouriteAsync(System.String,System.String,System.String,System.Threading.CancellationToken)">
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IFavouritesService.AddFavouriteAsync(System.String,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Попробовать добавить Избранное
             </summary>
@@ -427,14 +427,14 @@
             <param name="baseCurrency">Базовая валюта Избранного</param>
             <param name="cancellationToken">Токен отмены</param>
         </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IFavouritesService.TryDeleteFavouriteAsync(System.String,System.Threading.CancellationToken)">
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IFavouritesService.DeleteFavouriteAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Попробовать удалить Избранное
             </summary>
             <param name="name">Название Избранного</param>
             <param name="cancellationToken">Токен отмены</param>
         </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IFavouritesService.TryUpdateFavouriteAsync(System.String,System.String,System.String,System.String,System.Threading.CancellationToken)">
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IFavouritesService.UpdateFavouriteAsync(System.String,System.String,System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Попробовать обновить Избранное
             </summary>

@@ -95,7 +95,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
             [Required] CurrencyType baseCurrency,
             CancellationToken cancellationToken)
         {
-            return _favouritesService.TryAddFavouriteAsync(
+            return _favouritesService.AddFavouriteAsync(
                 name: newFavouriteName,
                 currency: currency.ToString(),
                 baseCurrency: baseCurrency.ToString(),
@@ -139,7 +139,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
             string? currencyString = currency?.ToString();
             string? baseCurrencyString = baseCurrency?.ToString();
 
-            return _favouritesService.TryUpdateFavouriteAsync(
+            return _favouritesService.UpdateFavouriteAsync(
                                         name: favouriteName,
                                         newName: newFavouriteName,
                                         currency: currencyString,
@@ -166,7 +166,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
             string favouriteName,
             CancellationToken cancellationToken)
         {
-            return _favouritesService.TryDeleteFavouriteAsync(favouriteName, cancellationToken);
+            return _favouritesService.DeleteFavouriteAsync(favouriteName, cancellationToken);
         }
     }
 }

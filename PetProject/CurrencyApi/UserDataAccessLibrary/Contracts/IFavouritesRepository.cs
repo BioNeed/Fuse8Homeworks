@@ -42,6 +42,6 @@ namespace UserDataAccessLibrary.Contracts
         /// </summary>
         /// <param name="name">Название Избранного</param>
         /// <param name="cancellationToken">Токен отмены</param>
-        Task TryDeleteFavouriteAsync(string name, CancellationToken cancellationToken);
+        Task DeleteFavouriteAsync(string name, CancellationToken cancellationToken);
     }
 }

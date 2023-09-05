@@ -29,14 +29,14 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts
         /// <param name="currency">Валюта Избранного</param>
         /// <param name="baseCurrency">Базовая валюта Избранного</param>
         /// <param name="cancellationToken">Токен отмены</param>
-        Task TryAddFavouriteAsync(string name, string currency, string baseCurrency, CancellationToken cancellationToken);
+        Task AddFavouriteAsync(string name, string currency, string baseCurrency, CancellationToken cancellationToken);
 
         /// <summary>
         /// Попробовать удалить Избранное
         /// </summary>
         /// <param name="name">Название Избранного</param>
         /// <param name="cancellationToken">Токен отмены</param>
-        Task TryDeleteFavouriteAsync(string name, CancellationToken cancellationToken);
+        Task DeleteFavouriteAsync(string name, CancellationToken cancellationToken);
 
         /// <summary>
         /// Попробовать обновить Избранное
@@ -46,6 +46,6 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts
         /// <param name="currency">Новая валюта Избранного</param>
         /// <param name="baseCurrency">Новая базовая валюта Избранного</param>
         /// <param name="cancellationToken">Токен отмены</param>
-        Task TryUpdateFavouriteAsync(string name, string? newName, string? currency, string? baseCurrency, CancellationToken cancellationToken);
+        Task UpdateFavouriteAsync(string name, string? newName, string? currency, string? baseCurrency, CancellationToken cancellationToken);
     }
 }

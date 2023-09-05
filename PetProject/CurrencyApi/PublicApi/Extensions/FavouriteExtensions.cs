@@ -4,7 +4,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Extensions
 {
     public static class FavouriteExtensions
     {
-        public static (bool isNameChanged, bool isCurrencyChanged, bool isBaseCurrencyChanged)
+        public static (bool isNameChanged, bool isCurrencySetChanged)
             CheckIfFavouriteChanged(this FavouriteExchangeRate favourite,
                                     string newName,
                                     string newCurrency,
@@ -18,7 +18,9 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Extensions
             bool isBaseCurrencyChanged = newBaseCurrency
                                         .IsNotNullAndNotEquals(favourite.BaseCurrency);
 
-            return (isNameChanged, isCurrencyChanged, isBaseCurrencyChanged);
+            bool isCurrencySetChanged = isCurrencyChanged || isBaseCurrencyChanged;
+
+            return (isNameChanged, isCurrencySetChanged);
         }
     }
 }
