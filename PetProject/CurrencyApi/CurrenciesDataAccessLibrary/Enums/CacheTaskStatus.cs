@@ -8,26 +8,26 @@
         /// <summary>
         /// Создана
         /// </summary>
-        Created,
+        Created = 0,
 
         /// <summary>
         /// В обработке
         /// </summary>
-        Processing,
+        Processing = 1,
 
         /// <summary>
         /// Завершена успешно
         /// </summary>
-        CompletedSuccessfully,
+        CompletedSuccessfully = 2,
 
         /// <summary>
         /// Завершена с ошибкой
         /// </summary>
-        CompletedWithError,
+        CompletedWithError = 3,
 
         /// <summary>
         /// Отменена
         /// </summary>
-        Cancelled,
+        Cancelled = 4,
     }
 }
