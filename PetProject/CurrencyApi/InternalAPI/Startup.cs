@@ -75,6 +75,7 @@ public class Startup
         services.AddScoped<ICacheTasksRepository, CacheTasksRepository>();
         services.AddScoped<ICacheSettingsRepository, CacheSettingsRepository>();
         services.AddScoped<IWorker, CacheRecalculator>();
+        services.AddScoped<IGrpcMediumService, GrpcMediumService>();
         services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
         services.AddHostedService<QueueHostedService>();
 

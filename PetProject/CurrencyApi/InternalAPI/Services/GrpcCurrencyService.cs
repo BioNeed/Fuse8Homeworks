@@ -3,7 +3,6 @@ using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using InternalAPI.Contracts;
 using InternalAPI.Contracts.GrpcContracts;
-using InternalAPI.Enums;
 using InternalAPI.Models;
 
 namespace InternalAPI.Services
@@ -14,22 +13,22 @@ namespace InternalAPI.Services
     /// </summary>
     public class GrpcCurrencyService : GrpcCurrency.GrpcCurrencyBase
     {
-        private readonly IGettingApiInfoService _gettingApiInfoice;
-        private readonly ICachedCurrencyAPI _cachedCurrencyAPI;
+        private readonly IGettingApiInfoService _gettingApiInfoService;
+        private readonly IGrpcMediumService _grpcMediumService;
 
         public GrpcCurrencyService(IGettingApiInfoService gettingApiInfoService,
-                                   ICachedCurrencyAPI cachedCurrencyAPI)
+                                   IGrpcMediumService grpcMediumService)
         {
-            _gettingApiInfoice = gettingApiInfoService;
-            _cachedCurrencyAPI = cachedCurrencyAPI;
+            _gettingApiInfoService = gettingApiInfoService;
+            _grpcMediumService = grpcMediumService;
         }
 
         public override async Task<ExchangeRate> GetCurrentExchangeRate(
             CurrencyInfo currencyInfo, ServerCallContext context)
         {
             ExchangeRateDTOModel exchangeRateDto =
-                await GetCurrentExchangeRateDtoAsync(currencyInfo.CurrencyCode,
-                                                     context.CancellationToken);
+                await _grpcMediumService.GetCurrentExchangeRateDtoAsync(
+                    currencyInfo.CurrencyCode, context.CancellationToken);
 
             return MapDtoToExchangeRate(exchangeRateDto);
         }
@@ -37,17 +36,17 @@ namespace InternalAPI.Services
         public override async Task<ExchangeRate> GetExchangeRateOnDate(
             CurrencyOnDateRequest currencyOnDate, ServerCallContext context)
         {
-            ExchangeRateDTOModel exchangeRateDto = await GetExchangeRateDtoOnDateAsync(
-                currencyOnDate.CurrencyCode,
-                currencyOnDate.Date.ToDateTime(),
-                context.CancellationToken);
+            ExchangeRateDTOModel exchangeRateDto = await _grpcMediumService
+                .GetExchangeRateDtoOnDateAsync(currencyOnDate.CurrencyCode,
+                                               currencyOnDate.Date.ToDateTime(),
+                                               context.CancellationToken);
 
             return MapDtoToExchangeRate(exchangeRateDto);
         }
 
         public override async Task<ApiInfo> GetApiInfo(Empty emptyRequest, ServerCallContext context)
         {
-            ApiInfoModel config = await _gettingApiInfoice
+            ApiInfoModel config = await _gettingApiInfoService
                 .GetApiInfoAsync(context.CancellationToken);
             return new ApiInfo
             {
@@ -59,69 +58,28 @@ namespace InternalAPI.Services
         public override async Task<ExchangeRateWithBase> GetCurrentFavouriteExchangeRate(
             FavouriteInfo favouriteInfo, ServerCallContext context)
         {
-            ExchangeRateDTOModel favouriteExchangeRate = await
-                GetCurrentExchangeRateDtoAsync(favouriteInfo.Currency,
-                                               context.CancellationToken);
-
-            if (_cachedCurrencyAPI.BaseCurrency.Equals(
-                    favouriteInfo.BaseCurrency, StringComparison.OrdinalIgnoreCase))
-            {
-                return new ExchangeRateWithBase
-                {
-                    BaseCurrency = favouriteInfo.BaseCurrency,
-                    Currency = favouriteInfo.Currency,
-                    Value = favouriteExchangeRate.Value,
-                };
-            }
-
-            ExchangeRateDTOModel favouriteBaseExchangeRate = await
-               GetCurrentExchangeRateDtoAsync(favouriteInfo.BaseCurrency,
-                                              context.CancellationToken);
-
-            decimal resultExchangeRate = favouriteExchangeRate.Value
-                                         / favouriteBaseExchangeRate.Value;
+            decimal exchangeRateValue = await _grpcMediumService
+                .GetCurrentFavouriteExchangeRateAsync(favouriteInfo, context.CancellationToken);
 
             return new ExchangeRateWithBase
             {
                 BaseCurrency = favouriteInfo.BaseCurrency,
                 Currency = favouriteInfo.Currency,
-                Value = resultExchangeRate,
+                Value = exchangeRateValue,
             };
         }
 
-        public async override Task<ExchangeRateWithBase> GetFavouriteExchangeRateOnDate(
+        public override async Task<ExchangeRateWithBase> GetFavouriteExchangeRateOnDate(
             FavouriteOnDateRequest request, ServerCallContext context)
         {
-            DateTime requestDateTime = request.Date.ToDateTime();
-            ExchangeRateDTOModel favouriteExchangeRate = await
-                GetExchangeRateDtoOnDateAsync(request.FavouriteInfo.Currency,
-                                              requestDateTime,
-                                              context.CancellationToken);
-
-            if (_cachedCurrencyAPI.BaseCurrency.Equals(
-                    request.FavouriteInfo.BaseCurrency, StringComparison.OrdinalIgnoreCase))
-            {
-                return new ExchangeRateWithBase
-                {
-                    BaseCurrency = request.FavouriteInfo.BaseCurrency,
-                    Currency = request.FavouriteInfo.Currency,
-                    Value = favouriteExchangeRate.Value,
-                };
-            }
-
-            ExchangeRateDTOModel favouriteBaseExchangeRate = await
-                GetExchangeRateDtoOnDateAsync(request.FavouriteInfo.BaseCurrency,
-                                              requestDateTime,
-                                              context.CancellationToken);
-
-            decimal resultExchangeRate = favouriteExchangeRate.Value
-                                         / favouriteBaseExchangeRate.Value;
+            decimal exchangeRateValue = await _grpcMediumService
+                .GetFavouriteExchangeRateOnDateAsync(request, context.CancellationToken);
 
             return new ExchangeRateWithBase
             {
                 BaseCurrency = request.FavouriteInfo.BaseCurrency,
                 Currency = request.FavouriteInfo.Currency,
-                Value = resultExchangeRate,
+                Value = exchangeRateValue,
             };
         }
 
@@ -132,34 +90,6 @@ namespace InternalAPI.Services
                 Code = exchangeRateDTO.Code.ToString(),
                 Value = exchangeRateDTO.Value,
             };
-        }
-
-        private async Task<ExchangeRateDTOModel> GetCurrentExchangeRateDtoAsync(
-            string currency,
-            CancellationToken cancellationToken)
-        {
-            CurrencyType currencyType = System.Enum.Parse<CurrencyType>(
-                currency, ignoreCase: true);
-
-            return await _cachedCurrencyAPI.GetCurrentExchangeRateAsync(
-                currencyType,
-                cancellationToken);
-        }
-
-        private Task<ExchangeRateDTOModel> GetExchangeRateDtoOnDateAsync(
-            string currency,
-            DateTime dateTime,
-            CancellationToken cancellationToken)
-        {
-            CurrencyType currencyType = System.Enum.Parse<CurrencyType>(
-                currency, ignoreCase: true);
-
-            DateOnly date = DateOnly.FromDateTime(dateTime);
-
-            return _cachedCurrencyAPI.GetExchangeRateOnDateAsync(
-                currencyType,
-                date,
-                cancellationToken);
         }
     }
 }
