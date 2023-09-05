@@ -5,6 +5,9 @@ using InternalAPI.Enums;
 
 namespace InternalAPI.Services
 {
+    /// <summary>
+    /// <inheritdoc cref="IGrpcMediumService"/>
+    /// </summary>
     public class GrpcMediumService : IGrpcMediumService
     {
         private readonly ICachedCurrencyAPI _cachedCurrencyAPI;
