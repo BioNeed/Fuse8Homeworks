@@ -74,9 +74,9 @@ namespace InternalAPI.Services
                                                     string newBaseCurrency,
                                                     ExchangeRateDTOModel[] exchangeRates)
         {
-            decimal newBaseExchangeRate = FindExchangeRateValue(
-                                            newBaseCurrency,
-                                            exchangeRates);
+            decimal newBaseExchangeRate = exchangeRates.First(e =>
+                                e.Code.Equals(newBaseCurrency,
+                                              StringComparison.OrdinalIgnoreCase)).Value;
 
             foreach (ExchangeRateDTOModel exchangeRateDTO in exchangeRates)
             {
@@ -90,19 +90,6 @@ namespace InternalAPI.Services
                     exchangeRateDTO.Value /= newBaseExchangeRate;
                 }
             }
-        }
-
-        private decimal FindExchangeRateValue(string currencyCode, ExchangeRateDTOModel[] exchangeRates)
-        {
-            foreach (ExchangeRateDTOModel exchangeRate in exchangeRates)
-            {
-                if (currencyCode.Equals(exchangeRate.Code, StringComparison.OrdinalIgnoreCase))
-                {
-                    return exchangeRate.Value;
-                }
-            }
-
-            throw new InvalidOperationException();
         }
     }
 }

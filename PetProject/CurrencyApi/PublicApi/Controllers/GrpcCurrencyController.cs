@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers;
 
 /// <summary>
-/// [PublicApi] Методы для работы с Internal API
+/// Методы для работы с Internal API
 /// </summary>
 [Route("currency")]
 public class GrpcCurrencyController : ControllerBase

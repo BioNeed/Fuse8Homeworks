@@ -617,7 +617,7 @@
         </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController">
             <summary>
-            [PublicApi] Методы для работы с Internal API
+            Методы для работы с Internal API
             </summary>
         </member>
         <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController.GetCurrentExchangeRateAsync(System.Nullable{Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType},System.Threading.CancellationToken)">

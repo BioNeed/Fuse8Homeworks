@@ -118,38 +118,21 @@ namespace InternalAPI.Services
         {
             string currencyCode = currencyType.ToString();
 
-            foreach (ExchangeRateModel exchangeRate in exchangeRates)
-            {
-                if (exchangeRate.Code.Equals(currencyCode, StringComparison.OrdinalIgnoreCase))
-                {
-                    return new ExchangeRateDTOModel
-                    {
-                        Code = currencyCode,
-                        Value = exchangeRate.Value,
-                    };
-                }
-            }
+            ExchangeRateModel foundExchangeRate = exchangeRates.First(e =>
+                e.Code.Equals(currencyCode, StringComparison.OrdinalIgnoreCase));
 
-            throw new InvalidOperationException();
+            return new ExchangeRateDTOModel
+            {
+                Code = currencyCode,
+                Value = foundExchangeRate.Value,
+            };
         }
 
-        private ExchangeRateDTOModel FindExchangeRateDTOByType(CurrencyType currencyType, ExchangeRateDTOModel[] exchangeRates)
+        private ExchangeRateDTOModel FindExchangeRateDTOByType(CurrencyType currencyType, ExchangeRateDTOModel[] exchangeRatesDTO)
         {
             string currencyCode = currencyType.ToString();
 
-            foreach (ExchangeRateDTOModel exchangeRateDTO in exchangeRates)
-            {
-                if (exchangeRateDTO.Code.Equals(currencyCode, StringComparison.OrdinalIgnoreCase))
-                {
-                    return new ExchangeRateDTOModel
-                    {
-                        Code = currencyCode,
-                        Value = exchangeRateDTO.Value,
-                    };
-                }
-            }
-
-            throw new InvalidOperationException();
+            return exchangeRatesDTO.First(e => e.Code.Equals(currencyCode, StringComparison.OrdinalIgnoreCase));
         }
 
         private bool IsLatestCacheActual(CachedExchangeRates latestData, DateTime currentDt)

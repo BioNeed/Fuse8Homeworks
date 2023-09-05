@@ -331,9 +331,41 @@
             <param name="item">Item с Id задачи, которую нужно выполнить</param>
             <param name="cancellationToken">Токен отмены</param>
         </member>
+        <member name="T:InternalAPI.Controllers.ApiInfoController">
+            <summary>
+            Методы для получения информации об API
+            </summary>
+        </member>
+        <member name="M:InternalAPI.Controllers.ApiInfoController.GetConfigSettingsAsync(System.Threading.CancellationToken)">
+            <summary>
+            Получить настройки приложения
+            </summary>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="200">
+            Возвращает, если удалось получить настройки приложения
+            </response>
+        </member>
+        <member name="T:InternalAPI.Controllers.CurrencyCacheController">
+            <summary>
+            Методы для работы с кэшем валют
+            </summary>
+        </member>
+        <member name="M:InternalAPI.Controllers.CurrencyCacheController.RecalculateCacheWithNewBaseCurrencyAsync(InternalAPI.Enums.CurrencyType,System.Threading.CancellationToken)">
+            <summary>
+            Пересчитать кэш под новую базовую валюту
+            </summary>
+            <param name="newBaseCurrency">Новая базовая валюта</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="202">
+            Возвращает, если удалось принять запрос на пересчет кэша
+            </response>
+            <response code="500">
+            Возвращает в случае внутренних ошибок
+            </response>
+        </member>
         <member name="T:InternalAPI.Controllers.CurrencyController">
             <summary>
-            [InternalApi] Методы для работы с Currencyapi API
+            Методы для работы с Currencyapi API
             </summary>
         </member>
         <member name="M:InternalAPI.Controllers.CurrencyController.GetExchangeRateAsync(InternalAPI.Enums.CurrencyType,System.Threading.CancellationToken)">
@@ -370,28 +402,6 @@
             </response>
             <response code="500">
             Возвращает в случае других ошибок
-            </response>
-        </member>
-        <member name="M:InternalAPI.Controllers.CurrencyController.GetConfigSettingsAsync(System.Threading.CancellationToken)">
-            <summary>
-            Получить настройки приложения
-            </summary>
-            <param name="cancellationToken">Токен отмены</param>
-            <response code="200">
-            Возвращает, если удалось получить настройки приложения
-            </response>
-        </member>
-        <member name="M:InternalAPI.Controllers.CurrencyController.RecalculateCacheWithNewBaseCurrencyAsync(InternalAPI.Enums.CurrencyType,System.Threading.CancellationToken)">
-            <summary>
-            Пересчитать кэш под новую базовую валюту
-            </summary>
-            <param name="newBaseCurrency">Новая базовая валюта</param>
-            <param name="cancellationToken">Токен отмены</param>
-            <response code="202">
-            Возвращает, если удалось принять запрос на пересчет кэша
-            </response>
-            <response code="500">
-            Возвращает в случае внутренних ошибок
             </response>
         </member>
         <member name="T:InternalAPI.Enums.CurrencyType">

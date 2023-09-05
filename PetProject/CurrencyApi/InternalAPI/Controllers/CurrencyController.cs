@@ -12,25 +12,16 @@ using Microsoft.AspNetCore.Mvc;
 namespace InternalAPI.Controllers;
 
 /// <summary>
-/// [InternalApi] Методы для работы с Currencyapi API
+/// Методы для работы с Currencyapi API
 /// </summary>
 [Route("currency")]
 public class CurrencyController : ControllerBase
 {
-    private readonly IGettingApiInfoService _gettingApiInfoService;
     private readonly ICachedCurrencyAPI _cachedCurrencyService;
-    private readonly ICacheTasksRepository _cacheTasksRepository;
-    private readonly IBackgroundTaskQueue _taskQueue;
 
-    public CurrencyController(IGettingApiInfoService gettingApiInfoService,
-                              ICachedCurrencyAPI cachedCurrencyService,
-                              ICacheTasksRepository cacheTasksRepository,
-                              IBackgroundTaskQueue taskQueue)
+    public CurrencyController(ICachedCurrencyAPI cachedCurrencyService)
     {
-        _gettingApiInfoService = gettingApiInfoService;
         _cachedCurrencyService = cachedCurrencyService;
-        _cacheTasksRepository = cacheTasksRepository;
-        _taskQueue = taskQueue;
     }
 
     /// <summary>
@@ -102,48 +93,6 @@ public class CurrencyController : ControllerBase
             Date = dateString,
             Value = exchangeRateDTO.Value,
         };
-    }
-
-    /// <summary>
-    /// Получить настройки приложения
-    /// </summary>
-    /// <param name="cancellationToken">Токен отмены</param>
-    /// <response code="200">
-    /// Возвращает, если удалось получить настройки приложения
-    /// </response>
-    [Route("/settings")]
-    [HttpGet]
-    public async Task<ApiInfoModel> GetConfigSettingsAsync(
-        CancellationToken cancellationToken)
-    {
-        return await _gettingApiInfoService.GetApiInfoAsync(cancellationToken);
-    }
-
-    /// <summary>
-    /// Пересчитать кэш под новую базовую валюту
-    /// </summary>
-    /// <param name="newBaseCurrency">Новая базовая валюта</param>
-    /// <param name="cancellationToken">Токен отмены</param>
-    /// <response code="202">
-    /// Возвращает, если удалось принять запрос на пересчет кэша
-    /// </response>
-    /// <response code="500">
-    /// Возвращает в случае внутренних ошибок
-    /// </response>
-    [Route("/cache/{newBaseCurrency}")]
-    [HttpPost]
-    public async Task<ActionResult> RecalculateCacheWithNewBaseCurrencyAsync(
-        CurrencyType newBaseCurrency,
-        CancellationToken cancellationToken)
-    {
-        Guid taskId = Guid.NewGuid();
-        await _cacheTasksRepository.AddCacheTaskAsync(taskId,
-                                                       newBaseCurrency.ToString(),
-                                                       cancellationToken);
-
-        await _taskQueue.QueueAsync(new WorkItem(taskId), cancellationToken);
-
-        return Accepted(taskId);
     }
 
     private bool TryParseDate(string dateString, out DateOnly date)
