@@ -1325,8 +1325,8 @@
         </member>
         <member name="M:InternalAPI.Exceptions.CacheTaskProcessingTimedOutException.#ctor(System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:InternalAPI.Exceptions.CacheBaseCurrencyNotFoundException"/> class.
-            <inheritdoc cref="T:InternalAPI.Exceptions.CacheBaseCurrencyNotFoundException"/>
+            Initializes a new instance of the <see cref="T:InternalAPI.Exceptions.CacheTaskProcessingTimedOutException"/> class.
+            <inheritdoc cref="T:InternalAPI.Exceptions.CacheTaskProcessingTimedOutException"/>
             </summary>
             <param name="message">Сообщение с деталями об ошибке</param>
         </member>

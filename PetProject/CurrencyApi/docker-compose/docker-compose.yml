@@ -29,11 +29,9 @@ services:
       - GrpcPort=${INTERNAL_API_GRPC_CONTAINER_PORT}
       - RestApiPort=${INTERNAL_API_CONTAINER_PORT}
       - ApiSettings__BaseAddress=https://api.currencyapi.com/ 
-      - ApiSettings__CacheExpirationTimeInHours=2
-      - ApiSettings__WaitingTimeForTaskProcessingInSeconds=10
 
     healthcheck:
-      test: curl --fail http://localhost:{INTERNAL_API_CONTAINER_PORT}/healthcheck || exit 1
+      test: curl --fail http://localhost:${INTERNAL_API_CONTAINER_PORT}/healthcheck || exit 1
       retries: 5
       start_period: 10s
       timeout: 10s
@@ -60,7 +58,7 @@ services:
       - ApiSettings__BaseAddress=http://${INTERNAL_API_CONTAINER_NAME}:${INTERNAL_API_GRPC_CONTAINER_PORT}
 
     healthcheck:
-      test: curl --fail http://localhost:{PUBLIC_API_CONTAINER_PORT}/healthcheck || exit 1
+      test: curl --fail http://localhost:${PUBLIC_API_CONTAINER_PORT}/healthcheck || exit 1
       retries: 5
       start_period: 10s
       timeout: 10s
