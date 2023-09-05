@@ -20,17 +20,17 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
             return _settingsRepository.GetApplicationSettingsAsync(cancellationToken);
         }
 
-        public async Task SetDefaultCurrencyAsync(CurrencyType currencyType,
+        public Task SetDefaultCurrencyAsync(CurrencyType currencyType,
                                                   CancellationToken cancellationToken)
         {
-            await _settingsRepository.SetDefaultCurrencyAsync(currencyType.ToString(),
-                                                              cancellationToken);
+            return _settingsRepository.SetDefaultCurrencyAsync(currencyType.ToString(),
+                                                               cancellationToken);
         }
 
-        public async Task SetCurrencyRoundCountAsync(int newRoundCount,
+        public Task SetCurrencyRoundCountAsync(int newRoundCount,
                                           CancellationToken cancellationToken)
         {
-            await _settingsRepository.SetCurrencyRoundCountAsync(newRoundCount, cancellationToken);
+            return _settingsRepository.SetCurrencyRoundCountAsync(newRoundCount, cancellationToken);
         }
     }
 }

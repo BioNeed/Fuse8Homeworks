@@ -69,13 +69,13 @@ namespace InternalAPI.Services
             }
         }
 
-        private async Task SetTaskAsError(WorkItem workItem, CancellationToken cancellationToken)
+        private Task SetTaskAsError(WorkItem workItem, CancellationToken cancellationToken)
         {
             using IServiceScope scope = _services.CreateScope();
             ICacheTasksRepository cacheTasksRepository = scope.ServiceProvider
                                 .GetRequiredService<ICacheTasksRepository>();
 
-            await cacheTasksRepository.SetCacheTaskStatusAsync(
+            return cacheTasksRepository.SetCacheTaskStatusAsync(
                 workItem.TaskId,
                 CacheTaskStatus.CompletedWithError,
                 cancellationToken);

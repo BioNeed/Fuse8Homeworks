@@ -26,9 +26,9 @@ public class ApiInfoController : ControllerBase
     /// </response>
     [Route("/settings")]
     [HttpGet]
-    public async Task<ApiInfoModel> GetConfigSettingsAsync(
+    public Task<ApiInfoModel> GetConfigSettingsAsync(
         CancellationToken cancellationToken)
     {
-        return await _gettingApiInfoService.GetApiInfoAsync(cancellationToken);
+        return _gettingApiInfoService.GetApiInfoAsync(cancellationToken);
     }
 }

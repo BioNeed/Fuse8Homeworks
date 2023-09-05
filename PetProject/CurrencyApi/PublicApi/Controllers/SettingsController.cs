@@ -27,11 +27,11 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
         /// Возвращает, если удалось изменить валюту по умолчанию
         /// </response>
         [HttpPost("default_currency/{newDefaultCurrency}")]
-        public async Task SetDefaultCurrencyAsync(
+        public Task SetDefaultCurrencyAsync(
             CurrencyType newDefaultCurrency,
             CancellationToken cancellationToken)
         {
-            await _settingsService.SetDefaultCurrencyAsync(
+            return _settingsService.SetDefaultCurrencyAsync(
                 newDefaultCurrency, cancellationToken);
         }
 
@@ -44,11 +44,11 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers
         /// Возвращает, если удалось изменить количество знаков после запятой
         /// </response>
         [HttpPost("round_count/{newRoundCount}")]
-        public async Task SetCurrencyRoundCountAsync(
+        public Task SetCurrencyRoundCountAsync(
             [Range(1, 8)] int newRoundCount,
             CancellationToken cancellationToken)
         {
-            await _settingsService.SetCurrencyRoundCountAsync(
+            return _settingsService.SetCurrencyRoundCountAsync(
                 newRoundCount, cancellationToken);
         }
     }

@@ -146,7 +146,7 @@ namespace InternalAPI.Services
                 cancellationToken);
         }
 
-        private async Task<ExchangeRateDTOModel> GetExchangeRateDtoOnDateAsync(
+        private Task<ExchangeRateDTOModel> GetExchangeRateDtoOnDateAsync(
             string currency,
             DateTime dateTime,
             CancellationToken cancellationToken)
@@ -156,7 +156,7 @@ namespace InternalAPI.Services
 
             DateOnly date = DateOnly.FromDateTime(dateTime);
 
-            return await _cachedCurrencyAPI.GetExchangeRateOnDateAsync(
+            return _cachedCurrencyAPI.GetExchangeRateOnDateAsync(
                 currencyType,
                 date,
                 cancellationToken);

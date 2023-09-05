@@ -11,14 +11,14 @@
             _logger = logger;
         }
 
-        public async Task InvokeAsync(HttpContext context)
+        public Task InvokeAsync(HttpContext context)
         {
             _logger.LogInformation("Method: {Method}, path: {Path}, query: {Query}",
                                    context.Request.Method,
                                    context.Request.Path,
                                    context.Request.Query);
 
-            await _next(context);
+            return _next(context);
         }
     }
 }
