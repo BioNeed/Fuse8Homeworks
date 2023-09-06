@@ -1,4 +1,5 @@
-﻿using CurrenciesDataAccessLibrary.Contracts;
+﻿using Audit.Core;
+using CurrenciesDataAccessLibrary.Contracts;
 using CurrenciesDataAccessLibrary.Models;
 using Grpc.Core;
 using InternalAPI.Constants;
@@ -7,6 +8,7 @@ using InternalAPI.Enums;
 using InternalAPI.Exceptions;
 using InternalAPI.Extensions;
 using InternalAPI.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
 namespace InternalAPI.Services
@@ -21,14 +23,13 @@ namespace InternalAPI.Services
         private readonly ICacheTasksRepository _cacheTasksRepository;
         private readonly TimeSpan _cacheExpirationTime;
         private readonly TimeSpan _waitingForTaskProcessingTime;
-        private readonly bool _usingByGrpc;
+        private readonly string _baseCurrency;
+        private bool _isBaseCurrencyValidated = false;
 
         public CachedCurrencyService(ICurrencyAPI currencyAPI,
                                      IExchangeRatesRepository exchangeRatesRepository,
                                      IOptionsSnapshot<ApiSettingsModel> apiSettings,
                                      ICacheSettingsRepository cacheSettingsRepository,
-                                     IHttpContextAccessor httpContextAccessor,
-                                     IConfiguration configuration,
                                      ICacheTasksRepository cacheTasksRepository)
         {
             _currencyAPI = currencyAPI;
@@ -42,29 +43,30 @@ namespace InternalAPI.Services
 
             CacheSettings cacheSettings = cacheSettingsRepository.GetCacheSettings();
 
-            if (Enum.TryParse<CurrencyType>(
-                cacheSettings.BaseCurrency,
-                true,
-                out _) == false)
-            {
-                _usingByGrpc = httpContextAccessor.HttpContext!.Connection.LocalPort ==
-                    configuration.GetValue<int>(ApiConstants.PortNames.GrpcPort);
-
-                if (_usingByGrpc == true)
-                {
-                    throw new RpcException(
-                        new Status(StatusCode.Internal,
-                            ApiConstants.ErrorMessages.CacheBaseCurrencyNotFoundExceptionMessage));
-                }
-
-                throw new CacheBaseCurrencyNotFoundException(ApiConstants
-                    .ErrorMessages.CacheBaseCurrencyNotFoundExceptionMessage);
-            }
-
-            BaseCurrency = cacheSettings.BaseCurrency;
+            _baseCurrency = cacheSettings.BaseCurrency;
         }
 
-        public string BaseCurrency { get; }
+        public string BaseCurrency
+        {
+            get
+            {
+                if (_isBaseCurrencyValidated == false)
+                {
+                    if (Enum.TryParse<CurrencyType>(
+                        _baseCurrency,
+                        true,
+                        out _) == false)
+                    {
+                        throw new CacheBaseCurrencyNotFoundException(ApiConstants
+                            .ErrorMessages.CacheBaseCurrencyNotFoundExceptionMessage);
+                    }
+
+                    _isBaseCurrencyValidated = true;
+                }
+
+                return _baseCurrency;
+            }
+        }
 
         public async Task<ExchangeRateDTOModel> GetCurrentExchangeRateAsync(
             CurrencyType currencyType, CancellationToken cancellationToken)
@@ -148,13 +150,6 @@ namespace InternalAPI.Services
                 if (await _cacheTasksRepository
                     .HasAnyUncompletedTaskAsync(cancellationToken) == true)
                 {
-                    if (_usingByGrpc == true)
-                    {
-                        throw new RpcException(
-                        new Status(StatusCode.Internal,
-                            ApiConstants.ErrorMessages.CacheTaskProcessingTimedOut));
-                    }
-
                     throw new CacheTaskProcessingTimedOutException(ApiConstants
                         .ErrorMessages.CacheTaskProcessingTimedOut);
                 }

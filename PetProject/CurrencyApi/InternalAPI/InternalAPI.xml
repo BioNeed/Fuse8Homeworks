@@ -319,6 +319,44 @@
             <param name="cancellationToken">Токен отмены</param>
             <returns>Инфо об InternalApi</returns>
         </member>
+        <member name="T:InternalAPI.Contracts.IGrpcMediumService">
+            <summary>
+            Сервис для получения курсов валют для Grpc-сервиса
+            </summary>
+        </member>
+        <member name="M:InternalAPI.Contracts.IGrpcMediumService.GetCurrentExchangeRateDtoAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Получить текущий курс валют
+            </summary>
+            <param name="currency">Валюта, в которой узнать курс валют</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Текущий курс валют</returns>
+        </member>
+        <member name="M:InternalAPI.Contracts.IGrpcMediumService.GetCurrentFavouriteExchangeRateAsync(InternalAPI.Contracts.GrpcContracts.FavouriteInfo,System.Threading.CancellationToken)">
+            <summary>
+            Получить текущий курс валют Избранного
+            </summary>
+            <param name="favouriteInfo">Избранное, для которого узнать курс валют</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Значение курса валют Избранного на данный момент</returns>
+        </member>
+        <member name="M:InternalAPI.Contracts.IGrpcMediumService.GetExchangeRateDtoOnDateAsync(System.String,System.DateTime,System.Threading.CancellationToken)">
+            <summary>
+            Получить курс валют на определенную дату
+            </summary>
+            <param name="currency">Валюта, в которой узнать курс валют</param>
+            <param name="dateTime">Дата, на которую узнать курс валют</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Курс валют на выбранную дату</returns>
+        </member>
+        <member name="M:InternalAPI.Contracts.IGrpcMediumService.GetFavouriteExchangeRateOnDateAsync(InternalAPI.Contracts.GrpcContracts.FavouriteOnDateRequest,System.Threading.CancellationToken)">
+            <summary>
+            Получить курс валют Избранного на определенную дату
+            </summary>
+            <param name="request">Избранное и дата, для которых узнать курс</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Значение курса валют Избранного на выбранную дату</returns>
+        </member>
         <member name="T:InternalAPI.Contracts.IWorker">
             <summary>
             Сервис, обрабатывающий задачу
@@ -1480,6 +1518,11 @@
             <summary>
             Grpc-сервер, отвечающий на запросы Grpc-клиента.
             <inheritdoc cref="T:InternalAPI.Contracts.GrpcContracts.GrpcCurrency"/>
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Services.GrpcMediumService">
+            <summary>
+            <inheritdoc cref="T:InternalAPI.Contracts.IGrpcMediumService"/>
             </summary>
         </member>
         <member name="T:InternalAPI.Services.QueueHostedService">

@@ -20,6 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 	ProjectSection(SolutionItems) = preProject
 		docker-compose\.dockerignore = docker-compose\.dockerignore
 		docker-compose\.env = docker-compose\.env
+		docker-compose\db_docker-compose.yml = docker-compose\db_docker-compose.yml
 		docker-compose\docker-compose.yml = docker-compose\docker-compose.yml
 	EndProjectSection
 EndProject

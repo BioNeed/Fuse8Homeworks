@@ -20,16 +20,11 @@ namespace InternalAPI.Services
     {
         private readonly ICacheSettingsRepository _cacheSettingsRepository;
         private readonly HttpClient _httpClient;
-        private readonly bool _usingByGrpc;
 
         public CurrencyService(IHttpClientFactory httpClientFactory,
-                               IHttpContextAccessor httpContextAccessor,
-                               IConfiguration configuration,
                                ICacheSettingsRepository cacheSettingsRepository)
         {
             _httpClient = httpClientFactory.CreateClient(ApiConstants.HttpClientNames.CurrencyApi);
-            _usingByGrpc = httpContextAccessor.HttpContext.Connection.LocalPort ==
-                configuration.GetValue<int>(ApiConstants.PortNames.GrpcPort);
             _cacheSettingsRepository = cacheSettingsRepository;
         }
 
@@ -104,13 +99,6 @@ namespace InternalAPI.Services
 
             if (apiStatus.UsedRequests > apiStatus.TotalRequests)
             {
-                if (_usingByGrpc == true)
-                {
-                    throw new RpcException(
-                        status: new Status(StatusCode.ResourceExhausted,
-                            ApiConstants.ErrorMessages.RequestLimitExceptionMessage));
-                }
-
                 throw new ApiRequestLimitException(ApiConstants.ErrorMessages.RequestLimitExceptionMessage);
             }
         }
@@ -121,13 +109,6 @@ namespace InternalAPI.Services
 
             if (response.IsSuccessStatusCode == false)
             {
-                if (_usingByGrpc == true)
-                {
-                    throw new RpcException(
-                        status: new Status(StatusCode.Unknown,
-                            ApiConstants.ErrorMessages.UnknownExceptionMessage));
-                }
-
                 throw new Exception(ApiConstants.ErrorMessages.UnknownExceptionMessage);
             }
 
