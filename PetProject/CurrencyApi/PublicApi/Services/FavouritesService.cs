@@ -86,7 +86,7 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
                 return;
             }
 
-            FavouriteExchangeRate updatedFavourite = new FavouriteExchangeRate
+            FavouriteExchangeRate newFavourite = new FavouriteExchangeRate
             {
                 Name = newName ?? oldFavourite.Name,
                 Currency = currency ?? oldFavourite.Currency,
@@ -95,11 +95,11 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Services
 
             await ThrowIfViolatesDbConstraints(isNameChanged,
                                                isCurrencySetChanged,
-                                               updatedFavourite,
+                                               newFavourite,
                                                cancellationToken);
 
             await _favouritesRepository.UpdateFavouriteAsync(name,
-                                                             updatedFavourite,
+                                                             newFavourite,
                                                              cancellationToken);
         }
 
