@@ -50,8 +50,7 @@ namespace InternalAPI.Services
             if (lastExchangeRates == null)
             {
                 ExchangeRateModel[] currentExchangeRates = await
-                    GetExchangeRatesFromExternalApiAsync(baseCurrency,
-                                                         currencyType,
+                    GetExchangeRatesFromExternalApiAsync(currencyType,
                                                          currentDateTime,
                                                          cancellationToken);
 
