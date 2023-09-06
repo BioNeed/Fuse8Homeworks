@@ -1,14 +1,11 @@
-﻿using Audit.Core;
-using CurrenciesDataAccessLibrary.Contracts;
+﻿using CurrenciesDataAccessLibrary.Contracts;
 using CurrenciesDataAccessLibrary.Models;
-using Grpc.Core;
 using InternalAPI.Constants;
 using InternalAPI.Contracts;
 using InternalAPI.Enums;
 using InternalAPI.Exceptions;
 using InternalAPI.Extensions;
 using InternalAPI.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
 namespace InternalAPI.Services
@@ -52,7 +49,13 @@ namespace InternalAPI.Services
 
             if (lastExchangeRates == null)
             {
-                return await GetExchangeRateFromExternalApiAsync(currencyType, currentDateTime, cancellationToken);
+                ExchangeRateModel[] currentExchangeRates = await
+                    GetExchangeRatesFromExternalApiAsync(baseCurrency,
+                                                         currencyType,
+                                                         currentDateTime,
+                                                         cancellationToken);
+
+                return FindExchangeRateDTOByType(currencyType, currentExchangeRates);
             }
 
             if (IsLatestCacheActual(lastExchangeRates, currentDateTime) == true)
@@ -63,7 +66,12 @@ namespace InternalAPI.Services
 
             await WaitIfCacheTasksUncompletedAsync(cancellationToken);
 
-            return await GetExchangeRateFromExternalApiAsync(currencyType, currentDateTime, cancellationToken);
+            ExchangeRateModel[] exchangeRates = await
+                    GetExchangeRatesFromExternalApiAsync(currencyType,
+                                                         currentDateTime,
+                                                         cancellationToken);
+
+            return FindExchangeRateDTOByType(currencyType, exchangeRates);
         }
 
         public async Task<ExchangeRateDTOModel> GetExchangeRateOnDateAsync(CurrencyType currencyType, DateOnly date, CancellationToken cancellationToken)
@@ -77,8 +85,6 @@ namespace InternalAPI.Services
                     currencyType,
                     cachedHistoricalExchangeRates.ExchangeRates);
             }
-
-            await WaitIfCacheTasksUncompletedAsync(cancellationToken);
 
             string baseCurrency = await GetValidBaseCurrencyAsync(cancellationToken);
             ExchangeRatesHistoricalModel exchangeRatesHistorical = await _currencyAPI
@@ -150,12 +156,12 @@ namespace InternalAPI.Services
             }
         }
 
-        private async Task<ExchangeRateDTOModel> GetExchangeRateFromExternalApiAsync(CurrencyType currencyType, DateTime currentDateTime, CancellationToken cancellationToken)
+        private async Task<ExchangeRateModel[]> GetExchangeRatesFromExternalApiAsync(CurrencyType currencyType, DateTime currentDateTime, CancellationToken cancellationToken)
         {
             string baseCurrency = await GetValidBaseCurrencyAsync(cancellationToken);
 
             ExchangeRateModel[] currentExchangeRates = await _currencyAPI.
-                            GetAllCurrentCurrenciesAsync(baseCurrency, cancellationToken);
+                        GetAllCurrentCurrenciesAsync(baseCurrency, cancellationToken);
 
             await _exchangeRatesRepository.SaveCacheDataAsync(
                 baseCurrency,
@@ -163,7 +169,7 @@ namespace InternalAPI.Services
                 currentDateTime,
                 cancellationToken);
 
-            return FindExchangeRateDTOByType(currencyType, currentExchangeRates);
+            return currentExchangeRates;
         }
     }
 }
