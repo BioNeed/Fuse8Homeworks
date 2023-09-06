@@ -263,10 +263,12 @@
             Сервис для работы с кэшем
             </summary>
         </member>
-        <member name="P:InternalAPI.Contracts.ICachedCurrencyAPI.BaseCurrency">
+        <member name="M:InternalAPI.Contracts.ICachedCurrencyAPI.GetValidBaseCurrencyAsync(System.Threading.CancellationToken)">
             <summary>
-            Базовая валюта, относительно которой строится кэш
+            Получает и проверяет базовую валюту кэша
             </summary>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Корректную базовую валюту кэша</returns>
         </member>
         <member name="M:InternalAPI.Contracts.ICachedCurrencyAPI.GetCurrentExchangeRateAsync(InternalAPI.Enums.CurrencyType,System.Threading.CancellationToken)">
             <summary>

@@ -20,11 +20,10 @@ namespace InternalAPI.Services
     {
         private readonly ICurrencyAPI _currencyAPI;
         private readonly IExchangeRatesRepository _exchangeRatesRepository;
+        private readonly ICacheSettingsRepository _cacheSettingsRepository;
         private readonly ICacheTasksRepository _cacheTasksRepository;
         private readonly TimeSpan _cacheExpirationTime;
         private readonly TimeSpan _waitingForTaskProcessingTime;
-        private readonly string _baseCurrency;
-        private bool _isBaseCurrencyValidated = false;
 
         public CachedCurrencyService(ICurrencyAPI currencyAPI,
                                      IExchangeRatesRepository exchangeRatesRepository,
@@ -34,38 +33,13 @@ namespace InternalAPI.Services
         {
             _currencyAPI = currencyAPI;
             _exchangeRatesRepository = exchangeRatesRepository;
+            _cacheSettingsRepository = cacheSettingsRepository;
             _cacheTasksRepository = cacheTasksRepository;
 
             _cacheExpirationTime = TimeSpan
                 .FromHours(apiSettings.Value.CacheExpirationTimeInHours);
             _waitingForTaskProcessingTime = TimeSpan
                 .FromSeconds(apiSettings.Value.WaitingTimeForTaskProcessingInSeconds);
-
-            CacheSettings cacheSettings = cacheSettingsRepository.GetCacheSettings();
-
-            _baseCurrency = cacheSettings.BaseCurrency;
-        }
-
-        public string BaseCurrency
-        {
-            get
-            {
-                if (_isBaseCurrencyValidated == false)
-                {
-                    if (Enum.TryParse<CurrencyType>(
-                        _baseCurrency,
-                        true,
-                        out _) == false)
-                    {
-                        throw new CacheBaseCurrencyNotFoundException(ApiConstants
-                            .ErrorMessages.CacheBaseCurrencyNotFoundExceptionMessage);
-                    }
-
-                    _isBaseCurrencyValidated = true;
-                }
-
-                return _baseCurrency;
-            }
         }
 
         public async Task<ExchangeRateDTOModel> GetCurrentExchangeRateAsync(
@@ -78,7 +52,7 @@ namespace InternalAPI.Services
 
             if (lastExchangeRates == null)
             {
-                return await GetExchangeRateFromExternalApi(currencyType, currentDateTime, cancellationToken);
+                return await GetExchangeRateFromExternalApiAsync(currencyType, currentDateTime, cancellationToken);
             }
 
             if (IsLatestCacheActual(lastExchangeRates, currentDateTime) == true)
@@ -87,9 +61,9 @@ namespace InternalAPI.Services
                     currencyType, lastExchangeRates.ExchangeRates);
             }
 
-            await WaitIfCacheTasksUncompleted(cancellationToken);
+            await WaitIfCacheTasksUncompletedAsync(cancellationToken);
 
-            return await GetExchangeRateFromExternalApi(currencyType, currentDateTime, cancellationToken);
+            return await GetExchangeRateFromExternalApiAsync(currencyType, currentDateTime, cancellationToken);
         }
 
         public async Task<ExchangeRateDTOModel> GetExchangeRateOnDateAsync(CurrencyType currencyType, DateOnly date, CancellationToken cancellationToken)
@@ -104,16 +78,36 @@ namespace InternalAPI.Services
                     cachedHistoricalExchangeRates.ExchangeRates);
             }
 
+            await WaitIfCacheTasksUncompletedAsync(cancellationToken);
+
+            string baseCurrency = await GetValidBaseCurrencyAsync(cancellationToken);
             ExchangeRatesHistoricalModel exchangeRatesHistorical = await _currencyAPI
-                .GetAllCurrenciesOnDateAsync(BaseCurrency, date, cancellationToken);
+                .GetAllCurrenciesOnDateAsync(baseCurrency, date, cancellationToken);
 
             await _exchangeRatesRepository.SaveCacheDataAsync(
-                BaseCurrency,
+                baseCurrency,
                 exchangeRatesHistorical.ExchangeRates.MapExchangeRatesToDTOs(),
                 exchangeRatesHistorical.LastUpdatedAt,
                 cancellationToken);
 
             return FindExchangeRateDTOByType(currencyType, exchangeRatesHistorical.ExchangeRates);
+        }
+
+        public async Task<string> GetValidBaseCurrencyAsync(CancellationToken cancellationToken)
+        {
+            string baseCurrency = (await _cacheSettingsRepository
+                .GetCacheSettingsAsync(cancellationToken)).BaseCurrency;
+
+            if (Enum.TryParse<CurrencyType>(
+                        baseCurrency,
+                        true,
+                        out _) == false)
+            {
+                throw new CacheBaseCurrencyNotFoundException(ApiConstants
+                    .ErrorMessages.CacheBaseCurrencyNotFoundExceptionMessage);
+            }
+
+            return baseCurrency;
         }
 
         private ExchangeRateDTOModel FindExchangeRateDTOByType(CurrencyType currencyType, ExchangeRateModel[] exchangeRates)
@@ -140,7 +134,7 @@ namespace InternalAPI.Services
         private bool IsLatestCacheActual(CachedExchangeRates latestData, DateTime currentDt)
             => currentDt - latestData.RelevantOnDate < _cacheExpirationTime;
 
-        private async Task WaitIfCacheTasksUncompleted(CancellationToken cancellationToken)
+        private async Task WaitIfCacheTasksUncompletedAsync(CancellationToken cancellationToken)
         {
             if (await _cacheTasksRepository
                 .HasAnyUncompletedTaskAsync(cancellationToken) == true)
@@ -156,13 +150,15 @@ namespace InternalAPI.Services
             }
         }
 
-        private async Task<ExchangeRateDTOModel> GetExchangeRateFromExternalApi(CurrencyType currencyType, DateTime currentDateTime, CancellationToken cancellationToken)
+        private async Task<ExchangeRateDTOModel> GetExchangeRateFromExternalApiAsync(CurrencyType currencyType, DateTime currentDateTime, CancellationToken cancellationToken)
         {
+            string baseCurrency = await GetValidBaseCurrencyAsync(cancellationToken);
+
             ExchangeRateModel[] currentExchangeRates = await _currencyAPI.
-                            GetAllCurrentCurrenciesAsync(BaseCurrency, cancellationToken);
+                            GetAllCurrentCurrenciesAsync(baseCurrency, cancellationToken);
 
             await _exchangeRatesRepository.SaveCacheDataAsync(
-                BaseCurrency,
+                baseCurrency,
                 currentExchangeRates.MapExchangeRatesToDTOs(),
                 currentDateTime,
                 cancellationToken);

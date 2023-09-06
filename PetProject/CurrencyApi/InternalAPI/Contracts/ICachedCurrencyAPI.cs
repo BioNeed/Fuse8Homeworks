@@ -9,9 +9,11 @@ namespace InternalAPI.Contracts;
 public interface ICachedCurrencyAPI
 {
     /// <summary>
-    /// Базовая валюта, относительно которой строится кэш
+    /// Получает и проверяет базовую валюту кэша
     /// </summary>
-    public string BaseCurrency { get; }
+    /// <param name="cancellationToken">Токен отмены</param>
+    /// <returns>Корректную базовую валюту кэша</returns>
+    Task<string> GetValidBaseCurrencyAsync(CancellationToken cancellationToken);
 
     /// <summary>
     /// Получает текущий курс

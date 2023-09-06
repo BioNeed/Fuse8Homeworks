@@ -52,8 +52,9 @@ namespace InternalAPI.Services
                 GetCurrentExchangeRateDtoAsync(favouriteInfo.Currency,
                                                cancellationToken);
 
-            if (_cachedCurrencyAPI.BaseCurrency.Equals(
-                    favouriteInfo.BaseCurrency, StringComparison.OrdinalIgnoreCase))
+            string baseCurrency = await _cachedCurrencyAPI.GetValidBaseCurrencyAsync(cancellationToken);
+            if (baseCurrency.Equals(favouriteInfo.BaseCurrency,
+                                    StringComparison.OrdinalIgnoreCase))
             {
                 return favouriteExchangeRate.Value;
             }
@@ -74,8 +75,9 @@ namespace InternalAPI.Services
                                               requestDateTime,
                                               cancellationToken);
 
-            if (_cachedCurrencyAPI.BaseCurrency.Equals(
-                    request.FavouriteInfo.BaseCurrency, StringComparison.OrdinalIgnoreCase))
+            string baseCurrency = await _cachedCurrencyAPI.GetValidBaseCurrencyAsync(cancellationToken);
+            if (baseCurrency.Equals(request.FavouriteInfo.BaseCurrency,
+                                    StringComparison.OrdinalIgnoreCase))
             {
                 return favouriteExchangeRate.Value;
             }
