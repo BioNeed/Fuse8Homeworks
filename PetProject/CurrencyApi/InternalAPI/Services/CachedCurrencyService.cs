@@ -50,8 +50,7 @@ namespace InternalAPI.Services
             if (lastExchangeRates == null)
             {
                 ExchangeRateModel[] currentExchangeRates = await
-                    GetExchangeRatesFromExternalApiAsync(currencyType,
-                                                         currentDateTime,
+                    GetExchangeRatesFromExternalApiAsync(currentDateTime,
                                                          cancellationToken);
 
                 return FindExchangeRateDTOByType(currencyType, currentExchangeRates);
@@ -66,8 +65,7 @@ namespace InternalAPI.Services
             await WaitIfCacheTasksUncompletedAsync(cancellationToken);
 
             ExchangeRateModel[] exchangeRates = await
-                    GetExchangeRatesFromExternalApiAsync(currencyType,
-                                                         currentDateTime,
+                    GetExchangeRatesFromExternalApiAsync(currentDateTime,
                                                          cancellationToken);
 
             return FindExchangeRateDTOByType(currencyType, exchangeRates);
@@ -155,7 +153,7 @@ namespace InternalAPI.Services
             }
         }
 
-        private async Task<ExchangeRateModel[]> GetExchangeRatesFromExternalApiAsync(CurrencyType currencyType, DateTime currentDateTime, CancellationToken cancellationToken)
+        private async Task<ExchangeRateModel[]> GetExchangeRatesFromExternalApiAsync(DateTime currentDateTime, CancellationToken cancellationToken)
         {
             string baseCurrency = await GetValidBaseCurrencyAsync(cancellationToken);
 
