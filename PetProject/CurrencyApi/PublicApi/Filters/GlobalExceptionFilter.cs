@@ -1,11 +1,13 @@
 ﻿using System.Net;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Constants;
 using Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions;
+using Grpc.Core;
 using Microsoft.AspNetCore.Mvc.Filters;
+using UserDataAccessLibrary.Exceptions;
 
 namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Filters
 {
-    public class GlobalExceptionFilter : IExceptionFilter
+    internal class GlobalExceptionFilter : IExceptionFilter
     {
         private readonly ILogger<GlobalExceptionFilter> _logger;
 
@@ -18,51 +20,51 @@ namespace Fuse8_ByteMinds.SummerSchool.PublicApi.Filters
         {
             switch (context.Exception)
             {
-                case ApiRequestLimitException:
+                case ViolatingDatabaseConstraintsException:
                     {
-                        HandleRequestLimitException(context);
+                        HandleException(context,
+                                        context.Exception.Message,
+                                        (int)HttpStatusCode.UnprocessableEntity);
                         break;
                     }
 
-                case CurrencyNotFoundException:
+                case DatabaseElementNotFoundException:
                     {
-                        HandleCurrencyNotFoundException(context);
+                        HandleException(context,
+                                        context.Exception.Message,
+                                        (int)HttpStatusCode.NotFound);
                         break;
                     }
 
-                case InvalidDateFormatException:
+                case RpcException ex when ex.Status.StatusCode == StatusCode.ResourceExhausted:
                     {
-                        HandleAnyOtherException(context, context.Exception.Message);
+                        HandleException(context,
+                                        ex.Status.Detail,
+                                        (int)HttpStatusCode.TooManyRequests);
+                        break;
+                    }
+
+                case RpcException ex:
+                    {
+                        HandleException(context, ex.Status.Detail);
                         break;
                     }
 
                 default:
                     {
-                        HandleAnyOtherException(context);
+                        HandleException(context);
                         break;
                     }
             }
         }
 
-        private void HandleRequestLimitException(ExceptionContext context)
-        {
-            _logger.LogError("Ошибка! {message}", context.Exception.Message);
-            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.TooManyRequests;
-            context.ExceptionHandled = true;
-        }
-
-        private void HandleCurrencyNotFoundException(ExceptionContext context)
-        {
-            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
-            context.ExceptionHandled = true;
-        }
-
-        private void HandleAnyOtherException(
+        private void HandleException(
             ExceptionContext context,
-            string message = ApiConstants.ErrorMessages.UnknownExceptionMessage)
+            string message = ApiConstants.ErrorMessages.UnknownExceptionMessage,
+            int responseStatusCode = (int)HttpStatusCode.InternalServerError)
         {
             _logger.LogError("Ошибка! {message}", message);
-            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            context.HttpContext.Response.StatusCode = responseStatusCode;
             context.ExceptionHandled = true;
         }
     }

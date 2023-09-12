@@ -1,0 +1,107 @@
+syntax = "proto3";
+
+option csharp_namespace = "Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+// Сервис для работы с валютами
+service GrpcCurrency {
+
+  // Получает текущий курс определенной валюты
+  rpc GetCurrentExchangeRate (CurrencyInfo) returns (ExchangeRate);
+
+  // Получает курс определенной валюты на конкретную дату
+  rpc GetExchangeRateOnDate (CurrencyOnDateRequest) returns (ExchangeRate);
+
+  // Получает информацию об API
+  rpc GetApiInfo (google.protobuf.Empty) returns (ApiInfo);
+
+  // Получает текущий курс для Избранного
+  rpc GetCurrentFavouriteExchangeRate(FavouriteInfo) returns (ExchangeRateWithBase);
+
+  // Получает курс для Избранного на конкретную дату
+  rpc GetFavouriteExchangeRateOnDate(FavouriteOnDateRequest) returns (ExchangeRateWithBase);
+}
+
+// Курс валюты
+message ExchangeRate {
+
+	// Код валюты, в которой узнать курс
+    string code = 1;
+
+    // Значение курса валют
+	DecimalValue value = 2;
+}
+
+// Нужен оператор для конвертирования в decimal число в C#
+// Пример: 12345.6789 -> { целая часть = 12345, нано-часть = 678900000 }
+message DecimalValue {
+
+    // Целая часть числа
+    int64 units = 1;
+
+    // Нано разряды числа (10^-9)
+    // Знаки у целой и нано-части должны совпадать
+    sfixed32 nanos = 2;
+}
+
+// Информация о валюте
+message CurrencyInfo {
+
+    // Код валюты, в которой узнать курс базовой валюты
+    string currency_code = 1;
+}
+
+// Запрос курса валют на дату
+message CurrencyOnDateRequest {
+    
+    // Код валюты, в которой узнать курс базовой валюты
+    string currency_code = 1;
+
+    // Дата, на которую получить курс валют
+    google.protobuf.Timestamp date = 2;
+}
+
+// Настройки API
+message ApiInfo {
+
+    // Тип базовой валюты
+    string base_currency = 1;
+
+    // Есть ли ещё доступные запросы
+    bool is_request_available = 2;
+}
+
+// Информация об Избранном
+message FavouriteInfo {
+
+    // Валюта Избранного
+    string currency = 1;
+
+    // Базовая валюта Избранного
+    string base_currency = 2;
+}
+
+// Курс валюты с базовой валютой
+message ExchangeRateWithBase {
+
+	// Код валюты, в которой вычисляется курс
+    string currency = 1;
+
+    // Базовая валюта, относительно которой вычисляется курс
+    string base_currency = 2;
+
+    // Значение курса валют
+	DecimalValue value = 3;
+}
+
+// Запрос курса Избранного на дату
+message FavouriteOnDateRequest {
+
+    // Информация об Избранном
+    FavouriteInfo favourite_info = 1;
+
+    // Дата, на которую получить курс Избранного
+    google.protobuf.Timestamp date = 2;
+}

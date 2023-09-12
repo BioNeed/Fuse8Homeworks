@@ -4,104 +4,1650 @@
         <name>PublicApi</name>
     </assembly>
     <members>
-        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController">
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Constants.ApiConstants">
             <summary>
-            Методы для работы с Currencyapi API
+            Класс строковых констант PublicApi
             </summary>
         </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController.GetExchangeRateAsync(Microsoft.Extensions.Options.IOptionsSnapshot{Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel},System.String)">
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.DecimalValue">
             <summary>
-            Получить курс валют
+            Класс-оболочка для decimal типа с операторами преобразования
+            в decimal и обратно.
             </summary>
-            <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
-            <param name="currencyCode">(Необязателен) Код валюты, в которой узнать курс базовой валюты. Если не указан, используется RUB</param>
-            <response code="200">
-            Возвращает, если удалось получить курс валюты
-            </response>
-            <response code="404">
-            Возвращает, если не найдена указанная валюта
-            </response>
-            <response code="429">
-            Возвращает, если больше не осталось доступных запросов
-            </response>
-            <response code="500">
-            Возвращает в случае других ошибок
-            </response>
-        </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController.GetExchangeRateByDateAsync(Microsoft.Extensions.Options.IOptionsSnapshot{Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel},System.String,System.String)">
             <summary>
-            Получить курс валют на выбранную дату
+            Нужен оператор для конвертирования в decimal число в C#
+            Пример: 12345.6789 -> { целая часть = 12345, нано-часть = 678900000 }
             </summary>
-            <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
-            <param name="currencyCode">Код валюты, в которой узнать курс базовой валюты</param>
-            <param name="dateString">Выбранная дата в формате yyyy-MM-dd</param>
-            <response code="200">
-            Возвращает, если удалось получить курс валюты на выбранную дату
-            </response>
-            <response code="404">
-            Возвращает, если не найдена указанная валюта
-            </response>
-            <response code="429">
-            Возвращает, если больше не осталось доступных запросов
-            </response>
-            <response code="500">
-            Возвращает в случае других ошибок
-            </response>
         </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.CurrencyController.GetConfigSettingsAsync(Microsoft.Extensions.Options.IOptionsSnapshot{Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel})">
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.DecimalValue.UnitsFieldNumber">
+            <summary>Field number for the "units" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.DecimalValue.Units">
+            <summary>
+            Целая часть числа
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.DecimalValue.NanosFieldNumber">
+            <summary>Field number for the "nanos" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.DecimalValue.Nanos">
+            <summary>
+            Нано разряды числа (10^-9)
+            Знаки у целой и нано-части должны совпадать
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrencyReflection">
+            <summary>Holder for reflection information generated from Contracts/GrpcContracts/GrpcCurrency.proto</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrencyReflection.Descriptor">
+            <summary>File descriptor for Contracts/GrpcContracts/GrpcCurrency.proto</summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRate">
+            <summary>
+            Курс валюты
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRate.CodeFieldNumber">
+            <summary>Field number for the "code" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRate.Code">
+            <summary>
+            Код валюты, в которой узнать курс
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRate.ValueFieldNumber">
+            <summary>Field number for the "value" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRate.Value">
+            <summary>
+            Значение курса валют
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyInfo">
+            <summary>
+            Информация о валюте
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyInfo.CurrencyCodeFieldNumber">
+            <summary>Field number for the "currency_code" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyInfo.CurrencyCode">
+            <summary>
+            Код валюты, в которой узнать курс базовой валюты
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyOnDateRequest">
+            <summary>
+            Запрос курса валют на дату
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyOnDateRequest.CurrencyCodeFieldNumber">
+            <summary>Field number for the "currency_code" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyOnDateRequest.CurrencyCode">
+            <summary>
+            Код валюты, в которой узнать курс базовой валюты
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyOnDateRequest.DateFieldNumber">
+            <summary>Field number for the "date" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyOnDateRequest.Date">
+            <summary>
+            Дата, на которую получить курс валют
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ApiInfo">
+            <summary>
+            Настройки API
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ApiInfo.BaseCurrencyFieldNumber">
+            <summary>Field number for the "base_currency" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ApiInfo.BaseCurrency">
+            <summary>
+            Тип базовой валюты
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ApiInfo.IsRequestAvailableFieldNumber">
+            <summary>Field number for the "is_request_available" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ApiInfo.IsRequestAvailable">
+            <summary>
+            Есть ли ещё доступные запросы
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteInfo">
+            <summary>
+            Информация об Избранном
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteInfo.CurrencyFieldNumber">
+            <summary>Field number for the "currency" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteInfo.Currency">
+            <summary>
+            Валюта Избранного
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteInfo.BaseCurrencyFieldNumber">
+            <summary>Field number for the "base_currency" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteInfo.BaseCurrency">
+            <summary>
+            Базовая валюта Избранного
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRateWithBase">
+            <summary>
+            Курс валюты с базовой валютой
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRateWithBase.CurrencyFieldNumber">
+            <summary>Field number for the "currency" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRateWithBase.Currency">
+            <summary>
+            Код валюты, в которой вычисляется курс
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRateWithBase.BaseCurrencyFieldNumber">
+            <summary>Field number for the "base_currency" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRateWithBase.BaseCurrency">
+            <summary>
+            Базовая валюта, относительно которой вычисляется курс
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRateWithBase.ValueFieldNumber">
+            <summary>Field number for the "value" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.ExchangeRateWithBase.Value">
+            <summary>
+            Значение курса валют
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteOnDateRequest">
+            <summary>
+            Запрос курса Избранного на дату
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteOnDateRequest.FavouriteInfoFieldNumber">
+            <summary>Field number for the "favourite_info" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteOnDateRequest.FavouriteInfo">
+            <summary>
+            Информация об Избранном
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteOnDateRequest.DateFieldNumber">
+            <summary>Field number for the "date" field.</summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteOnDateRequest.Date">
+            <summary>
+            Дата, на которую получить курс Избранного
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency">
+            <summary>
+            Сервис для работы с валютами
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.Descriptor">
+            <summary>Service descriptor</summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient">
+            <summary>Client for GrpcCurrency</summary>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.#ctor(Grpc.Core.ChannelBase)">
+            <summary>Creates a new client for GrpcCurrency</summary>
+            <param name="channel">The channel to use to make remote calls.</param>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.#ctor(Grpc.Core.CallInvoker)">
+            <summary>Creates a new client for GrpcCurrency that uses a custom <c>CallInvoker</c>.</summary>
+            <param name="callInvoker">The callInvoker to use to make remote calls.</param>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.#ctor">
+            <summary>Protected parameterless constructor to allow creation of test doubles.</summary>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.#ctor(Grpc.Core.ClientBase.ClientBaseConfiguration)">
+            <summary>Protected constructor to allow creation of configured clients.</summary>
+            <param name="configuration">The client configuration.</param>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetCurrentExchangeRate(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyInfo,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Получает текущий курс определенной валюты
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetCurrentExchangeRate(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyInfo,Grpc.Core.CallOptions)">
+            <summary>
+            Получает текущий курс определенной валюты
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetCurrentExchangeRateAsync(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyInfo,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Получает текущий курс определенной валюты
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetCurrentExchangeRateAsync(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyInfo,Grpc.Core.CallOptions)">
+            <summary>
+            Получает текущий курс определенной валюты
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetExchangeRateOnDate(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyOnDateRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Получает курс определенной валюты на конкретную дату
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetExchangeRateOnDate(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyOnDateRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Получает курс определенной валюты на конкретную дату
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetExchangeRateOnDateAsync(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyOnDateRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Получает курс определенной валюты на конкретную дату
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetExchangeRateOnDateAsync(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.CurrencyOnDateRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Получает курс определенной валюты на конкретную дату
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetApiInfo(Google.Protobuf.WellKnownTypes.Empty,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Получает информацию об API
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetApiInfo(Google.Protobuf.WellKnownTypes.Empty,Grpc.Core.CallOptions)">
+            <summary>
+            Получает информацию об API
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetApiInfoAsync(Google.Protobuf.WellKnownTypes.Empty,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Получает информацию об API
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetApiInfoAsync(Google.Protobuf.WellKnownTypes.Empty,Grpc.Core.CallOptions)">
+            <summary>
+            Получает информацию об API
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetCurrentFavouriteExchangeRate(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteInfo,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Получает текущий курс для Избранного
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetCurrentFavouriteExchangeRate(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteInfo,Grpc.Core.CallOptions)">
+            <summary>
+            Получает текущий курс для Избранного
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetCurrentFavouriteExchangeRateAsync(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteInfo,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Получает текущий курс для Избранного
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetCurrentFavouriteExchangeRateAsync(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteInfo,Grpc.Core.CallOptions)">
+            <summary>
+            Получает текущий курс для Избранного
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetFavouriteExchangeRateOnDate(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteOnDateRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Получает курс для Избранного на конкретную дату
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetFavouriteExchangeRateOnDate(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteOnDateRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Получает курс для Избранного на конкретную дату
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The response received from the server.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetFavouriteExchangeRateOnDateAsync(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteOnDateRequest,Grpc.Core.Metadata,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Получает курс для Избранного на конкретную дату
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+            <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+            <param name="cancellationToken">An optional token for canceling the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.GetFavouriteExchangeRateOnDateAsync(Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.FavouriteOnDateRequest,Grpc.Core.CallOptions)">
+            <summary>
+            Получает курс для Избранного на конкретную дату
+            </summary>
+            <param name="request">The request to send to the server.</param>
+            <param name="options">The options for the call.</param>
+            <returns>The call object.</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyClient.NewInstance(Grpc.Core.ClientBase.ClientBaseConfiguration)">
+            <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IFavouritesService">
+            <summary>
+            Сервис для работы с Избранными курсами валют
+            </summary>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IFavouritesService.GetAllFavouritesAsync(System.Threading.CancellationToken)">
+            <summary>
+            Получить все Избранные курсы валют
+            </summary>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Все Избранные курсы валют</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IFavouritesService.GetFavouriteByNameAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Получить Избранный курс валют по имени
+            </summary>
+            <param name="name">Имя, по которому осуществлять поиск</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Найденный Избранный курс валют</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IFavouritesService.AddFavouriteAsync(System.String,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Попробовать добавить Избранное
+            </summary>
+            <param name="name">Имя Избранного</param>
+            <param name="currency">Валюта Избранного</param>
+            <param name="baseCurrency">Базовая валюта Избранного</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IFavouritesService.DeleteFavouriteAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Попробовать удалить Избранное
+            </summary>
+            <param name="name">Название Избранного</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IFavouritesService.UpdateFavouriteAsync(System.String,System.String,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Попробовать обновить Избранное
+            </summary>
+            <param name="name">Название Избранного</param>
+            <param name="newName">Новое имя Избранного</param>
+            <param name="currency">Новая валюта Избранного</param>
+            <param name="baseCurrency">Новая базовая валюта Избранного</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IGrpcCurrencyService">
+            <summary>
+            Сервис, посылащий запросы Grpc-серверу через Grpc-клиента
+            </summary>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IGrpcCurrencyService.GetExchangeRateAsync(System.Nullable{Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType},System.Threading.CancellationToken)">
+            <summary>
+            Получить курс определенной валюты
+            </summary>
+            <param name="currencyCode">Валюта, в которой узнать курс</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Курс выбранной валюты</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IGrpcCurrencyService.GetExchangeRateOnDateAsync(System.String,System.DateTime,System.Threading.CancellationToken)">
+            <summary>
+            Получить курс определенной валюты на определенную дату
+            </summary>
+            <param name="currencyCode">Валюта, в которой узнать курс</param>
+            <param name="dateTime">Дата актуальности курса</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Курс заданной валюты на заданную дату</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IGrpcCurrencyService.GetFavouriteExchangeRateAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Получить курс валют Избранного
+            </summary>
+            <param name="favouriteName">Название Избранного курса валют</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Курс валют Избранного с заданным названием</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IGrpcCurrencyService.GetFavouriteExchangeRateOnDateAsync(System.String,System.DateTime,System.Threading.CancellationToken)">
+            <summary>
+            Получить курс валют Избранного на определенную дату
+            </summary>
+            <param name="favouriteName">Название Избранного курса валют</param>
+            <param name="dateTime">Дата актуальности курса Избранного</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Курс валют Избранного на определенную дату</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IGrpcCurrencyService.GetSettingsAsync(System.Threading.CancellationToken)">
             <summary>
             Получить настройки приложения
             </summary>
-            <param name="currencyConfig">Конфигурационные настройки для работы с валютами</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Настройки приложения</returns>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.ISettingsService">
+            <summary>
+            Сервис для работы с репозиторием настроек PublicApi
+            </summary>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.ISettingsService.GetApplicationSettingsAsync(System.Threading.CancellationToken)">
+            <summary>
+            Получить настройки PublicApi
+            </summary>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Настройки PublicApi</returns>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.ISettingsService.SetDefaultCurrencyAsync(Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType,System.Threading.CancellationToken)">
+            <summary>
+            Задать новую валюту по умолчанию
+            </summary>
+            <param name="currencyType">Новая валюта по умолчанию</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.ISettingsService.SetCurrencyRoundCountAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Задать новое значение - кол-во знаков после запятой при округлении курсов валют
+            </summary>
+            <param name="newRoundCount">Новое кол-во знаков после запятой</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.FavouritesContoller">
+            <summary>
+            Методы для управления Избранными курсами валют
+            </summary>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.FavouritesContoller.GetAllFavouritesAsync(System.Threading.CancellationToken)">
+            <summary>
+            Получить все Избранные
+            </summary>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="200">
+            Возвращает курс, если удалось его получить.
+            Ничего не возвращает, если не существует Избранного с указанным именем.
+            </response>
+            <response code="500">
+            Возвращает в случае других ошибок
+            </response>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.FavouritesContoller.GetFavouriteByNameAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Получить Избранное по названию
+            </summary>
+            <param name="favouriteName">Название Избранного</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="200">
+            Возвращает курс, если удалось его получить.
+            </response>
+            <response code="404">
+            Возвращает, если не найдено Избранное с указанным именем
+            </response>
+            <response code="500">
+            Возвращает в случае других ошибок
+            </response>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.FavouritesContoller.AddFavouriteAsync(System.String,Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType,Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType,System.Threading.CancellationToken)">
+            <summary>
+            Добавить новое Избранное
+            </summary>
+            <param name="newFavouriteName">Название нового Избранного</param>
+            <param name="currency">Валюта Избранного (должны отличаться с базовой валютой)</param>
+            <param name="baseCurrency">Базовая валюта Избранного</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="200">
+            Возвращает, если удалось добавить новое Избранное
+            </response>
+            <response code="422">
+            Возвращает, если
+            1. Валюта совпадает с базовой валютой.
+            2. Уже существует Избранное с таким новым именем.
+            3. Уже существует Избранное с таким набором (Валюта, Базовая валюта).
+            </response>
+            <response code="500">
+            Возвращает в случае других ошибок
+            </response>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.FavouritesContoller.UpdateFavouriteAsync(System.String,System.String,System.Nullable{Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType},System.Nullable{Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType},System.Threading.CancellationToken)">
+            <summary>
+            Изменить существующее Избранное
+            </summary>
+            <param name="favouriteName">Название Избранного</param>
+            <param name="newFavouriteName">(Необязательно) Новое название Избранного</param>
+            <param name="currency">(Необязательно) Новая валюта Избранного (должны отличаться с базовой валютой)</param>
+            <param name="baseCurrency">(Необязательно) Новая базовая валюта Избранного</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="200">
+            Возвращает, если
+            1. Удалось изменить Избранное
+            2. Пользователь не ввел данные для изменения
+            3. Пользователь ввел данные для изменения, которые совпадают с уже существующими данными
+            </response>
+            <response code="404">
+            Возвращает, если не найдено Избранного с таким именем
+            </response>
+            <response code="422">
+            Возвращает, если
+            1. Валюта совпадает с базовой валютой.
+            2. Уже существует Избранное с указанным новым именем
+            3. Уже существует Избранное с таким набором (Валюта, Базовая валюта)
+            </response>
+            <response code="500">
+            Возвращает в случае других ошибок
+            </response>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.FavouritesContoller.DeleteFavouriteAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Удалить существующее Избранное
+            </summary>
+            <param name="favouriteName">Название Избранного</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="200">
+            Возвращает, если удалось удалить Избранное
+            </response>
+            <response code="404">
+            Возвращает, если не существует Избранного с таким именем
+            </response>
+            <response code="500">
+            Возвращает в случае других ошибок
+            </response>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController">
+            <summary>
+            Методы для работы с Internal API
+            </summary>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController.GetCurrentExchangeRateAsync(System.Nullable{Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType},System.Threading.CancellationToken)">
+            <summary>
+            Получить курс валют
+            </summary>
+            <param name="currencyType">(Необязательно) Код валюты, в которой узнать курс базовой валюты. Если не указан, используется валюта по умолчанию</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="200">
+            Возвращает, если удалось получить курс валюты
+            </response>
+            <response code="429">
+            Возвращает, если больше не осталось доступных запросов
+            </response>
+            <response code="500">
+            Возвращает в случае других ошибок
+            </response>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController.GetExchangeRateByDateAsync(Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Получить курс валют на выбранную дату
+            </summary>
+            <param name="currencyType">Код валюты, в которой узнать курс базовой валюты</param>
+            <param name="dateString">Выбранная дата в формате yyyy-MM-dd</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="200">
+            Возвращает, если удалось получить курс валюты на выбранную дату
+            </response>
+            <response code="422">
+            Возвращает, если неверно введена дата
+            </response>
+            <response code="429">
+            Возвращает, если больше не осталось доступных запросов
+            </response>
+            <response code="500">
+            Возвращает в случае других ошибок
+            </response>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController.GetConfigSettingsAsync(System.Threading.CancellationToken)">
+            <summary>
+            Получить настройки приложения
+            </summary>
+            <param name="cancellationToken">Токен отмены</param>
             <response code="200">
             Возвращает, если удалось получить настройки приложения
             </response>
         </member>
-        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckController">
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController.GetFavouriteExchangeRateAsync(System.String,System.Threading.CancellationToken)">
             <summary>
-            Методы для проверки работоспособности PublicApi
+            Получить курс Избранного
             </summary>
-        </member>
-        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckController.Check(System.Nullable{System.Boolean})">
-            <summary>
-            Проверить что API работает
-            </summary>
-            <param name="checkExternalApi">Необходимо проверить работоспособность внешнего API. Если FALSE или NULL - проверяется работоспособность только текущего API</param>
+            <param name="favouriteName">Название Избранного, для которого узнать курс</param>
+            <param name="cancellationToken">Токен отмены</param>
             <response code="200">
-            Возвращает если удалось получить доступ к API
+            Возвращает, если удалось получить курс Избранного
             </response>
-            <response code="400">
-            Возвращает если удалось не удалось получить доступ к API
+            <response code="404">
+            Возвращает, если нет Избранного с указанным именем
+            </response>
+            <response code="429">
+            Возвращает, если больше не осталось доступных запросов
+            </response>
+            <response code="500">
+            Возвращает в случае других ошибок
             </response>
         </member>
-        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult">
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.GrpcCurrencyController.GetFavouriteExchangeRateOnDateAsync(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
-            Результат проверки работоспособности API
+            Получить курс Избранного на выбранную дату
+            </summary>
+            <param name="favouriteName">Название Избранного, для которого узнать курс</param>
+            <param name="dateString">Дата, на которую узнать курс избранного (в формате yyyy-MM-dd)</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="200">
+            Возвращает, если удалось получить курс Избранного
+            </response>
+            <response code="404">
+            Возвращает, если нет Избранного с указанным именем
+            </response>
+            <response code="422">
+            Возвращает, если неверно введена дата
+            </response>
+            <response code="429">
+            Возвращает, если больше не осталось доступных запросов
+            </response>
+            <response code="500">
+            Возвращает в случае других ошибок
+            </response>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.SettingsController">
+            <summary>
+            Методы для управления настройками PublicApi
             </summary>
         </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult.CheckedOn">
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.SettingsController.SetDefaultCurrencyAsync(Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType,System.Threading.CancellationToken)">
             <summary>
-            Дата проверки
+            Изменить валюту по умолчанию
+            </summary>
+            <param name="newDefaultCurrency">Новая валюта по умолчанию</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="200">
+            Возвращает, если удалось изменить валюту по умолчанию
+            </response>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.SettingsController.SetCurrencyRoundCountAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Изменить количество знаков после запятой для округления
+            </summary>
+            <param name="newRoundCount">Новое значение - количество знаков после запятой у курса валют. Допустимые значения = 1..8</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="200">
+            Возвращает, если удалось изменить количество знаков после запятой
+            </response>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType">
+            <summary>
+            Тип валюты
             </summary>
         </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult.Status">
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.RUB">
             <summary>
-            Статус работоспособности API
+            Russian Ruble
             </summary>
         </member>
-        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult.CheckStatus">
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.AED">
             <summary>
-            Статус API
+            United Arab Emirates Dirham
             </summary>
         </member>
-        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult.CheckStatus.Ok">
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.AFN">
             <summary>
-            API работает
+            Afghan Afghani
             </summary>
         </member>
-        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Controllers.HealthCheckResult.CheckStatus.Failed">
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ALL">
             <summary>
-            Ошибка в работе API
+            Albanian Lek
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.AMD">
+            <summary>
+            Armenian Dram
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ANG">
+            <summary>
+            NL Antillean Guilder
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.AOA">
+            <summary>
+            Angolan Kwanza
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ARS">
+            <summary>
+            Argentine Peso
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.AUD">
+            <summary>
+            Australian Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.AWG">
+            <summary>
+            Aruban Florin
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.AZN">
+            <summary>
+            Azerbaijani Manat
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BAM">
+            <summary>
+            Bosnia-Herzegovina Convertible Mark
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BBD">
+            <summary>
+            Barbadian Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BDT">
+            <summary>
+            Bangladeshi Taka
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BGN">
+            <summary>
+            Bulgarian Lev
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BHD">
+            <summary>
+            Bahraini Dinar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BIF">
+            <summary>
+            Burundian Franc
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BMD">
+            <summary>
+            Bermudan Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BND">
+            <summary>
+            Brunei Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BOB">
+            <summary>
+            Bolivian Boliviano
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BRL">
+            <summary>
+            Brazilian Real
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BSD">
+            <summary>
+            Bahamian Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BTN">
+            <summary>
+            Bhutanese Ngultrum
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BWP">
+            <summary>
+            Botswanan Pula
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BYN">
+            <summary>
+            Belarusian ruble
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BYR">
+            <summary>
+            Belarusian Ruble
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BZD">
+            <summary>
+            Belize Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.CAD">
+            <summary>
+            Canadian Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.CDF">
+            <summary>
+            Congolese Franc
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.CHF">
+            <summary>
+            Swiss Franc
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.CLF">
+            <summary>
+            Unidad de Fomento
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.CLP">
+            <summary>
+            Chilean Peso
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.CNY">
+            <summary>
+            Chinese Yuan
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.COP">
+            <summary>
+            Coombian Peso
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.CRC">
+            <summary>
+            Costa Rican Colón
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.CUC">
+            <summary>
+            Cuban Convertible Peso
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.CUP">
+            <summary>
+            Cuban Peso
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.CVE">
+            <summary>
+            Cape Verdean Escudo
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.CZK">
+            <summary>
+            Czech Republic Koruna
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.DJF">
+            <summary>
+            Djiboutian Franc
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.DKK">
+            <summary>
+            Danish Krone
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.DOP">
+            <summary>
+            Dominican Peso
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.DZD">
+            <summary>
+            Algerian Dinar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.EGP">
+            <summary>
+            Egyptian Pound
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ERN">
+            <summary>
+            Eritrean Nakfa
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ETB">
+            <summary>
+            Ethiopian Birr
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.EUR">
+            <summary>
+            Euro
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.FJD">
+            <summary>
+            Fijian Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.FKP">
+            <summary>
+            Falkland Islands Pound
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.GBP">
+            <summary>
+            British Pound Sterling
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.GEL">
+            <summary>
+            Georgian Lari
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.GGP">
+            <summary>
+            Guernsey pound
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.GHS">
+            <summary>
+            Ghanaian Cedi
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.GIP">
+            <summary>
+            Gibraltar Pound
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.GMD">
+            <summary>
+            Gambian Dalasi
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.GNF">
+            <summary>
+            Guinean Franc
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.GTQ">
+            <summary>
+            Guatemalan Quetzal
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.GYD">
+            <summary>
+            Guyanaese Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.HKD">
+            <summary>
+            Hong Kong Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.HNL">
+            <summary>
+            Honduran Lempira
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.HRK">
+            <summary>
+            Croatian Kuna
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.HTG">
+            <summary>
+            Haitian Gourde
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.HUF">
+            <summary>
+            Hungarian Forint
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.IDR">
+            <summary>
+            Indonesian Rupiah
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ILS">
+            <summary>
+            Israeli New Sheqel
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.IMP">
+            <summary>
+            Manx pound
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.INR">
+            <summary>
+            Indian Rupee
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.IQD">
+            <summary>
+            Iraqi Dinar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.IRR">
+            <summary>
+            Iranian Rial
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ISK">
+            <summary>
+            Icelandic Króna
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.JEP">
+            <summary>
+            Jersey pound
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.JMD">
+            <summary>
+            Jamaican Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.JOD">
+            <summary>
+            Jordanian Dinar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.JPY">
+            <summary>
+            Japanese Yen
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.KES">
+            <summary>
+            Kenyan Shilling
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.KGS">
+            <summary>
+            Kyrgystani Som
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.KHR">
+            <summary>
+            Cambodian Riel
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.KMF">
+            <summary>
+            Comorian Franc
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.KPW">
+            <summary>
+            North Korean Won
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.KRW">
+            <summary>
+            South Korean Won
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.KWD">
+            <summary>
+            Kuwaiti Dinar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.KYD">
+            <summary>
+            Cayman Islands Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.KZT">
+            <summary>
+            Kazakhstani Tenge
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.LAK">
+            <summary>
+            Laotian Kip
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.LBP">
+            <summary>
+            Lebanese Pound
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.LKR">
+            <summary>
+            Sri Lankan Rupee
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.LRD">
+            <summary>
+            Liberian Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.LSL">
+            <summary>
+            Lesotho Loti
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.LTL">
+            <summary>
+            Lithuanian Litas
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.LVL">
+            <summary>
+            Latvian Lats
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.LYD">
+            <summary>
+            Libyan Dinar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MAD">
+            <summary>
+            Moroccan Dirham
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MDL">
+            <summary>
+            Moldovan Leu
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MGA">
+            <summary>
+            Malagasy Ariary
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MKD">
+            <summary>
+            Macedonian Denar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MMK">
+            <summary>
+            Myanma Kyat
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MNT">
+            <summary>
+            Mongolian Tugrik
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MOP">
+            <summary>
+            Macanese Pataca
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MRO">
+            <summary>
+            Mauritanian ouguiya
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MUR">
+            <summary>
+            Mauritian Rupee
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MVR">
+            <summary>
+            Maldivian Rufiyaa
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MWK">
+            <summary>
+            Malawian Kwacha
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MXN">
+            <summary>
+            Mexican Peso
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MYR">
+            <summary>
+            Malaysian Ringgit
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MZN">
+            <summary>
+            Mozambican Metical
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.NAD">
+            <summary>
+            Namibian Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.NGN">
+            <summary>
+            Nigerian Naira
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.NIO">
+            <summary>
+            Nicaraguan Córdoba
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.NOK">
+            <summary>
+            Norwegian Krone
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.NPR">
+            <summary>
+            Nepalese Rupee
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.NZD">
+            <summary>
+            New Zealand Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.OMR">
+            <summary>
+            Omani Rial
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.PAB">
+            <summary>
+            Panamanian Balboa
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.PEN">
+            <summary>
+            Peruvian Nuevo Sol
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.PGK">
+            <summary>
+            Papua New Guinean Kina
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.PHP">
+            <summary>
+            Philippine Peso
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.PKR">
+            <summary>
+            Pakistani Rupee
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.PLN">
+            <summary>
+            Polish Zloty
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.PYG">
+            <summary>
+            Paraguayan Guarani
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.QAR">
+            <summary>
+            Qatari Rial
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.RON">
+            <summary>
+            Romanian Leu
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.RSD">
+            <summary>
+            Serbian Dinar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.RWF">
+            <summary>
+            Rwandan Franc
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SAR">
+            <summary>
+            Saudi Riyal
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SBD">
+            <summary>
+            Solomon Islands Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SCR">
+            <summary>
+            Seychellois Rupee
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SDG">
+            <summary>
+            Sudanese Pound
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SEK">
+            <summary>
+            Swedish Krona
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SGD">
+            <summary>
+            Singapore Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SHP">
+            <summary>
+            Saint Helena Pound
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SLL">
+            <summary>
+            Sierra Leonean Leone
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SOS">
+            <summary>
+            Somali Shilling
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SRD">
+            <summary>
+            Surinamese Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.STD">
+            <summary>
+            São Tomé and Príncipe dobra
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SVC">
+            <summary>
+            Salvadoran Colón
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SYP">
+            <summary>
+            Syrian Pound
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SZL">
+            <summary>
+            Swazi Lilangeni
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.THB">
+            <summary>
+            Thai Baht
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.TJS">
+            <summary>
+            Tajikistani Somoni
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.TMT">
+            <summary>
+            Turkmenistani Manat
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.TND">
+            <summary>
+            Tunisian Dinar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.TOP">
+            <summary>
+            Tongan Paʻanga
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.TRY">
+            <summary>
+            Turkish Lira
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.TTD">
+            <summary>
+            Trinidad and Tobago Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.TWD">
+            <summary>
+            New Taiwan Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.TZS">
+            <summary>
+            Tanzanian Shilling
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.UAH">
+            <summary>
+            Ukrainian Hryvnia
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.UGX">
+            <summary>
+            Ugandan Shilling
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.USD">
+            <summary>
+            US Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.UYU">
+            <summary>
+            Uruguayan Peso
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.UZS">
+            <summary>
+            Uzbekistan Som
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.VEF">
+            <summary>
+            Venezuelan Bolívar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.VND">
+            <summary>
+            Vietnamese Dong
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.VUV">
+            <summary>
+            Vanuatu Vatu
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.WST">
+            <summary>
+            Samoan Tala
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.XAF">
+            <summary>
+            CFA Franc BEAC
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.XAG">
+            <summary>
+            Silver Ounce
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.XAU">
+            <summary>
+            Gold Ounce
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.XCD">
+            <summary>
+            East Caribbean Dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.XDR">
+            <summary>
+            Special drawing rights
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.XOF">
+            <summary>
+            CFA Franc BCEAO
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.XPF">
+            <summary>
+            CFP Franc
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.YER">
+            <summary>
+            Yemeni Rial
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ZAR">
+            <summary>
+            South African Rand
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ZMK">
+            <summary>
+            Zambian Kwacha
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ZMW">
+            <summary>
+            Zambian Kwacha
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ZWL">
+            <summary>
+            Zimbabwean dollar
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.XPT">
+            <summary>
+            Platinum Ounce
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.XPD">
+            <summary>
+            Palladium Ounce
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BTC">
+            <summary>
+            Bitcoin
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ETH">
+            <summary>
+            Ethereum
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.BNB">
+            <summary>
+            Binance
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.XRP">
+            <summary>
+            Ripple
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.SOL">
+            <summary>
+            Solana
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.DOT">
+            <summary>
+            Polkadot
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.AVAX">
+            <summary>
+            Avalanche
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.MATIC">
+            <summary>
+            Matic Token
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.LTC">
+            <summary>
+            Litecoin
+            </summary>
+        </member>
+        <member name="F:Fuse8_ByteMinds.SummerSchool.PublicApi.Enums.CurrencyType.ADA">
+            <summary>
+            Cardano
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions.ViolatingDatabaseConstraintsException">
+            <summary>
+            Исключение, возникающее при нарушении ограничений БД
+            </summary>
+        </member>
+        <member name="M:Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions.ViolatingDatabaseConstraintsException.#ctor(System.String)">
+            <inheritdoc cref="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Exceptions.ViolatingDatabaseConstraintsException"/>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ApiSettingsModel">
+            <summary>
+            Настройки для взаимодействия с InternalAPI
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ApiSettingsModel.BaseAddress">
+            <summary>
+            Базовый адрес для работы с InternalApi
             </summary>
         </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel">
@@ -124,14 +1670,9 @@
             Количество знаков после запятой у курса валют
             </summary>
         </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel.RequestLimit">
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel.NewRequestsAvailable">
             <summary>
-            Максимальное количество запросов к внешнему API
-            </summary>
-        </member>
-        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.CurrencyConfigurationModel.RequestCount">
-            <summary>
-            Количество отправленных запросов к внешнему API
+            Есть ли ещё доступные запросы
             </summary>
         </member>
         <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateHistoricalModel">
@@ -168,6 +1709,60 @@
             <summary>
             Курс валюты относительно базовой валюты
             </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateWithBaseHistoricalModel">
+            <summary>
+            Курс валюты с базовой валютой на дату
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateWithBaseHistoricalModel.Currency">
+            <summary>
+            Код валюты, в которой вычисляется курс
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateWithBaseHistoricalModel.BaseCurrency">
+            <summary>
+            Код базовой валюты, относительно которой вычисляется курс
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateWithBaseHistoricalModel.Value">
+            <summary>
+            Курс валюты относительно базовой валюты
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateWithBaseHistoricalModel.Date">
+            <summary>
+            Дата акутуальности курса
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateWithBaseModel">
+            <summary>
+            Курс валюты с базовой валютой
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateWithBaseModel.Currency">
+            <summary>
+            Код валюты, в которой вычисляется курс
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateWithBaseModel.BaseCurrency">
+            <summary>
+            Код базовой валюты, относительно которой вычисляется курс
+            </summary>
+        </member>
+        <member name="P:Fuse8_ByteMinds.SummerSchool.PublicApi.Models.ExchangeRateWithBaseModel.Value">
+            <summary>
+            Курс валюты относительно базовой валюты
+            </summary>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Services.FavouritesService">
+            <inheritdoc cref="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IFavouritesService"/>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Services.GrpcCurrencyService">
+            <inheritdoc cref="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.IGrpcCurrencyService"/>
+        </member>
+        <member name="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Services.SettingsService">
+            <inheritdoc cref="T:Fuse8_ByteMinds.SummerSchool.PublicApi.Contracts.ISettingsService"/>
         </member>
     </members>
 </doc>

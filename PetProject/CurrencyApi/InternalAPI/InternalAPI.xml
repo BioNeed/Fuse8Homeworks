@@ -1,0 +1,1536 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>InternalAPI</name>
+    </assembly>
+    <members>
+        <member name="T:InternalAPI.Background.BackgroundTaskQueue">
+            <inheritdoc cref="T:InternalAPI.Contracts.IBackgroundTaskQueue"/>
+        </member>
+        <member name="T:InternalAPI.Constants.ApiConstants">
+            <summary>
+            Класс строковых констант InternalApi
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Contracts.GrpcContracts.DecimalValue">
+            <summary>
+            Класс-оболочка для decimal типа с операторами преобразования
+            в decimal и обратно.
+            </summary>
+            <summary>
+            Нужен оператор для конвертирования в decimal число в C#
+            Пример: 12345.6789 -> { целая часть = 12345, нано-часть = 678900000 }
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.DecimalValue.UnitsFieldNumber">
+            <summary>Field number for the "units" field.</summary>
+        </member>
+        <member name="P:InternalAPI.Contracts.GrpcContracts.DecimalValue.Units">
+            <summary>
+            Целая часть числа
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.DecimalValue.NanosFieldNumber">
+            <summary>Field number for the "nanos" field.</summary>
+        </member>
+        <member name="P:InternalAPI.Contracts.GrpcContracts.DecimalValue.Nanos">
+            <summary>
+            Нано разряды числа (10^-9)
+            Знаки у целой и нано-части должны совпадать
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Contracts.GrpcContracts.GrpcCurrencyReflection">
+            <summary>Holder for reflection information generated from Contracts/GrpcContracts/GrpcCurrency.proto</summary>
+        </member>
+        <member name="P:InternalAPI.Contracts.GrpcContracts.GrpcCurrencyReflection.Descriptor">
+            <summary>File descriptor for Contracts/GrpcContracts/GrpcCurrency.proto</summary>
+        </member>
+        <member name="T:InternalAPI.Contracts.GrpcContracts.ExchangeRate">
+            <summary>
+            Курс валюты
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.ExchangeRate.CodeFieldNumber">
+            <summary>Field number for the "code" field.</summary>
+        </member>
+        <member name="P:InternalAPI.Contracts.GrpcContracts.ExchangeRate.Code">
+            <summary>
+            Код валюты, в которой узнать курс
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.ExchangeRate.ValueFieldNumber">
+            <summary>Field number for the "value" field.</summary>
+        </member>
+        <member name="P:InternalAPI.Contracts.GrpcContracts.ExchangeRate.Value">
+            <summary>
+            Значение курса валют
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Contracts.GrpcContracts.CurrencyInfo">
+            <summary>
+            Информация о валюте
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.CurrencyInfo.CurrencyCodeFieldNumber">
+            <summary>Field number for the "currency_code" field.</summary>
+        </member>
+        <member name="P:InternalAPI.Contracts.GrpcContracts.CurrencyInfo.CurrencyCode">
+            <summary>
+            Код валюты, в которой узнать курс базовой валюты
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Contracts.GrpcContracts.CurrencyOnDateRequest">
+            <summary>
+            Запрос курса валют на дату
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.CurrencyOnDateRequest.CurrencyCodeFieldNumber">
+            <summary>Field number for the "currency_code" field.</summary>
+        </member>
+        <member name="P:InternalAPI.Contracts.GrpcContracts.CurrencyOnDateRequest.CurrencyCode">
+            <summary>
+            Код валюты, в которой узнать курс базовой валюты
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.CurrencyOnDateRequest.DateFieldNumber">
+            <summary>Field number for the "date" field.</summary>
+        </member>
+        <member name="P:InternalAPI.Contracts.GrpcContracts.CurrencyOnDateRequest.Date">
+            <summary>
+            Дата, на которую получить курс валют
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Contracts.GrpcContracts.ApiInfo">
+            <summary>
+            Настройки API
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.ApiInfo.BaseCurrencyFieldNumber">
+            <summary>Field number for the "base_currency" field.</summary>
+        </member>
+        <member name="P:InternalAPI.Contracts.GrpcContracts.ApiInfo.BaseCurrency">
+            <summary>
+            Тип базовой валюты
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.ApiInfo.IsRequestAvailableFieldNumber">
+            <summary>Field number for the "is_request_available" field.</summary>
+        </member>
+        <member name="P:InternalAPI.Contracts.GrpcContracts.ApiInfo.IsRequestAvailable">
+            <summary>
+            Есть ли ещё доступные запросы
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Contracts.GrpcContracts.FavouriteInfo">
+            <summary>
+            Информация об Избранном
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.FavouriteInfo.CurrencyFieldNumber">
+            <summary>Field number for the "currency" field.</summary>
+        </member>
+        <member name="P:InternalAPI.Contracts.GrpcContracts.FavouriteInfo.Currency">
+            <summary>
+            Валюта Избранного
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.FavouriteInfo.BaseCurrencyFieldNumber">
+            <summary>Field number for the "base_currency" field.</summary>
+        </member>
+        <member name="P:InternalAPI.Contracts.GrpcContracts.FavouriteInfo.BaseCurrency">
+            <summary>
+            Базовая валюта Избранного
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Contracts.GrpcContracts.ExchangeRateWithBase">
+            <summary>
+            Курс валюты с базовой валютой
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.ExchangeRateWithBase.CurrencyFieldNumber">
+            <summary>Field number for the "currency" field.</summary>
+        </member>
+        <member name="P:InternalAPI.Contracts.GrpcContracts.ExchangeRateWithBase.Currency">
+            <summary>
+            Код валюты, в которой вычисляется курс
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.ExchangeRateWithBase.BaseCurrencyFieldNumber">
+            <summary>Field number for the "base_currency" field.</summary>
+        </member>
+        <member name="P:InternalAPI.Contracts.GrpcContracts.ExchangeRateWithBase.BaseCurrency">
+            <summary>
+            Базовая валюта, относительно которой вычисляется курс
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.ExchangeRateWithBase.ValueFieldNumber">
+            <summary>Field number for the "value" field.</summary>
+        </member>
+        <member name="P:InternalAPI.Contracts.GrpcContracts.ExchangeRateWithBase.Value">
+            <summary>
+            Значение курса валют
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Contracts.GrpcContracts.FavouriteOnDateRequest">
+            <summary>
+            Запрос курса Избранного на дату
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.FavouriteOnDateRequest.FavouriteInfoFieldNumber">
+            <summary>Field number for the "favourite_info" field.</summary>
+        </member>
+        <member name="P:InternalAPI.Contracts.GrpcContracts.FavouriteOnDateRequest.FavouriteInfo">
+            <summary>
+            Информация об Избранном
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Contracts.GrpcContracts.FavouriteOnDateRequest.DateFieldNumber">
+            <summary>Field number for the "date" field.</summary>
+        </member>
+        <member name="P:InternalAPI.Contracts.GrpcContracts.FavouriteOnDateRequest.Date">
+            <summary>
+            Дата, на которую получить курс Избранного
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Contracts.GrpcContracts.GrpcCurrency">
+            <summary>
+            Сервис для работы с валютами
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Contracts.GrpcContracts.GrpcCurrency.Descriptor">
+            <summary>Service descriptor</summary>
+        </member>
+        <member name="T:InternalAPI.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyBase">
+            <summary>Base class for server-side implementations of GrpcCurrency</summary>
+        </member>
+        <member name="M:InternalAPI.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyBase.GetCurrentExchangeRate(InternalAPI.Contracts.GrpcContracts.CurrencyInfo,Grpc.Core.ServerCallContext)">
+            <summary>
+            Получает текущий курс определенной валюты
+            </summary>
+            <param name="request">The request received from the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:InternalAPI.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyBase.GetExchangeRateOnDate(InternalAPI.Contracts.GrpcContracts.CurrencyOnDateRequest,Grpc.Core.ServerCallContext)">
+            <summary>
+            Получает курс определенной валюты на конкретную дату
+            </summary>
+            <param name="request">The request received from the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:InternalAPI.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyBase.GetApiInfo(Google.Protobuf.WellKnownTypes.Empty,Grpc.Core.ServerCallContext)">
+            <summary>
+            Получает информацию об API
+            </summary>
+            <param name="request">The request received from the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:InternalAPI.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyBase.GetCurrentFavouriteExchangeRate(InternalAPI.Contracts.GrpcContracts.FavouriteInfo,Grpc.Core.ServerCallContext)">
+            <summary>
+            Получает текущий курс для Избранного
+            </summary>
+            <param name="request">The request received from the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:InternalAPI.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyBase.GetFavouriteExchangeRateOnDate(InternalAPI.Contracts.GrpcContracts.FavouriteOnDateRequest,Grpc.Core.ServerCallContext)">
+            <summary>
+            Получает курс для Избранного на конкретную дату
+            </summary>
+            <param name="request">The request received from the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:InternalAPI.Contracts.GrpcContracts.GrpcCurrency.BindService(InternalAPI.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyBase)">
+            <summary>Creates service definition that can be registered with a server</summary>
+            <param name="serviceImpl">An object implementing the server-side handling logic.</param>
+        </member>
+        <member name="M:InternalAPI.Contracts.GrpcContracts.GrpcCurrency.BindService(Grpc.Core.ServiceBinderBase,InternalAPI.Contracts.GrpcContracts.GrpcCurrency.GrpcCurrencyBase)">
+            <summary>Register service method with a service binder with or without implementation. Useful when customizing the service binding logic.
+            Note: this method is part of an experimental API that can change or be removed without any prior notice.</summary>
+            <param name="serviceBinder">Service methods will be bound by calling <c>AddMethod</c> on this object.</param>
+            <param name="serviceImpl">An object implementing the server-side handling logic.</param>
+        </member>
+        <member name="T:InternalAPI.Contracts.IBackgroundTaskQueue">
+            <summary>
+            Фоновая очередь задач
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Contracts.ICachedCurrencyAPI">
+            <summary>
+            Сервис для работы с кэшем
+            </summary>
+        </member>
+        <member name="M:InternalAPI.Contracts.ICachedCurrencyAPI.GetValidBaseCurrencyAsync(System.Threading.CancellationToken)">
+            <summary>
+            Получает и проверяет базовую валюту кэша
+            </summary>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Корректную базовую валюту кэша</returns>
+        </member>
+        <member name="M:InternalAPI.Contracts.ICachedCurrencyAPI.GetCurrentExchangeRateAsync(InternalAPI.Enums.CurrencyType,System.Threading.CancellationToken)">
+            <summary>
+            Получает текущий курс
+            </summary>
+            <param name="currencyType">Валюта, для которой необходимо получить курс</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Текущий курс</returns>
+        </member>
+        <member name="M:InternalAPI.Contracts.ICachedCurrencyAPI.GetExchangeRateOnDateAsync(InternalAPI.Enums.CurrencyType,System.DateOnly,System.Threading.CancellationToken)">
+            <summary>
+            Получает курс валюты, актуальный на <paramref name="date"/>
+            </summary>
+            <param name="currencyType">Валюта, для которой необходимо получить курс</param>
+            <param name="date">Дата, на которую нужно получить курс валют</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Курс на дату</returns>
+        </member>
+        <member name="T:InternalAPI.Contracts.ICurrencyAPI">
+            <summary>
+            Сервис для работы с внешним API (CurrencyApi)
+            </summary>
+        </member>
+        <member name="M:InternalAPI.Contracts.ICurrencyAPI.GetAllCurrentCurrenciesAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Получает текущий курс для всех валют
+            </summary>
+            <param name="baseCurrency">Базовая валюта, относительно которой необходимо получить курс</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Список курсов валют</returns>
+        </member>
+        <member name="M:InternalAPI.Contracts.ICurrencyAPI.GetAllCurrenciesOnDateAsync(System.String,System.DateOnly,System.Threading.CancellationToken)">
+            <summary>
+            Получает курс для всех валют, актуальный на <paramref name="date"/>
+            </summary>
+            <param name="baseCurrency">Базовая валюта, относительно которой необходимо получить курс</param>
+            <param name="date">Дата, на которую нужно получить курс валют</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Список курсов валют на дату</returns>
+        </member>
+        <member name="T:InternalAPI.Contracts.IGettingApiInfoService">
+            <summary>
+            Сервис, получающий информацию об InternalApi
+            </summary>
+        </member>
+        <member name="M:InternalAPI.Contracts.IGettingApiInfoService.GetApiInfoAsync(System.Threading.CancellationToken)">
+            <summary>
+            Получить информацию об InternalApi
+            </summary>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Инфо об InternalApi</returns>
+        </member>
+        <member name="T:InternalAPI.Contracts.IGrpcMediumService">
+            <summary>
+            Сервис для получения курсов валют для Grpc-сервиса
+            </summary>
+        </member>
+        <member name="M:InternalAPI.Contracts.IGrpcMediumService.GetCurrentExchangeRateDtoAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Получить текущий курс валют
+            </summary>
+            <param name="currency">Валюта, в которой узнать курс валют</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Текущий курс валют</returns>
+        </member>
+        <member name="M:InternalAPI.Contracts.IGrpcMediumService.GetCurrentFavouriteExchangeRateAsync(InternalAPI.Contracts.GrpcContracts.FavouriteInfo,System.Threading.CancellationToken)">
+            <summary>
+            Получить текущий курс валют Избранного
+            </summary>
+            <param name="favouriteInfo">Избранное, для которого узнать курс валют</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Значение курса валют Избранного на данный момент</returns>
+        </member>
+        <member name="M:InternalAPI.Contracts.IGrpcMediumService.GetExchangeRateDtoOnDateAsync(System.String,System.DateTime,System.Threading.CancellationToken)">
+            <summary>
+            Получить курс валют на определенную дату
+            </summary>
+            <param name="currency">Валюта, в которой узнать курс валют</param>
+            <param name="dateTime">Дата, на которую узнать курс валют</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Курс валют на выбранную дату</returns>
+        </member>
+        <member name="M:InternalAPI.Contracts.IGrpcMediumService.GetFavouriteExchangeRateOnDateAsync(InternalAPI.Contracts.GrpcContracts.FavouriteOnDateRequest,System.Threading.CancellationToken)">
+            <summary>
+            Получить курс валют Избранного на определенную дату
+            </summary>
+            <param name="request">Избранное и дата, для которых узнать курс</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Значение курса валют Избранного на выбранную дату</returns>
+        </member>
+        <member name="T:InternalAPI.Contracts.IWorker">
+            <summary>
+            Сервис, обрабатывающий задачу
+            </summary>
+        </member>
+        <member name="M:InternalAPI.Contracts.IWorker.ProcessWorkItemAsync(InternalAPI.Models.WorkItem,System.Threading.CancellationToken)">
+            <summary>
+            Выполнить задачу
+            </summary>
+            <param name="item">Item с Id задачи, которую нужно выполнить</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="T:InternalAPI.Controllers.ApiInfoController">
+            <summary>
+            Методы для получения информации об API
+            </summary>
+        </member>
+        <member name="M:InternalAPI.Controllers.ApiInfoController.GetConfigSettingsAsync(System.Threading.CancellationToken)">
+            <summary>
+            Получить настройки приложения
+            </summary>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="200">
+            Возвращает, если удалось получить настройки приложения
+            </response>
+        </member>
+        <member name="T:InternalAPI.Controllers.CurrencyCacheController">
+            <summary>
+            Методы для работы с кэшем валют
+            </summary>
+        </member>
+        <member name="M:InternalAPI.Controllers.CurrencyCacheController.RecalculateCacheWithNewBaseCurrencyAsync(InternalAPI.Enums.CurrencyType,System.Threading.CancellationToken)">
+            <summary>
+            Пересчитать кэш под новую базовую валюту
+            </summary>
+            <param name="newBaseCurrency">Новая базовая валюта</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="202">
+            Возвращает, если удалось принять запрос на пересчет кэша
+            </response>
+            <response code="500">
+            Возвращает в случае внутренних ошибок
+            </response>
+        </member>
+        <member name="T:InternalAPI.Controllers.CurrencyController">
+            <summary>
+            Методы для работы с Currencyapi API
+            </summary>
+        </member>
+        <member name="M:InternalAPI.Controllers.CurrencyController.GetExchangeRateAsync(InternalAPI.Enums.CurrencyType,System.Threading.CancellationToken)">
+            <summary>
+            Получить курс валют
+            </summary>
+            <param name="currencyType">Код валюты, в которой узнать курс базовой валюты</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="200">
+            Возвращает, если удалось получить курс валюты
+            </response>
+            <response code="429">
+            Возвращает, если больше не осталось доступных запросов
+            </response>
+            <response code="500">
+            Возвращает в случае других ошибок
+            </response>
+        </member>
+        <member name="M:InternalAPI.Controllers.CurrencyController.GetExchangeRateByDateAsync(InternalAPI.Enums.CurrencyType,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Получить курс валют на выбранную дату
+            </summary>
+            <param name="currencyType">Код валюты, в которой узнать курс базовой валюты</param>
+            <param name="dateString">Выбранная дата в формате yyyy-MM-dd</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <response code="200">
+            Возвращает, если удалось получить курс валюты на выбранную дату
+            </response>
+            <response code="422">
+            Возвращает, если неверно введена дата
+            </response>
+            <response code="429">
+            Возвращает, если больше не осталось доступных запросов
+            </response>
+            <response code="500">
+            Возвращает в случае других ошибок
+            </response>
+        </member>
+        <member name="T:InternalAPI.Enums.CurrencyType">
+            <summary>
+            Тип валюты
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.RUB">
+            <summary>
+            Russian Ruble
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.AED">
+            <summary>
+            United Arab Emirates Dirham
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.AFN">
+            <summary>
+            Afghan Afghani
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ALL">
+            <summary>
+            Albanian Lek
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.AMD">
+            <summary>
+            Armenian Dram
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ANG">
+            <summary>
+            NL Antillean Guilder
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.AOA">
+            <summary>
+            Angolan Kwanza
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ARS">
+            <summary>
+            Argentine Peso
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.AUD">
+            <summary>
+            Australian Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.AWG">
+            <summary>
+            Aruban Florin
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.AZN">
+            <summary>
+            Azerbaijani Manat
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BAM">
+            <summary>
+            Bosnia-Herzegovina Convertible Mark
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BBD">
+            <summary>
+            Barbadian Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BDT">
+            <summary>
+            Bangladeshi Taka
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BGN">
+            <summary>
+            Bulgarian Lev
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BHD">
+            <summary>
+            Bahraini Dinar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BIF">
+            <summary>
+            Burundian Franc
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BMD">
+            <summary>
+            Bermudan Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BND">
+            <summary>
+            Brunei Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BOB">
+            <summary>
+            Bolivian Boliviano
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BRL">
+            <summary>
+            Brazilian Real
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BSD">
+            <summary>
+            Bahamian Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BTN">
+            <summary>
+            Bhutanese Ngultrum
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BWP">
+            <summary>
+            Botswanan Pula
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BYN">
+            <summary>
+            Belarusian ruble
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BYR">
+            <summary>
+            Belarusian Ruble
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BZD">
+            <summary>
+            Belize Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.CAD">
+            <summary>
+            Canadian Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.CDF">
+            <summary>
+            Congolese Franc
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.CHF">
+            <summary>
+            Swiss Franc
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.CLF">
+            <summary>
+            Unidad de Fomento
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.CLP">
+            <summary>
+            Chilean Peso
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.CNY">
+            <summary>
+            Chinese Yuan
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.COP">
+            <summary>
+            Coombian Peso
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.CRC">
+            <summary>
+            Costa Rican Colón
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.CUC">
+            <summary>
+            Cuban Convertible Peso
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.CUP">
+            <summary>
+            Cuban Peso
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.CVE">
+            <summary>
+            Cape Verdean Escudo
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.CZK">
+            <summary>
+            Czech Republic Koruna
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.DJF">
+            <summary>
+            Djiboutian Franc
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.DKK">
+            <summary>
+            Danish Krone
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.DOP">
+            <summary>
+            Dominican Peso
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.DZD">
+            <summary>
+            Algerian Dinar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.EGP">
+            <summary>
+            Egyptian Pound
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ERN">
+            <summary>
+            Eritrean Nakfa
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ETB">
+            <summary>
+            Ethiopian Birr
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.EUR">
+            <summary>
+            Euro
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.FJD">
+            <summary>
+            Fijian Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.FKP">
+            <summary>
+            Falkland Islands Pound
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.GBP">
+            <summary>
+            British Pound Sterling
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.GEL">
+            <summary>
+            Georgian Lari
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.GGP">
+            <summary>
+            Guernsey pound
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.GHS">
+            <summary>
+            Ghanaian Cedi
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.GIP">
+            <summary>
+            Gibraltar Pound
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.GMD">
+            <summary>
+            Gambian Dalasi
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.GNF">
+            <summary>
+            Guinean Franc
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.GTQ">
+            <summary>
+            Guatemalan Quetzal
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.GYD">
+            <summary>
+            Guyanaese Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.HKD">
+            <summary>
+            Hong Kong Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.HNL">
+            <summary>
+            Honduran Lempira
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.HRK">
+            <summary>
+            Croatian Kuna
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.HTG">
+            <summary>
+            Haitian Gourde
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.HUF">
+            <summary>
+            Hungarian Forint
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.IDR">
+            <summary>
+            Indonesian Rupiah
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ILS">
+            <summary>
+            Israeli New Sheqel
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.IMP">
+            <summary>
+            Manx pound
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.INR">
+            <summary>
+            Indian Rupee
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.IQD">
+            <summary>
+            Iraqi Dinar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.IRR">
+            <summary>
+            Iranian Rial
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ISK">
+            <summary>
+            Icelandic Króna
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.JEP">
+            <summary>
+            Jersey pound
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.JMD">
+            <summary>
+            Jamaican Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.JOD">
+            <summary>
+            Jordanian Dinar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.JPY">
+            <summary>
+            Japanese Yen
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.KES">
+            <summary>
+            Kenyan Shilling
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.KGS">
+            <summary>
+            Kyrgystani Som
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.KHR">
+            <summary>
+            Cambodian Riel
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.KMF">
+            <summary>
+            Comorian Franc
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.KPW">
+            <summary>
+            North Korean Won
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.KRW">
+            <summary>
+            South Korean Won
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.KWD">
+            <summary>
+            Kuwaiti Dinar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.KYD">
+            <summary>
+            Cayman Islands Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.KZT">
+            <summary>
+            Kazakhstani Tenge
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.LAK">
+            <summary>
+            Laotian Kip
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.LBP">
+            <summary>
+            Lebanese Pound
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.LKR">
+            <summary>
+            Sri Lankan Rupee
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.LRD">
+            <summary>
+            Liberian Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.LSL">
+            <summary>
+            Lesotho Loti
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.LTL">
+            <summary>
+            Lithuanian Litas
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.LVL">
+            <summary>
+            Latvian Lats
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.LYD">
+            <summary>
+            Libyan Dinar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MAD">
+            <summary>
+            Moroccan Dirham
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MDL">
+            <summary>
+            Moldovan Leu
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MGA">
+            <summary>
+            Malagasy Ariary
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MKD">
+            <summary>
+            Macedonian Denar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MMK">
+            <summary>
+            Myanma Kyat
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MNT">
+            <summary>
+            Mongolian Tugrik
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MOP">
+            <summary>
+            Macanese Pataca
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MRO">
+            <summary>
+            Mauritanian ouguiya
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MUR">
+            <summary>
+            Mauritian Rupee
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MVR">
+            <summary>
+            Maldivian Rufiyaa
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MWK">
+            <summary>
+            Malawian Kwacha
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MXN">
+            <summary>
+            Mexican Peso
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MYR">
+            <summary>
+            Malaysian Ringgit
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MZN">
+            <summary>
+            Mozambican Metical
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.NAD">
+            <summary>
+            Namibian Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.NGN">
+            <summary>
+            Nigerian Naira
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.NIO">
+            <summary>
+            Nicaraguan Córdoba
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.NOK">
+            <summary>
+            Norwegian Krone
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.NPR">
+            <summary>
+            Nepalese Rupee
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.NZD">
+            <summary>
+            New Zealand Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.OMR">
+            <summary>
+            Omani Rial
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.PAB">
+            <summary>
+            Panamanian Balboa
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.PEN">
+            <summary>
+            Peruvian Nuevo Sol
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.PGK">
+            <summary>
+            Papua New Guinean Kina
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.PHP">
+            <summary>
+            Philippine Peso
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.PKR">
+            <summary>
+            Pakistani Rupee
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.PLN">
+            <summary>
+            Polish Zloty
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.PYG">
+            <summary>
+            Paraguayan Guarani
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.QAR">
+            <summary>
+            Qatari Rial
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.RON">
+            <summary>
+            Romanian Leu
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.RSD">
+            <summary>
+            Serbian Dinar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.RWF">
+            <summary>
+            Rwandan Franc
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SAR">
+            <summary>
+            Saudi Riyal
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SBD">
+            <summary>
+            Solomon Islands Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SCR">
+            <summary>
+            Seychellois Rupee
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SDG">
+            <summary>
+            Sudanese Pound
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SEK">
+            <summary>
+            Swedish Krona
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SGD">
+            <summary>
+            Singapore Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SHP">
+            <summary>
+            Saint Helena Pound
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SLL">
+            <summary>
+            Sierra Leonean Leone
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SOS">
+            <summary>
+            Somali Shilling
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SRD">
+            <summary>
+            Surinamese Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.STD">
+            <summary>
+            São Tomé and Príncipe dobra
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SVC">
+            <summary>
+            Salvadoran Colón
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SYP">
+            <summary>
+            Syrian Pound
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SZL">
+            <summary>
+            Swazi Lilangeni
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.THB">
+            <summary>
+            Thai Baht
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.TJS">
+            <summary>
+            Tajikistani Somoni
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.TMT">
+            <summary>
+            Turkmenistani Manat
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.TND">
+            <summary>
+            Tunisian Dinar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.TOP">
+            <summary>
+            Tongan Paʻanga
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.TRY">
+            <summary>
+            Turkish Lira
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.TTD">
+            <summary>
+            Trinidad and Tobago Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.TWD">
+            <summary>
+            New Taiwan Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.TZS">
+            <summary>
+            Tanzanian Shilling
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.UAH">
+            <summary>
+            Ukrainian Hryvnia
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.UGX">
+            <summary>
+            Ugandan Shilling
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.USD">
+            <summary>
+            US Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.UYU">
+            <summary>
+            Uruguayan Peso
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.UZS">
+            <summary>
+            Uzbekistan Som
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.VEF">
+            <summary>
+            Venezuelan Bolívar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.VND">
+            <summary>
+            Vietnamese Dong
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.VUV">
+            <summary>
+            Vanuatu Vatu
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.WST">
+            <summary>
+            Samoan Tala
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.XAF">
+            <summary>
+            CFA Franc BEAC
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.XAG">
+            <summary>
+            Silver Ounce
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.XAU">
+            <summary>
+            Gold Ounce
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.XCD">
+            <summary>
+            East Caribbean Dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.XDR">
+            <summary>
+            Special drawing rights
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.XOF">
+            <summary>
+            CFA Franc BCEAO
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.XPF">
+            <summary>
+            CFP Franc
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.YER">
+            <summary>
+            Yemeni Rial
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ZAR">
+            <summary>
+            South African Rand
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ZMK">
+            <summary>
+            Zambian Kwacha
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ZMW">
+            <summary>
+            Zambian Kwacha
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ZWL">
+            <summary>
+            Zimbabwean dollar
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.XPT">
+            <summary>
+            Platinum Ounce
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.XPD">
+            <summary>
+            Palladium Ounce
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BTC">
+            <summary>
+            Bitcoin
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ETH">
+            <summary>
+            Ethereum
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.BNB">
+            <summary>
+            Binance
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.XRP">
+            <summary>
+            Ripple
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.SOL">
+            <summary>
+            Solana
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.DOT">
+            <summary>
+            Polkadot
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.AVAX">
+            <summary>
+            Avalanche
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.MATIC">
+            <summary>
+            Matic Token
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.LTC">
+            <summary>
+            Litecoin
+            </summary>
+        </member>
+        <member name="F:InternalAPI.Enums.CurrencyType.ADA">
+            <summary>
+            Cardano
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Exceptions.ApiRequestLimitException">
+            <summary>
+            Исключение, возникающие при превышении допустимого количества запросов
+            </summary>
+        </member>
+        <member name="M:InternalAPI.Exceptions.ApiRequestLimitException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:InternalAPI.Exceptions.ApiRequestLimitException"/> class.
+            <inheritdoc cref="T:InternalAPI.Exceptions.ApiRequestLimitException"/>
+            </summary>
+            <param name="message">Сообщение с деталями об ошибке</param>
+        </member>
+        <member name="T:InternalAPI.Exceptions.CacheBaseCurrencyNotFoundException">
+            <summary>
+            Исключение, возникающее, когда не найдена базовая валюта кэша из таблицы
+            </summary>
+        </member>
+        <member name="M:InternalAPI.Exceptions.CacheBaseCurrencyNotFoundException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:InternalAPI.Exceptions.CacheBaseCurrencyNotFoundException"/> class.
+            <inheritdoc cref="T:InternalAPI.Exceptions.CacheBaseCurrencyNotFoundException"/>
+            </summary>
+            <param name="message">Сообщение с деталями об ошибке</param>
+        </member>
+        <member name="T:InternalAPI.Exceptions.CacheTaskProcessingTimedOutException">
+            <summary>
+            Исключение, возникающее при слишком долгой обработке задачи кэша
+            </summary>
+        </member>
+        <member name="M:InternalAPI.Exceptions.CacheTaskProcessingTimedOutException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:InternalAPI.Exceptions.CacheTaskProcessingTimedOutException"/> class.
+            <inheritdoc cref="T:InternalAPI.Exceptions.CacheTaskProcessingTimedOutException"/>
+            </summary>
+            <param name="message">Сообщение с деталями об ошибке</param>
+        </member>
+        <member name="T:InternalAPI.Models.ApiInfoModel">
+            <summary>
+            Настройки приложения и доступные запросы
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.ApiInfoModel.BaseCurrency">
+            <summary>
+            Базовая валюта
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.ApiInfoModel.NewRequestsAvailable">
+            <summary>
+            Есть ли ещё доступные запросы
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Models.ApiSettingsModel">
+            <summary>
+            Настройки API
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.ApiSettingsModel.BaseAddress">
+            <summary>
+            Базовый адрес для работы с внешним API
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.ApiSettingsModel.ApiKey">
+            <summary>
+            Токен, по которому есть доступ к внешнему API
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.ApiSettingsModel.CacheExpirationTimeInHours">
+            <summary>
+            Время устаревания кэша (в часах)
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.ApiSettingsModel.WaitingTimeForTaskProcessingInSeconds">
+            <summary>
+            Время ожидания обработки задачи (в секундах)
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Models.ApiStatusModel">
+            <summary>
+            Статус API
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.ApiStatusModel.TotalRequests">
+            <summary>
+            Полное количество запросов
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.ApiStatusModel.UsedRequests">
+            <summary>
+            Количество использованных запросов
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Models.ExchangeRateHistoricalModel">
+            <summary>
+            Курс валюты относительно базовой валюты
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.ExchangeRateHistoricalModel.Code">
+            <summary>
+            Код валюты, в которой нужно узнать курс
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.ExchangeRateHistoricalModel.Value">
+            <summary>
+            Курс валюты относительно базовой валюты
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.ExchangeRateHistoricalModel.Date">
+            <summary>
+            Дата акутуальности курса
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Models.ExchangeRateModel">
+            <summary>
+            Курс валюты относительно базовой валюты
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.ExchangeRateModel.Code">
+            <summary>
+            Код валюты, в которой нужно узнать курс
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.ExchangeRateModel.Value">
+            <summary>
+            Курс валюты относительно базовой валюты
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Models.ExchangeRatesHistoricalModel">
+            <summary>
+            Курсы валют на конкретную дату
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.ExchangeRatesHistoricalModel.LastUpdatedAt">
+            <summary>
+            Дата обновления данных
+            </summary>
+        </member>
+        <member name="P:InternalAPI.Models.ExchangeRatesHistoricalModel.ExchangeRates">
+            <summary>
+            Список курсов валют
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Models.WorkItem">
+            <summary>
+            Item с уникальным идентификатором задачи
+            </summary>
+            <param name="TaskId">Уникальный идентификатор задачи</param>
+        </member>
+        <member name="M:InternalAPI.Models.WorkItem.#ctor(System.Guid)">
+            <summary>
+            Item с уникальным идентификатором задачи
+            </summary>
+            <param name="TaskId">Уникальный идентификатор задачи</param>
+        </member>
+        <member name="P:InternalAPI.Models.WorkItem.TaskId">
+            <summary>Уникальный идентификатор задачи</summary>
+        </member>
+        <member name="T:InternalAPI.Services.CachedCurrencyService">
+            <summary>
+            <inheritdoc cref="T:InternalAPI.Contracts.ICachedCurrencyAPI"/>
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Services.CacheRecalculator">
+            <summary>
+            Сервис, пересчитывающий кэш
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Services.CurrencyService">
+            <summary>
+            <inheritdoc cref="T:InternalAPI.Contracts.ICurrencyAPI"/>
+            <inheritdoc cref="T:InternalAPI.Contracts.IGettingApiInfoService"/>
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Services.GrpcCurrencyService">
+            <summary>
+            Grpc-сервер, отвечающий на запросы Grpc-клиента.
+            <inheritdoc cref="T:InternalAPI.Contracts.GrpcContracts.GrpcCurrency"/>
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Services.GrpcMediumService">
+            <summary>
+            <inheritdoc cref="T:InternalAPI.Contracts.IGrpcMediumService"/>
+            </summary>
+        </member>
+        <member name="T:InternalAPI.Services.QueueHostedService">
+            <summary>
+            Сервис, управляющий очередью с задачами
+            </summary>
+        </member>
+    </members>
+</doc>

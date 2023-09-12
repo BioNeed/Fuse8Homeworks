@@ -1,0 +1,75 @@
+﻿version: '3.8'
+
+services:
+  postgres:
+    container_name: ${DATABASE_CONTAINER_NAME}
+    image: postgres:15.3
+    restart: unless-stopped
+    environment:
+        DATABASE_HOST: ${DATABASE_HOST}
+        POSTGRES_USER: ${DATABASE_USER}
+        POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+        POSTGRES_DB: ${DATABASE_MAINTENANCE_DB}
+    ports:
+        - "5434:${DATABASE_CONTAINER_PORT}"
+    volumes:
+        - ${DATABASE_HOST_DATA}:${DATABASE_CONTAINER_DATA}
+
+  internal_api:
+    container_name: ${INTERNAL_API_CONTAINER_NAME}
+    image: school/${INTERNAL_API_CONTAINER_NAME}:dev
+    restart: unless-stopped
+    ports:
+      - "5236:${INTERNAL_API_GRPC_CONTAINER_PORT}"
+      - "7228:${INTERNAL_API_CONTAINER_PORT}"
+    
+    environment:
+      - ASPNETCORE_URLS=http://+:${INTERNAL_API_GRPC_CONTAINER_PORT};http://+:${INTERNAL_API_CONTAINER_PORT};
+      - ASPNETCORE_ENVIRONMENT=${INTERNAL_API_ENVIRONMENT}
+      - GrpcPort=${INTERNAL_API_GRPC_CONTAINER_PORT}
+      - RestApiPort=${INTERNAL_API_CONTAINER_PORT}
+      - ApiSettings__BaseAddress=https://api.currencyapi.com/ 
+
+    healthcheck:
+      test: curl --fail http://localhost:${INTERNAL_API_CONTAINER_PORT}/healthcheck || exit 1
+      retries: 5
+      start_period: 10s
+      timeout: 10s
+      interval: 60s
+
+    build:
+      context: ..
+      dockerfile: InternalAPI\Dockerfile
+
+    depends_on:
+      postgres:
+        condition: service_started
+
+  public_api:
+    container_name: ${PUBLIC_API_CONTAINER_NAME}
+    image: school/${PUBLIC_API_CONTAINER_NAME}:dev
+    restart: unless-stopped
+    ports:
+      - "5166:${PUBLIC_API_CONTAINER_PORT}"
+    
+    environment:
+      - ASPNETCORE_URLS=http://+:${PUBLIC_API_CONTAINER_PORT};
+      - ASPNETCORE_ENVIRONMENT=${PUBLIC_API_ENVIRONMENT}
+      - ApiSettings__BaseAddress=http://${INTERNAL_API_CONTAINER_NAME}:${INTERNAL_API_GRPC_CONTAINER_PORT}
+
+    healthcheck:
+      test: curl --fail http://localhost:${PUBLIC_API_CONTAINER_PORT}/healthcheck || exit 1
+      retries: 5
+      start_period: 10s
+      timeout: 10s
+      interval: 60s
+
+    build:
+      context: ..
+      dockerfile: PublicApi\Dockerfile
+
+    depends_on:
+      internal_api:
+        condition: service_healthy
+      postgres:
+        condition: service_started
